@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mobile Price Checker - Quick Access Tool | FarmScout Online</title>
+    <meta name="description" content="Lightning-fast mobile price checker for market shopping. Voice search, barcode scanning, and offline access to Baloan Public Market prices." />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="theme-color" content="#2D5016" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="FarmScout Quick Check" />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Ffarmscout2741back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-background min-h-screen">
+    <!-- Mobile Header -->
+    <header class="bg-primary text-white sticky top-0 z-50 shadow-elevated">
+        <div class="px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Back Button & Logo -->
+                <div class="flex items-center">
+                    <button onclick="history.back()" class="mr-3 p-2 -ml-2 rounded-lg hover:bg-primary-700 transition-colors">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <div class="flex items-center">
+                        <svg class="h-8 w-8 mr-2" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="18" fill="white"/>
+                            <path d="M12 20c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8-8-3.6-8-8z" fill="#75A347"/>
+                            <path d="M16 18h8v4h-8z" fill="#FF6B35"/>
+                            <circle cx="20" cy="20" r="2" fill="#2D5016"/>
+                        </svg>
+                        <div>
+                            <h1 class="text-lg font-bold font-accent">Quick Check</h1>
+                            <p class="text-xs text-primary-200">Mobile Price Checker</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Button -->
+                <button type="button" class="p-2 rounded-lg hover:bg-primary-700 transition-colors" onclick="toggleMobileMenu()">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Navigation Menu -->
+            <div id="mobile-menu" class="hidden mt-4 pb-2">
+                <div class="space-y-2">
+                    <a href="homepage_real_time_price_dashboard.html" class="block px-3 py-2 rounded-lg text-primary-200 hover:text-white hover:bg-primary-700 transition-colors">Home</a>
+                    <a href="product_categories_agricultural_classification_system.html" class="block px-3 py-2 rounded-lg text-primary-200 hover:text-white hover:bg-primary-700 transition-colors">Categories</a>
+                    <a href="market_information_baloan_public_market_guide.html" class="block px-3 py-2 rounded-lg text-primary-200 hover:text-white hover:bg-primary-700 transition-colors">Market Info</a>
+                    <a href="about_transparency_community_mission.html" class="block px-3 py-2 rounded-lg text-primary-200 hover:text-white hover:bg-primary-700 transition-colors">About</a>
+                    <a href="mobile_price_checker_quick_access_tool.html" class="block px-3 py-2 rounded-lg text-white bg-primary-800 font-semibold">Quick Check</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Location Status Bar -->
+    <div class="bg-success-50 border-b border-success-200 px-4 py-2">
+        <div class="flex items-center justify-between text-sm">
+            <div class="flex items-center text-success-700">
+                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                </svg>
+                <span class="font-medium">Near Baloan Market</span>
+            </div>
+            <div class="text-success-600 text-xs">
+                <span class="inline-flex items-center">
+                    <div class="w-2 h-2 bg-success rounded-full mr-1 animate-pulse"></div>
+                    Live Prices
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Search Interface -->
+    <section class="px-4 py-6">
+        <!-- Quick Search -->
+        <div class="mb-6">
+            <div class="relative">
+                <input type="text" id="quick-search" placeholder="Search products (kamatis, bangus, bigas...)" class="w-full text-lg px-6 py-4 pr-16 border-2 border-primary-200 rounded-2xl focus:ring-4 focus:ring-primary-300 focus:border-primary-500 focus:outline-none transition-all bg-white shadow-card" autocomplete="off" />
+                <button class="absolute right-2 top-2 p-3 bg-primary text-white rounded-xl hover:bg-primary-700 transition-colors">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Voice & Barcode Actions -->
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <!-- Voice Search -->
+            <button class="flex flex-col items-center justify-center p-6 bg-accent text-white rounded-2xl shadow-card hover:bg-accent-600 transition-all active:scale-95" onclick="startVoiceSearch()">
+                <svg class="w-8 h-8 mb-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd"/>
+                </svg>
+                <span class="font-semibold text-sm">Voice Search</span>
+                <span class="text-xs opacity-90">Tap & speak</span>
+            </button>
+
+            <!-- Barcode Scanner -->
+            <button class="flex flex-col items-center justify-center p-6 bg-secondary text-white rounded-2xl shadow-card hover:bg-secondary-700 transition-all active:scale-95" onclick="startBarcodeScanner()">
+                <svg class="w-8 h-8 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+                </svg>
+                <span class="font-semibold text-sm">Scan Barcode</span>
+                <span class="text-xs opacity-90">Point & scan</span>
+            </button>
+        </div>
+
+        <!-- Quick Categories -->
+        <div class="mb-6">
+            <h2 class="text-lg font-semibold text-text-primary mb-4">Quick Categories</h2>
+            <div class="grid grid-cols-2 gap-3">
+                <button class="flex items-center p-4 bg-white rounded-xl shadow-card border border-surface-300 hover:border-primary-300 transition-all active:scale-95" onclick="searchCategory('gulay')">
+                    <div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center mr-3">
+                        <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                        </svg>
+                    </div>
+                    <div class="text-left">
+                        <p class="font-semibold text-text-primary">Gulay</p>
+                        <p class="text-sm text-text-secondary">Vegetables</p>
+                    </div>
+                </button>
+
+                <button class="flex items-center p-4 bg-white rounded-xl shadow-card border border-surface-300 hover:border-primary-300 transition-all active:scale-95" onclick="searchCategory('isda')">
+                    <div class="w-12 h-12 bg-primary-200 rounded-xl flex items-center justify-center mr-3">
+                        <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                        </svg>
+                    </div>
+                    <div class="text-left">
+                        <p class="font-semibold text-text-primary">Isda</p>
+                        <p class="text-sm text-text-secondary">Fish</p>
+                    </div>
+                </button>
+
+                <button class="flex items-center p-4 bg-white rounded-xl shadow-card border border-surface-300 hover:border-primary-300 transition-all active:scale-95" onclick="searchCategory('karne')">
+                    <div class="w-12 h-12 bg-secondary-100 rounded-xl flex items-center justify-center mr-3">
+                        <svg class="w-6 h-6 text-secondary" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div class="text-left">
+                        <p class="font-semibold text-text-primary">Karne</p>
+                        <p class="text-sm text-text-secondary">Meat</p>
+                    </div>
+                </button>
+
+                <button class="flex items-center p-4 bg-white rounded-xl shadow-card border border-surface-300 hover:border-primary-300 transition-all active:scale-95" onclick="searchCategory('prutas')">
+                    <div class="w-12 h-12 bg-accent-100 rounded-xl flex items-center justify-center mr-3">
+                        <svg class="w-6 h-6 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="text-left">
+                        <p class="font-semibold text-text-primary">Prutas</p>
+                        <p class="text-sm text-text-secondary">Fruits</p>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Results -->
+    <section id="search-results" class="px-4 pb-6 hidden">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-text-primary">Search Results</h2>
+            <button class="text-sm text-primary font-medium" onclick="clearResults()">Clear</button>
+        </div>
+        
+        <div id="results-container" class="space-y-3">
+            <!-- Results will be populated here -->
+        </div>
+    </section>
+
+    <!-- Recent Searches -->
+    <section class="px-4 pb-6">
+        <h2 class="text-lg font-semibold text-text-primary mb-4">Recent Searches</h2>
+        <div class="space-y-3">
+            <!-- Recent Search Item 1 -->
+            <div class="flex items-center justify-between p-4 bg-white rounded-xl shadow-card border border-surface-300">
+                <div class="flex items-center">
+                    <img src="https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Tomatoes" class="w-12 h-12 rounded-lg object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                    <div>
+                        <p class="font-semibold text-text-primary">Kamatis</p>
+                        <p class="text-sm text-text-secondary">2 minutes ago</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-xl font-bold text-primary">₱45</p>
+                    <p class="text-sm text-text-secondary">per kilo</p>
+                </div>
+            </div>
+
+            <!-- Recent Search Item 2 -->
+            <div class="flex items-center justify-between p-4 bg-white rounded-xl shadow-card border border-surface-300">
+                <div class="flex items-center">
+                    <img src="https://images.unsplash.com/photo-1544943910-4c1dc44aab44?auto=format&fit=crop&w=100&q=80" alt="Bangus" class="w-12 h-12 rounded-lg object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                    <div>
+                        <p class="font-semibold text-text-primary">Bangus</p>
+                        <p class="text-sm text-text-secondary">5 minutes ago</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-xl font-bold text-primary">₱180</p>
+                    <p class="text-sm text-text-secondary">per kilo</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Products -->
+    <section class="px-4 pb-6">
+        <h2 class="text-lg font-semibold text-text-primary mb-4">Popular Today</h2>
+        <div class="grid grid-cols-2 gap-3">
+            <!-- Popular Product 1 -->
+            <div class="bg-white rounded-xl shadow-card border border-surface-300 p-4">
+                <img src="https://images.pixabay.com/photo/2016/08/11/08/04/rice-1584109_960_720.jpg" alt="Rice" class="w-full h-24 rounded-lg object-cover mb-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                <h3 class="font-semibold text-text-primary mb-1">Bigas</h3>
+                <p class="text-2xl font-bold text-primary mb-1">₱52</p>
+                <p class="text-sm text-text-secondary">per kilo</p>
+                <button class="w-full mt-3 py-2 bg-primary-50 text-primary rounded-lg font-medium hover:bg-primary-100 transition-colors">
+                    Quick Check
+                </button>
+            </div>
+
+            <!-- Popular Product 2 -->
+            <div class="bg-white rounded-xl shadow-card border border-surface-300 p-4">
+                <img src="https://images.pexels.com/photos/1435735/pexels-photo-1435735.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Onions" class="w-full h-24 rounded-lg object-cover mb-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                <h3 class="font-semibold text-text-primary mb-1">Sibuyas</h3>
+                <p class="text-2xl font-bold text-primary mb-1">₱85</p>
+                <p class="text-sm text-text-secondary">per kilo</p>
+                <button class="w-full mt-3 py-2 bg-primary-50 text-primary rounded-lg font-medium hover:bg-primary-100 transition-colors">
+                    Quick Check
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Actions Footer -->
+    <section class="px-4 pb-8">
+        <div class="bg-primary-50 rounded-2xl p-6">
+            <h3 class="text-lg font-semibold text-primary mb-4 text-center">Quick Actions</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <a href="homepage_real_time_price_dashboard.html" class="flex flex-col items-center p-4 bg-white rounded-xl shadow-card hover:shadow-elevated transition-all">
+                    <svg class="w-8 h-8 text-primary mb-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-9 9a1 1 0 001.414 1.414L3 11.414V18a1 1 0 001 1h3a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h3a1 1 0 001-1v-6.586l1.293 1.293a1 1 0 001.414-1.414l-9-9z"/>
+                    </svg>
+                    <span class="text-sm font-medium text-text-primary">Full Site</span>
+                </a>
+
+                <button class="flex flex-col items-center p-4 bg-white rounded-xl shadow-card hover:shadow-elevated transition-all" onclick="shareApp()">
+                    <svg class="w-8 h-8 text-primary mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
+                    </svg>
+                    <span class="text-sm font-medium text-text-primary">Share</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Offline Status Banner -->
+    <div id="offline-banner" class="hidden fixed bottom-4 left-4 right-4 bg-warning text-warning-800 px-4 py-3 rounded-xl shadow-elevated">
+        <div class="flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+            </svg>
+            <span class="text-sm font-medium">Using cached prices - Connect for latest updates</span>
+        </div>
+    </div>
+
+    <!-- Voice Search Modal -->
+    <div id="voice-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-8 max-w-sm w-full text-center">
+            <div class="w-20 h-20 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-10 h-10 text-accent animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-text-primary mb-2">Listening...</h3>
+            <p class="text-text-secondary mb-6">Say the product name in Filipino or English</p>
+            <button class="btn-secondary w-full" onclick="stopVoiceSearch()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Search functionality
+        const searchInput = document.getElementById('quick-search');
+        const resultsSection = document.getElementById('search-results');
+        const resultsContainer = document.getElementById('results-container');
+
+        // Mock product data
+        const products = [
+            { name: 'Kamatis', english: 'Tomatoes', price: 45, category: 'gulay', image: 'https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg?auto=compress&cs=tinysrgb&w=100' },
+            { name: 'Bangus', english: 'Milkfish', price: 180, category: 'isda', image: 'https://images.unsplash.com/photo-1544943910-4c1dc44aab44?auto=format&fit=crop&w=100&q=80' },
+            { name: 'Bigas', english: 'Rice', price: 52, category: 'processed', image: 'https://images.pixabay.com/photo/2016/08/11/08/04/rice-1584109_960_720.jpg' },
+            { name: 'Sibuyas', english: 'Red Onions', price: 85, category: 'gulay', image: 'https://images.pexels.com/photos/1435735/pexels-photo-1435735.jpeg?auto=compress&cs=tinysrgb&w=100' },
+            { name: 'Baboy Kasim', english: 'Pork Shoulder', price: 320, category: 'karne', image: 'https://images.pexels.com/photos/1435735/pexels-photo-1435735.jpeg?auto=compress&cs=tinysrgb&w=100' },
+            { name: 'Saging', english: 'Banana', price: 60, category: 'prutas', image: 'https://images.pixabay.com/photo/2016/02/23/17/42/orange-1218158_960_720.jpg' }
+        ];
+
+        // Search input handler
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase().trim();
+            if (query.length > 0) {
+                performSearch(query);
+            } else {
+                hideResults();
+            }
+        });
+
+        function performSearch(query) {
+            const results = products.filter(product => 
+                product.name.toLowerCase().includes(query) || 
+                product.english.toLowerCase().includes(query)
+            );
+
+            displayResults(results);
+        }
+
+        function displayResults(results) {
+            resultsContainer.innerHTML = '';
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="text-center py-8">
+                        <svg class="w-16 h-16 text-text-muted mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.29-1.009-5.824-2.562M15 6.306a7.962 7.962 0 00-6 0m6 0V5a2 2 0 00-2-2H9a2 2 0 00-2 2v1.306"/>
+                        </svg>
+                        <p class="text-text-secondary">No products found</p>
+                    </div>
+                `;
+            } else {
+                results.forEach(product => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'flex items-center justify-between p-4 bg-white rounded-xl shadow-card border border-surface-300 hover:border-primary-300 transition-all';
+                    resultItem.innerHTML = `
+                        <div class="flex items-center">
+                            <img src="${product.image}" 
+                                 alt="${product.name}" 
+                                 class="w-12 h-12 rounded-lg object-cover mr-3"
+                                 onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                            <div>
+                                <p class="font-semibold text-text-primary">${product.name}</p>
+                                <p class="text-sm text-text-secondary">${product.english}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xl font-bold text-primary">₱${product.price}</p>
+                            <p class="text-sm text-text-secondary">per kilo</p>
+                        </div>
+                        <button class="ml-4 p-2 text-primary hover:bg-primary-50 rounded-lg transition-colors" onclick="sharePrice('${product.name}', ${product.price})">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
+                            </svg>
+                        </button>
+                    `;
+                    resultsContainer.appendChild(resultItem);
+                });
+            }
+
+            resultsSection.classList.remove('hidden');
+        }
+
+        function hideResults() {
+            resultsSection.classList.add('hidden');
+        }
+
+        function clearResults() {
+            searchInput.value = '';
+            hideResults();
+        }
+
+        function searchCategory(category) {
+            const results = products.filter(product => product.category === category);
+            displayResults(results);
+            searchInput.value = category;
+        }
+
+        // Voice search functionality
+        function startVoiceSearch() {
+            document.getElementById('voice-modal').classList.remove('hidden');
+            
+            // Simulate voice recognition
+            setTimeout(() => {
+                stopVoiceSearch();
+                searchInput.value = 'kamatis';
+                performSearch('kamatis');
+            }, 3000);
+        }
+
+        function stopVoiceSearch() {
+            document.getElementById('voice-modal').classList.add('hidden');
+        }
+
+        // Barcode scanner
+        function startBarcodeScanner() {
+            alert('Barcode scanner would open camera here. Demo: Searching for "Bigas"');
+            searchInput.value = 'bigas';
+            performSearch('bigas');
+        }
+
+        // Share functionality
+        function sharePrice(productName, price) {
+            if (navigator.share) {
+                navigator.share({
+                    title: `${productName} Price - FarmScout`,
+                    text: `${productName} is ₱${price}/kg at Baloan Market`,
+                    url: window.location.href
+                });
+            } else {
+                // Fallback for browsers without Web Share API
+                const text = `${productName} is ₱${price}/kg at Baloan Market - Check more prices at FarmScout Online`;
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('Price information copied to clipboard!');
+                });
+            }
+        }
+
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'FarmScout Online - Mobile Price Checker',
+                    text: 'Check real-time market prices on your phone!',
+                    url: window.location.href
+                });
+            } else {
+                const text = 'Check real-time market prices with FarmScout Online Mobile Price Checker: ' + window.location.href;
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('App link copied to clipboard!');
+                });
+            }
+        }
+
+        // Offline detection
+        function updateOnlineStatus() {
+            const offlineBanner = document.getElementById('offline-banner');
+            if (!navigator.onLine) {
+                offlineBanner.classList.remove('hidden');
+            } else {
+                offlineBanner.classList.add('hidden');
+            }
+        }
+
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+
+        // Initialize
+        updateOnlineStatus();
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('mobile-menu');
+            const button = e.target.closest('button');
+            
+            if (!menu.contains(e.target) && !button) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // PWA install prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install banner
+            const installBanner = document.createElement('div');
+            installBanner.className = 'fixed top-20 left-4 right-4 bg-primary text-white p-4 rounded-xl shadow-elevated z-40';
+            installBanner.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="font-semibold">Install FarmScout</p>
+                        <p class="text-sm text-primary-200">Add to home screen for quick access</p>
+                    </div>
+                    <button class="btn-accent text-sm px-4 py-2" onclick="installApp()">Install</button>
+                </div>
+            `;
+            document.body.appendChild(installBanner);
+            
+            setTimeout(() => {
+                installBanner.remove();
+            }, 10000);
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    deferredPrompt = null;
+                });
+            }
+        }
+    </script>
+</body>
+</html>

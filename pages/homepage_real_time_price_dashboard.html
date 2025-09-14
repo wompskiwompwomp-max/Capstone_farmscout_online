@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FarmScout Online - Real-Time Market Prices | Baloan Public Market</title>
+    <meta name="description" content="Get real-time prices from Baloan Public Market. Your trusted digital guide for fresh produce, meat, fish, and processed goods with transparent pricing." />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Ffarmscout2741back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-background min-h-screen">
+    <!-- Navigation Header -->
+    <header class="bg-white shadow-minimal sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <svg class="h-10 w-10" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="18" fill="#2D5016"/>
+                            <path d="M12 20c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8-8-3.6-8-8z" fill="#75A347"/>
+                            <path d="M16 18h8v4h-8z" fill="#FF6B35"/>
+                            <circle cx="20" cy="20" r="2" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <h1 class="text-xl font-bold text-primary font-accent">FarmScout</h1>
+                        <p class="text-xs text-text-secondary">Tapat na Presyo</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="homepage_real_time_price_dashboard.html" class="text-primary font-semibold px-3 py-2 rounded-md text-sm">Home</a>
+                        <a href="product_categories_agricultural_classification_system.html" class="text-text-secondary hover:text-primary px-3 py-2 rounded-md text-sm transition-colors">Categories</a>
+                        <a href="market_information_baloan_public_market_guide.html" class="text-text-secondary hover:text-primary px-3 py-2 rounded-md text-sm transition-colors">Market Info</a>
+                        <a href="about_transparency_community_mission.html" class="text-text-secondary hover:text-primary px-3 py-2 rounded-md text-sm transition-colors">About</a>
+                        <a href="mobile_price_checker_quick_access_tool.html" class="btn-accent text-sm px-4 py-2">Quick Check</a>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" class="text-text-secondary hover:text-primary p-2" onclick="toggleMobileMenu()">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation Menu -->
+            <div id="mobile-menu" class="md:hidden hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-surface-50 rounded-lg mt-2">
+                    <a href="homepage_real_time_price_dashboard.html" class="text-primary font-semibold block px-3 py-2 rounded-md text-base">Home</a>
+                    <a href="product_categories_agricultural_classification_system.html" class="text-text-secondary hover:text-primary block px-3 py-2 rounded-md text-base">Categories</a>
+                    <a href="market_information_baloan_public_market_guide.html" class="text-text-secondary hover:text-primary block px-3 py-2 rounded-md text-base">Market Info</a>
+                    <a href="about_transparency_community_mission.html" class="text-text-secondary hover:text-primary block px-3 py-2 rounded-md text-base">About</a>
+                    <a href="mobile_price_checker_quick_access_tool.html" class="btn-accent block text-center mx-3 my-2">Quick Check</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section with Search -->
+    <section class="bg-gradient-to-br from-primary-50 to-surface-100 py-8 md:py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-bold text-primary mb-4 font-accent">
+                    Kapamilya sa Palengke
+                </h1>
+                <p class="text-lg text-text-secondary mb-6 max-w-2xl mx-auto">
+                    Real-time prices from Baloan Public Market. Plan your shopping with confidence and transparency.
+                </p>
+                
+                <!-- Search Bar -->
+                <div class="max-w-md mx-auto relative">
+                    <div class="relative">
+                        <input type="text" placeholder="Search products (e.g., kamatis, bangus)..." class="input-field pl-12 pr-4 text-base" id="product-search" />
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Market Status Widget -->
+            <div class="bg-white rounded-lg shadow-card p-4 mb-8 max-w-md mx-auto">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-success rounded-full mr-3"></div>
+                        <div>
+                            <p class="font-semibold text-text-primary">Baloan Public Market</p>
+                            <p class="text-sm text-text-secondary">Open • 42 vendors active</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-text-secondary">Last updated</p>
+                        <p class="text-sm font-semibold text-primary">2:10 PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section class="py-8 md:py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-primary">Today's Featured Prices</h2>
+                <div class="text-sm text-text-secondary">
+                    <span class="inline-flex items-center">
+                        <svg class="w-4 h-4 mr-1 text-success" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        Verified by Market Admin
+                    </span>
+                </div>
+            </div>
+
+            <!-- Featured Products Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Featured Product 1 -->
+                <div class="card hover:shadow-elevated transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <img src="https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Fresh Tomatoes" class="w-12 h-12 rounded-lg object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div>
+                            <h3 class="font-semibold text-text-primary">Kamatis</h3>
+                            <p class="text-sm text-text-secondary">Tomatoes</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-2xl font-bold text-primary">₱45</p>
+                            <p class="text-sm text-text-secondary">per kilo</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="flex items-center text-success text-sm">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 4.414 6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                ₱5 down
+                            </div>
+                            <p class="text-xs text-text-muted">from yesterday</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Product 2 -->
+                <div class="card hover:shadow-elevated transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <img src="https://images.pixabay.com/photo/2016/08/11/08/04/rice-1584109_960_720.jpg" alt="Rice" class="w-12 h-12 rounded-lg object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div>
+                            <h3 class="font-semibold text-text-primary">Bigas</h3>
+                            <p class="text-sm text-text-secondary">Rice (Regular)</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-2xl font-bold text-primary">₱52</p>
+                            <p class="text-sm text-text-secondary">per kilo</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="flex items-center text-text-muted text-sm">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/>
+                                </svg>
+                                No change
+                            </div>
+                            <p class="text-xs text-text-muted">from yesterday</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Product 3 -->
+                <div class="card hover:shadow-elevated transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <img src="https://images.unsplash.com/photo-1544943910-4c1dc44aab44?auto=format&fit=crop&w=400&q=80" alt="Fresh Fish" class="w-12 h-12 rounded-lg object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div>
+                            <h3 class="font-semibold text-text-primary">Bangus</h3>
+                            <p class="text-sm text-text-secondary">Milkfish</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-2xl font-bold text-primary">₱180</p>
+                            <p class="text-sm text-text-secondary">per kilo</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="flex items-center text-error text-sm">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L10 15.586l3.293-3.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                ₱10 up
+                            </div>
+                            <p class="text-xs text-text-muted">from yesterday</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Product 4 -->
+                <div class="card hover:shadow-elevated transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <img src="https://images.pexels.com/photos/1435735/pexels-photo-1435735.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Fresh Onions" class="w-12 h-12 rounded-lg object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div>
+                            <h3 class="font-semibold text-text-primary">Sibuyas</h3>
+                            <p class="text-sm text-text-secondary">Red Onions</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-2xl font-bold text-primary">₱85</p>
+                            <p class="text-sm text-text-secondary">per kilo</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="flex items-center text-success text-sm">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 4.414 6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                ₱15 down
+                            </div>
+                            <p class="text-xs text-text-muted">from yesterday</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Navigation -->
+    <section class="py-8 bg-surface-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-primary mb-6 text-center">Browse by Category</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <!-- Gulay Category -->
+                <a href="product_categories_agricultural_classification_system.html" class="card hover:shadow-elevated transition-all text-center group">
+                    <div class="w-16 h-16 mx-auto mb-3 bg-primary-100 rounded-full flex items-center justify-center group-hover:bg-primary-200 transition-colors">
+                        <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-text-primary mb-1">Gulay</h3>
+                    <p class="text-sm text-text-secondary mb-2">Vegetables</p>
+                    <p class="text-xs text-primary font-semibold">₱25-₱120/kg</p>
+                </a>
+
+                <!-- Prutas Category -->
+                <a href="product_categories_agricultural_classification_system.html" class="card hover:shadow-elevated transition-all text-center group">
+                    <div class="w-16 h-16 mx-auto mb-3 bg-accent-100 rounded-full flex items-center justify-center group-hover:bg-accent-200 transition-colors">
+                        <svg class="w-8 h-8 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-text-primary mb-1">Prutas</h3>
+                    <p class="text-sm text-text-secondary mb-2">Fruits</p>
+                    <p class="text-xs text-primary font-semibold">₱40-₱200/kg</p>
+                </a>
+
+                <!-- Karne Category -->
+                <a href="product_categories_agricultural_classification_system.html" class="card hover:shadow-elevated transition-all text-center group">
+                    <div class="w-16 h-16 mx-auto mb-3 bg-secondary-100 rounded-full flex items-center justify-center group-hover:bg-secondary-200 transition-colors">
+                        <svg class="w-8 h-8 text-secondary" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-text-primary mb-1">Karne</h3>
+                    <p class="text-sm text-text-secondary mb-2">Meat</p>
+                    <p class="text-xs text-primary font-semibold">₱280-₱450/kg</p>
+                </a>
+
+                <!-- Isda Category -->
+                <a href="product_categories_agricultural_classification_system.html" class="card hover:shadow-elevated transition-all text-center group">
+                    <div class="w-16 h-16 mx-auto mb-3 bg-primary-200 rounded-full flex items-center justify-center group-hover:bg-primary-300 transition-colors">
+                        <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-text-primary mb-1">Isda</h3>
+                    <p class="text-sm text-text-secondary mb-2">Fish</p>
+                    <p class="text-xs text-primary font-semibold">₱150-₱350/kg</p>
+                </a>
+
+                <!-- Processed Category -->
+                <a href="product_categories_agricultural_classification_system.html" class="card hover:shadow-elevated transition-all text-center group">
+                    <div class="w-16 h-16 mx-auto mb-3 bg-warning-100 rounded-full flex items-center justify-center group-hover:bg-warning-200 transition-colors">
+                        <svg class="w-8 h-8 text-warning-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-text-primary mb-1">Processed</h3>
+                    <p class="text-sm text-text-secondary mb-2">Goods</p>
+                    <p class="text-xs text-primary font-semibold">₱35-₱180/pack</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Price Table -->
+    <section class="py-8 md:py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                <h2 class="text-2xl font-bold text-primary mb-4 md:mb-0">Live Market Prices</h2>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button class="btn-secondary text-sm px-4 py-2">
+                        <svg class="w-4 h-4 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd"/>
+                        </svg>
+                        Filter
+                    </button>
+                    <button class="btn-accent text-sm px-4 py-2">
+                        <svg class="w-4 h-4 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                        </svg>
+                        Set Price Alert
+                    </button>
+                </div>
+            </div>
+
+            <!-- Price Table -->
+            <div class="overflow-x-auto">
+                <table class="price-table">
+                    <thead>
+                        <tr>
+                            <th class="text-left">Product</th>
+                            <th class="text-left">Category</th>
+                            <th class="text-right">Current Price</th>
+                            <th class="text-right">Yesterday</th>
+                            <th class="text-right">Change</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="flex items-center">
+                                    <img src="https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Tomatoes" class="w-8 h-8 rounded object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                    <div>
+                                        <p class="font-semibold">Kamatis</p>
+                                        <p class="text-sm text-text-secondary">Tomatoes</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-text-secondary">Gulay</td>
+                            <td class="text-right font-semibold">₱45.00/kg</td>
+                            <td class="text-right text-text-secondary">₱50.00/kg</td>
+                            <td class="text-right">
+                                <span class="inline-flex items-center text-success text-sm">
+                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 4.414 6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    -₱5.00
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-700">
+                                    Fresh
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="flex items-center">
+                                    <img src="https://images.pixabay.com/photo/2016/08/11/08/04/rice-1584109_960_720.jpg" alt="Rice" class="w-8 h-8 rounded object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                    <div>
+                                        <p class="font-semibold">Bigas Regular</p>
+                                        <p class="text-sm text-text-secondary">Regular Rice</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-text-secondary">Processed</td>
+                            <td class="text-right font-semibold">₱52.00/kg</td>
+                            <td class="text-right text-text-secondary">₱52.00/kg</td>
+                            <td class="text-right">
+                                <span class="inline-flex items-center text-text-muted text-sm">
+                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/>
+                                    </svg>
+                                    ₱0.00
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-700">
+                                    Available
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="flex items-center">
+                                    <img src="https://images.unsplash.com/photo-1544943910-4c1dc44aab44?auto=format&fit=crop&w=100&q=80" alt="Bangus" class="w-8 h-8 rounded object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                    <div>
+                                        <p class="font-semibold">Bangus</p>
+                                        <p class="text-sm text-text-secondary">Milkfish</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-text-secondary">Isda</td>
+                            <td class="text-right font-semibold">₱180.00/kg</td>
+                            <td class="text-right text-text-secondary">₱170.00/kg</td>
+                            <td class="text-right">
+                                <span class="inline-flex items-center text-error text-sm">
+                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L10 15.586l3.293-3.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    +₱10.00
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-700">
+                                    Fresh
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="flex items-center">
+                                    <img src="https://images.pexels.com/photos/1435735/pexels-photo-1435735.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Red Onions" class="w-8 h-8 rounded object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                    <div>
+                                        <p class="font-semibold">Sibuyas Pula</p>
+                                        <p class="text-sm text-text-secondary">Red Onions</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-text-secondary">Gulay</td>
+                            <td class="text-right font-semibold">₱85.00/kg</td>
+                            <td class="text-right text-text-secondary">₱100.00/kg</td>
+                            <td class="text-right">
+                                <span class="inline-flex items-center text-success text-sm">
+                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 4.414 6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    -₱15.00
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-700">
+                                    Fresh
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="flex items-center">
+                                    <img src="https://images.pexels.com/photos/1435735/pexels-photo-1435735.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Pork" class="w-8 h-8 rounded object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                    <div>
+                                        <p class="font-semibold">Baboy Kasim</p>
+                                        <p class="text-sm text-text-secondary">Pork Shoulder</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-text-secondary">Karne</td>
+                            <td class="text-right font-semibold">₱320.00/kg</td>
+                            <td class="text-right text-text-secondary">₱315.00/kg</td>
+                            <td class="text-right">
+                                <span class="inline-flex items-center text-error text-sm">
+                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L10 15.586l3.293-3.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    +₱5.00
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-700">
+                                    Fresh
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-6 text-center">
+                <a href="product_categories_agricultural_classification_system.html" class="btn-primary">
+                    View All Products
+                    <svg class="w-4 h-4 ml-2 inline" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Actions -->
+    <section class="py-8 bg-primary-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Shopping List Card -->
+                <div class="card-elevated">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-text-primary">Smart Shopping List</h3>
+                            <p class="text-text-secondary">Plan your market visit with current prices</p>
+                        </div>
+                    </div>
+                    <button class="btn-accent w-full">Create Shopping List</button>
+                </div>
+
+                <!-- Price Alerts Card -->
+                <div class="card-elevated">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-text-primary">Price Alerts</h3>
+                            <p class="text-text-secondary">Get notified when prices drop</p>
+                        </div>
+                    </div>
+                    <button class="btn-primary w-full">Set Up Alerts</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Brand -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center mb-4">
+                        <svg class="h-8 w-8 mr-3" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="18" fill="white"/>
+                            <path d="M12 20c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8-8-3.6-8-8z" fill="#75A347"/>
+                            <path d="M16 18h8v4h-8z" fill="#FF6B35"/>
+                            <circle cx="20" cy="20" r="2" fill="#2D5016"/>
+                        </svg>
+                        <div>
+                            <h3 class="text-xl font-bold font-accent">FarmScout Online</h3>
+                            <p class="text-primary-200">Tapat na Presyo, Tapat na Serbisyo</p>
+                        </div>
+                    </div>
+                    <p class="text-primary-200 mb-4">
+                        Your trusted digital guide to Baloan Public Market. Empowering Filipino families with transparent, real-time pricing information for smarter market shopping.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="homepage_real_time_price_dashboard.html" class="text-primary-200 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="product_categories_agricultural_classification_system.html" class="text-primary-200 hover:text-white transition-colors">Categories</a></li>
+                        <li><a href="market_information_baloan_public_market_guide.html" class="text-primary-200 hover:text-white transition-colors">Market Info</a></li>
+                        <li><a href="mobile_price_checker_quick_access_tool.html" class="text-primary-200 hover:text-white transition-colors">Mobile Checker</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-primary-200">
+                        <li>Baloan Public Market</li>
+                        <li>La Union, Philippines</li>
+                        <li>farmscout@email.com</li>
+                        <li>+63 912 345 6789</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-primary-600 mt-8 pt-8 text-center text-primary-200">
+                <p>&copy; 2025 FarmScout Online. All Rights Reserved. | Serving the Filipino community with transparency and trust.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Simple search functionality
+        document.getElementById('product-search').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            // In a real application, this would filter the price table
+            console.log('Searching for:', searchTerm);
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('mobile-menu');
+            const button = e.target.closest('button');
+            
+            if (!menu.contains(e.target) && !button) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

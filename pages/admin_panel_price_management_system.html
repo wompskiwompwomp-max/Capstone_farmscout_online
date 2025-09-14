@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel - Price Management System | FarmScout Online</title>
+    <meta name="description" content="Secure admin interface for Baloan Public Market price management. Update product prices, manage inventory, and maintain market transparency." />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Ffarmscout2741back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-surface-100 min-h-screen">
+    <!-- Login Modal (Initially visible) -->
+    <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-elevated p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <div class="flex items-center justify-center mb-4">
+                    <svg class="h-12 w-12" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="20" cy="20" r="18" fill="#2D5016"/>
+                        <path d="M12 20c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8-8-3.6-8-8z" fill="#75A347"/>
+                        <path d="M16 18h8v4h-8z" fill="#FF6B35"/>
+                        <circle cx="20" cy="20" r="2" fill="white"/>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-primary font-accent">Admin Login</h2>
+                <p class="text-text-secondary">Secure access to price management system</p>
+            </div>
+
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label for="email" class="block text-sm font-semibold text-text-primary mb-2">Email Address</label>
+                    <input type="email" id="email" class="input-field" placeholder="admin@farmscout.com" required />
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-semibold text-text-primary mb-2">Password</label>
+                    <input type="password" id="password" class="input-field" placeholder="Enter your password" required />
+                </div>
+
+                <div class="flex items-center">
+                    <input type="checkbox" id="remember" class="mr-2" />
+                    <label for="remember" class="text-sm text-text-secondary">Remember me</label>
+                </div>
+
+                <button type="submit" class="btn-primary w-full">
+                    <svg class="w-5 h-5 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Login to Admin Panel
+                </button>
+            </form>
+
+            <div class="mt-6 p-4 bg-surface-50 rounded-lg">
+                <p class="text-sm text-text-secondary mb-2">Access Required:</p>
+                <div class="text-xs text-text-muted space-y-1">
+                    <p>Contact your administrator for access credentials</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Admin Interface (Initially hidden) -->
+    <div id="admin-interface" class="hidden">
+        <!-- Navigation Header -->
+        <header class="bg-white shadow-minimal sticky top-0 z-40">
+            <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <!-- Logo -->
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <svg class="h-10 w-10" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="18" fill="#2D5016"/>
+                                <path d="M12 20c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8-8-3.6-8-8z" fill="#75A347"/>
+                                <path d="M16 18h8v4h-8z" fill="#FF6B35"/>
+                                <circle cx="20" cy="20" r="2" fill="white"/>
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h1 class="text-xl font-bold text-primary font-accent">FarmScout Admin</h1>
+                            <p class="text-xs text-text-secondary">Price Management System</p>
+                        </div>
+                    </div>
+
+                    <!-- Admin Navigation -->
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <button onclick="showSection('dashboard')" class="admin-nav-btn active" data-section="dashboard">Dashboard</button>
+                            <button onclick="showSection('products')" class="admin-nav-btn" data-section="products">Products</button>
+                            <button onclick="showSection('bulk-upload')" class="admin-nav-btn" data-section="bulk-upload">Bulk Upload</button>
+                            <button onclick="showSection('users')" class="admin-nav-btn" data-section="users">Users</button>
+                            <a href="homepage_real_time_price_dashboard.html" class="text-text-secondary hover:text-primary px-3 py-2 rounded-md text-sm transition-colors">View Site</a>
+                        </div>
+                    </div>
+
+                    <!-- User Menu -->
+                    <div class="flex items-center space-x-4">
+                        <div class="text-right hidden sm:block">
+                            <p class="text-sm font-semibold text-text-primary" id="user-name">Admin User</p>
+                            <p class="text-xs text-text-secondary">Last login: Today 2:10 PM</p>
+                        </div>
+                        <button onclick="logout()" class="text-text-secondary hover:text-error transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Navigation Menu -->
+                <div id="mobile-admin-menu" class="md:hidden hidden">
+                    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-surface-50 rounded-lg mt-2">
+                        <button onclick="showSection('dashboard')" class="admin-nav-btn-mobile active block w-full text-left" data-section="dashboard">Dashboard</button>
+                        <button onclick="showSection('products')" class="admin-nav-btn-mobile block w-full text-left" data-section="products">Products</button>
+                        <button onclick="showSection('bulk-upload')" class="admin-nav-btn-mobile block w-full text-left" data-section="bulk-upload">Bulk Upload</button>
+                        <button onclick="showSection('users')" class="admin-nav-btn-mobile block w-full text-left" data-section="users">Users</button>
+                        <a href="homepage_real_time_price_dashboard.html" class="block px-3 py-2 text-text-secondary">View Site</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="admin-section py-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-primary mb-2">Admin Dashboard</h2>
+                    <p class="text-text-secondary">Welcome back! Here's today's market activity summary.</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="card">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-text-primary">247</p>
+                                <p class="text-sm text-text-secondary">Total Products</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-success-100 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-success" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-text-primary">23</p>
+                                <p class="text-sm text-text-secondary">Updates Today</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-text-primary">5</p>
+                                <p class="text-sm text-text-secondary">Pending Reviews</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-secondary" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-text-primary">8</p>
+                                <p class="text-sm text-text-secondary">Active Users</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity & Quick Actions -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Recent Activity -->
+                    <div class="card-elevated">
+                        <h3 class="text-lg font-semibold text-text-primary mb-4">Recent Price Updates</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between py-3 border-b border-surface-200">
+                                <div class="flex items-center">
+                                    <img src="https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Tomatoes" class="w-10 h-10 rounded-lg object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                    <div>
+                                        <p class="font-semibold text-text-primary">Kamatis</p>
+                                        <p class="text-sm text-text-secondary">Updated by Maria Santos</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-semibold text-primary">₱45.00/kg</p>
+                                    <p class="text-xs text-text-muted">2 hours ago</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between py-3 border-b border-surface-200">
+                                <div class="flex items-center">
+                                    <img src="https://images.pixabay.com/photo/2016/08/11/08/04/rice-1584109_960_720.jpg" alt="Rice" class="w-10 h-10 rounded-lg object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                    <div>
+                                        <p class="font-semibold text-text-primary">Bigas Regular</p>
+                                        <p class="text-sm text-text-secondary">Updated by Juan Cruz</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-semibold text-primary">₱52.00/kg</p>
+                                    <p class="text-xs text-text-muted">4 hours ago</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between py-3">
+                                <div class="flex items-center">
+                                    <img src="https://images.unsplash.com/photo-1544943910-4c1dc44aab44?auto=format&fit=crop&w=100&q=80" alt="Bangus" class="w-10 h-10 rounded-lg object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                    <div>
+                                        <p class="font-semibold text-text-primary">Bangus</p>
+                                        <p class="text-sm text-text-secondary">Updated by Rosa Dela Cruz</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-semibold text-primary">₱180.00/kg</p>
+                                    <p class="text-xs text-text-muted">6 hours ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="card-elevated">
+                        <h3 class="text-lg font-semibold text-text-primary mb-4">Quick Actions</h3>
+                        <div class="space-y-3">
+                            <button onclick="showSection('products')" class="w-full btn-primary text-left flex items-center">
+                                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                                </svg>
+                                Add New Product
+                            </button>
+                            
+                            <button onclick="showSection('bulk-upload')" class="w-full btn-secondary text-left flex items-center">
+                                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                                Bulk Upload Prices
+                            </button>
+                            
+                            <button class="w-full btn-accent text-left flex items-center">
+                                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                </svg>
+                                Generate Price Report
+                            </button>
+                        </div>
+
+                        <div class="mt-6 p-4 bg-warning-50 rounded-lg">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-warning-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                </svg>
+                                <div>
+                                    <p class="text-sm font-semibold text-warning-700">5 products need price review</p>
+                                    <p class="text-xs text-warning-600">Prices haven't been updated in 3+ days</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Management Section -->
+        <section id="products-section" class="admin-section hidden py-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                    <div>
+                        <h2 class="text-3xl font-bold text-primary mb-2">Product Management</h2>
+                        <p class="text-text-secondary">Manage individual product prices and information</p>
+                    </div>
+                    <button class="btn-primary mt-4 md:mt-0" onclick="showAddProductForm()">
+                        <svg class="w-5 h-5 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                        </svg>
+                        Add New Product
+                    </button>
+                </div>
+
+                <!-- Filters -->
+                <div class="card mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-text-primary mb-2">Search Products</label>
+                            <input type="text" class="input-field" placeholder="Search by name..." id="product-search" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-text-primary mb-2">Category</label>
+                            <select class="input-field" id="category-filter">
+                                <option value>All Categories</option>
+                                <option value="gulay">Gulay (Vegetables)</option>
+                                <option value="prutas">Prutas (Fruits)</option>
+                                <option value="karne">Karne (Meat)</option>
+                                <option value="isda">Isda (Fish)</option>
+                                <option value="processed">Processed Goods</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-text-primary mb-2">Status</label>
+                            <select class="input-field" id="status-filter">
+                                <option value>All Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="needs-update">Needs Update</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button class="btn-secondary w-full">
+                                <svg class="w-4 h-4 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+                                </svg>
+                                Filter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Table -->
+                <div class="card-elevated">
+                    <div class="overflow-x-auto">
+                        <table class="price-table">
+                            <thead>
+                                <tr>
+                                    <th class="text-left">Product</th>
+                                    <th class="text-left">Category</th>
+                                    <th class="text-right">Current Price</th>
+                                    <th class="text-right">Last Updated</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center">
+                                            <img src="https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Tomatoes" class="w-12 h-12 rounded-lg object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                            <div>
+                                                <p class="font-semibold text-text-primary">Kamatis</p>
+                                                <p class="text-sm text-text-secondary">Tomatoes</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-text-secondary">Gulay</td>
+                                    <td class="text-right font-semibold">₱45.00/kg</td>
+                                    <td class="text-right text-text-secondary">2 hours ago</td>
+                                    <td class="text-center">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-700">
+                                            Active
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="flex items-center justify-center space-x-2">
+                                            <button onclick="editProduct('kamatis')" class="text-primary hover:text-primary-700 transition-colors">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                                                </svg>
+                                            </button>
+                                            <button class="text-error hover:text-error-700 transition-colors">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clip-rule="evenodd"/>
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l1.293 1.293-1.293 1.293a1 1 0 101.414 1.414L9 13.414l3.293 3.293a1 1 0 001.414-1.414L12.414 14l1.293-1.293z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center">
+                                            <img src="https://images.pixabay.com/photo/2016/08/11/08/04/rice-1584109_960_720.jpg" alt="Rice" class="w-12 h-12 rounded-lg object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                            <div>
+                                                <p class="font-semibold text-text-primary">Bigas Regular</p>
+                                                <p class="text-sm text-text-secondary">Regular Rice</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-text-secondary">Processed</td>
+                                    <td class="text-right font-semibold">₱52.00/kg</td>
+                                    <td class="text-right text-text-secondary">4 hours ago</td>
+                                    <td class="text-center">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-700">
+                                            Active
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="flex items-center justify-center space-x-2">
+                                            <button onclick="editProduct('bigas')" class="text-primary hover:text-primary-700 transition-colors">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                                                </svg>
+                                            </button>
+                                            <button class="text-error hover:text-error-700 transition-colors">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clip-rule="evenodd"/>
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l1.293 1.293-1.293 1.293a1 1 0 101.414 1.414L9 13.414l3.293 3.293a1 1 0 001.414-1.414L12.414 14l1.293-1.293z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center">
+                                            <img src="https://images.unsplash.com/photo-1544943910-4c1dc44aab44?auto=format&fit=crop&w=100&q=80" alt="Bangus" class="w-12 h-12 rounded-lg object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                            <div>
+                                                <p class="font-semibold text-text-primary">Bangus</p>
+                                                <p class="text-sm text-text-secondary">Milkfish</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-text-secondary">Isda</td>
+                                    <td class="text-right font-semibold">₱180.00/kg</td>
+                                    <td class="text-right text-text-secondary">6 hours ago</td>
+                                    <td class="text-center">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-warning-100 text-warning-700">
+                                            Needs Update
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="flex items-center justify-center space-x-2">
+                                            <button onclick="editProduct('bangus')" class="text-primary hover:text-primary-700 transition-colors">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                                                </svg>
+                                            </button>
+                                            <button class="text-error hover:text-error-700 transition-colors">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clip-rule="evenodd"/>
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l1.293 1.293-1.293 1.293a1 1 0 101.414 1.414L9 13.414l3.293 3.293a1 1 0 001.414-1.414L12.414 14l1.293-1.293z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bulk Upload Section -->
+        <section id="bulk-upload-section" class="admin-section hidden py-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-primary mb-2">Bulk Price Upload</h2>
+                    <p class="text-text-secondary">Upload multiple product prices using CSV files</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Upload Form -->
+                    <div class="card-elevated">
+                        <h3 class="text-lg font-semibold text-text-primary mb-4">Upload CSV File</h3>
+                        
+                        <div class="border-2 border-dashed border-surface-300 rounded-lg p-8 text-center mb-6">
+                            <svg class="w-12 h-12 text-text-muted mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                            <p class="text-text-primary font-semibold mb-2">Drop your CSV file here</p>
+                            <p class="text-text-secondary text-sm mb-4">or click to browse</p>
+                            <input type="file" accept=".csv" class="hidden" id="csv-upload" />
+                            <button onclick="document.getElementById('csv-upload').click()" class="btn-primary">
+                                Choose File
+                            </button>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-text-primary mb-2">Upload Notes</label>
+                                <textarea class="input-field" rows="3" placeholder="Add notes about this price update..."></textarea>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <input type="checkbox" id="validate-prices" class="mr-2" checked />
+                                <label for="validate-prices" class="text-sm text-text-secondary">Validate prices before upload</label>
+                            </div>
+
+                            <button class="btn-accent w-full">
+                                <svg class="w-5 h-5 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                                Upload & Process
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Instructions & Template -->
+                    <div class="space-y-6">
+                        <div class="card">
+                            <h3 class="text-lg font-semibold text-text-primary mb-4">CSV Format Instructions</h3>
+                            <div class="space-y-3 text-sm">
+                                <p class="text-text-secondary">Your CSV file should include the following columns:</p>
+                                <ul class="list-disc list-inside space-y-1 text-text-muted">
+                                    <li><strong>product_name</strong> - Product name in Filipino</li>
+                                    <li><strong>english_name</strong> - English translation</li>
+                                    <li><strong>category</strong> - Product category</li>
+                                    <li><strong>price</strong> - Price per unit (numbers only)</li>
+                                    <li><strong>unit</strong> - Unit of measurement (kg, piece, etc.)</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <button class="btn-secondary text-sm">
+                                    <svg class="w-4 h-4 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Download Template
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3 class="text-lg font-semibold text-text-primary mb-4">Recent Uploads</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between py-2 border-b border-surface-200">
+                                    <div>
+                                        <p class="font-semibold text-text-primary">vegetables_update.csv</p>
+                                        <p class="text-sm text-text-secondary">45 products updated</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-sm text-success">Success</p>
+                                        <p class="text-xs text-text-muted">2 hours ago</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between py-2 border-b border-surface-200">
+                                    <div>
+                                        <p class="font-semibold text-text-primary">fish_prices.csv</p>
+                                        <p class="text-sm text-text-secondary">23 products updated</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-sm text-success">Success</p>
+                                        <p class="text-xs text-text-muted">1 day ago</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Users Management Section -->
+        <section id="users-section" class="admin-section hidden py-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                    <div>
+                        <h2 class="text-3xl font-bold text-primary mb-2">User Management</h2>
+                        <p class="text-text-secondary">Manage admin users and access permissions</p>
+                    </div>
+                    <button class="btn-primary mt-4 md:mt-0">
+                        <svg class="w-5 h-5 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
+                        </svg>
+                        Add New User
+                    </button>
+                </div>
+
+                <!-- Users Table -->
+                <div class="card-elevated">
+                    <div class="overflow-x-auto">
+                        <table class="price-table">
+                            <thead>
+                                <tr>
+                                    <th class="text-left">User</th>
+                                    <th class="text-left">Role</th>
+                                    <th class="text-left">Last Login</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center mr-3">
+                                                <span class="text-primary font-semibold">MS</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-semibold text-text-primary">Maria Santos</p>
+                                                <p class="text-sm text-text-secondary">maria@farmscout.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-text-secondary">Market Admin</td>
+                                    <td class="text-text-secondary">Today, 2:10 PM</td>
+                                    <td class="text-center">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-700">
+                                            Active
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="flex items-center justify-center space-x-2">
+                                            <button class="text-primary hover:text-primary-700 transition-colors">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                                                </svg>
+                                            </button>
+                                            <button class="text-error hover:text-error-700 transition-colors">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-secondary-100 rounded-full flex items-center justify-center mr-3">
+                                                <span class="text-secondary font-semibold">JC</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-semibold text-text-primary">Juan Cruz</p>
+                                                <p class="text-sm text-text-secondary">juan@farmscout.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-text-secondary">Vendor</td>
+                                    <td class="text-text-secondary">Yesterday, 4:30 PM</td>
+                                    <td class="text-center">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-700">
+                                            Active
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="flex items-center justify-center space-x-2">
+                                            <button class="text-primary hover:text-primary-700 transition-colors">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                                                </svg>
+                                            </button>
+                                            <button class="text-error hover:text-error-700 transition-colors">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-accent-100 rounded-full flex items-center justify-center mr-3">
+                                                <span class="text-accent font-semibold">RD</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-semibold text-text-primary">Rosa Dela Cruz</p>
+                                                <p class="text-sm text-text-secondary">rosa@farmscout.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-text-secondary">Manager</td>
+                                    <td class="text-text-secondary">2 days ago</td>
+                                    <td class="text-center">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-warning-100 text-warning-700">
+                                            Inactive
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="flex items-center justify-center space-x-2">
+                                            <button class="text-primary hover:text-primary-700 transition-colors">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                                                </svg>
+                                            </button>
+                                            <button class="text-error hover:text-error-700 transition-colors">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Activity Log -->
+                <div class="mt-8">
+                    <h3 class="text-xl font-semibold text-text-primary mb-4">Recent Activity Log</h3>
+                    <div class="card">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between py-3 border-b border-surface-200">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-success-100 rounded-full flex items-center justify-center mr-3">
+                                        <svg class="w-4 h-4 text-success" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-text-primary">Price Updated</p>
+                                        <p class="text-sm text-text-secondary">Maria Santos updated Kamatis price to ₱45.00/kg</p>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-text-muted">2 hours ago</p>
+                            </div>
+
+                            <div class="flex items-center justify-between py-3 border-b border-surface-200">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center mr-3">
+                                        <svg class="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-text-primary">User Login</p>
+                                        <p class="text-sm text-text-secondary">Juan Cruz logged into the system</p>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-text-muted">4 hours ago</p>
+                            </div>
+
+                            <div class="flex items-center justify-between py-3">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-accent-100 rounded-full flex items-center justify-center mr-3">
+                                        <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-text-primary">Bulk Upload</p>
+                                        <p class="text-sm text-text-secondary">Rosa Dela Cruz uploaded 45 product prices via CSV</p>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-text-muted">6 hours ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Product Edit Modal -->
+    <div id="product-edit-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-elevated p-6 max-w-2xl w-full mx-4 max-h-screen overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold text-text-primary">Edit Product</h3>
+                <button onclick="closeEditModal()" class="text-text-muted hover:text-text-primary">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                </button>
+            </div>
+
+            <form class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-text-primary mb-2">Product Name (Filipino)</label>
+                        <input type="text" class="input-field" id="edit-product-name" placeholder="e.g., Kamatis" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-text-primary mb-2">English Name</label>
+                        <input type="text" class="input-field" id="edit-english-name" placeholder="e.g., Tomatoes" />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-text-primary mb-2">Category</label>
+                        <select class="input-field" id="edit-category">
+                            <option value="gulay">Gulay (Vegetables)</option>
+                            <option value="prutas">Prutas (Fruits)</option>
+                            <option value="karne">Karne (Meat)</option>
+                            <option value="isda">Isda (Fish)</option>
+                            <option value="processed">Processed Goods</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-text-primary mb-2">Unit</label>
+                        <select class="input-field" id="edit-unit">
+                            <option value="kg">per kilogram (kg)</option>
+                            <option value="piece">per piece</option>
+                            <option value="pack">per pack</option>
+                            <option value="bundle">per bundle</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-text-primary mb-2">Current Price (₱)</label>
+                        <input type="number" step="0.01" class="input-field" id="edit-price" placeholder="0.00" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-text-primary mb-2">Status</label>
+                        <select class="input-field" id="edit-status">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="needs-update">Needs Update</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-text-primary mb-2">Product Image</label>
+                    <div class="border-2 border-dashed border-surface-300 rounded-lg p-4 text-center">
+                        <input type="file" accept="image/*" class="hidden" id="product-image" />
+                        <button type="button" onclick="document.getElementById('product-image').click()" class="btn-secondary text-sm">
+                            <svg class="w-4 h-4 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+                            </svg>
+                            Upload Image
+                        </button>
+                        <p class="text-xs text-text-muted mt-2">JPG, PNG up to 2MB</p>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-text-primary mb-2">Update Notes</label>
+                    <textarea class="input-field" rows="3" placeholder="Add notes about this price update..."></textarea>
+                </div>
+
+                <div class="flex justify-end space-x-4">
+                    <button type="button" onclick="closeEditModal()" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Update Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Brand -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center mb-4">
+                        <svg class="h-8 w-8 mr-3" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="18" fill="white"/>
+                            <path d="M12 20c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8-8-3.6-8-8z" fill="#75A347"/>
+                            <path d="M16 18h8v4h-8z" fill="#FF6B35"/>
+                            <circle cx="20" cy="20" r="2" fill="#2D5016"/>
+                        </svg>
+                        <div>
+                            <h3 class="text-xl font-bold font-accent">FarmScout Admin</h3>
+                            <p class="text-primary-200">Price Management System</p>
+                        </div>
+                    </div>
+                    <p class="text-primary-200 mb-4">
+                        Secure administrative interface for maintaining transparent, accurate pricing information for the Baloan Public Market community.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Admin Links</h4>
+                    <ul class="space-y-2">
+                        <li><button onclick="showSection('dashboard')" class="text-primary-200 hover:text-white transition-colors">Dashboard</button></li>
+                        <li><button onclick="showSection('products')" class="text-primary-200 hover:text-white transition-colors">Products</button></li>
+                        <li><button onclick="showSection('bulk-upload')" class="text-primary-200 hover:text-white transition-colors">Bulk Upload</button></li>
+                        <li><button onclick="showSection('users')" class="text-primary-200 hover:text-white transition-colors">User Management</button></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2 text-primary-200">
+                        <li>Admin Help Center</li>
+                        <li>System Status</li>
+                        <li>admin@farmscout.com</li>
+                        <li>+63 912 345 6789</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-primary-600 mt-8 pt-8 text-center text-primary-200">
+                <p>&copy; 2025 FarmScout Online Admin Panel. All Rights Reserved. | Secure price management for community transparency.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Login functionality
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Mock authentication - credentials removed for security
+            const validCredentials = [
+                // Contact administrator for valid credentials
+            ];
+            
+            const user = validCredentials.find(cred => cred.email === email && cred.password === password);
+            
+            if (user) {
+                document.getElementById('login-modal').classList.add('hidden');
+                document.getElementById('admin-interface').classList.remove('hidden');
+                document.getElementById('user-name').textContent = user.name;
+                
+                // Show success message
+                showNotification('Login successful! Welcome to FarmScout Admin.', 'success');
+            } else {
+                showNotification('Invalid credentials. Please try again.', 'error');
+            }
+        });
+
+        // Section navigation
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.admin-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName + '-section').classList.remove('hidden');
+            
+            // Update navigation active states
+            document.querySelectorAll('.admin-nav-btn, .admin-nav-btn-mobile').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.querySelectorAll(`[data-section="${sectionName}"]`).forEach(btn => {
+                btn.classList.add('active');
+            });
+        }
+
+        // Product editing
+        function editProduct(productId) {
+            document.getElementById('product-edit-modal').classList.remove('hidden');
+            
+            // Mock data population based on product ID
+            const productData = {
+                'kamatis': {
+                    name: 'Kamatis',
+                    english: 'Tomatoes',
+                    category: 'gulay',
+                    price: '45.00',
+                    unit: 'kg',
+                    status: 'active'
+                },
+                'bigas': {
+                    name: 'Bigas Regular',
+                    english: 'Regular Rice',
+                    category: 'processed',
+                    price: '52.00',
+                    unit: 'kg',
+                    status: 'active'
+                },
+                'bangus': {
+                    name: 'Bangus',
+                    english: 'Milkfish',
+                    category: 'isda',
+                    price: '180.00',
+                    unit: 'kg',
+                    status: 'needs-update'
+                }
+            };
+            
+            const product = productData[productId];
+            if (product) {
+                document.getElementById('edit-product-name').value = product.name;
+                document.getElementById('edit-english-name').value = product.english;
+                document.getElementById('edit-category').value = product.category;
+                document.getElementById('edit-price').value = product.price;
+                document.getElementById('edit-unit').value = product.unit;
+                document.getElementById('edit-status').value = product.status;
+            }
+        }
+
+        function closeEditModal() {
+            document.getElementById('product-edit-modal').classList.add('hidden');
+        }
+
+        function showAddProductForm() {
+            // Clear form
+            document.getElementById('edit-product-name').value = '';
+            document.getElementById('edit-english-name').value = '';
+            document.getElementById('edit-category').value = 'gulay';
+            document.getElementById('edit-price').value = '';
+            document.getElementById('edit-unit').value = 'kg';
+            document.getElementById('edit-status').value = 'active';
+            
+            document.getElementById('product-edit-modal').classList.remove('hidden');
+        }
+
+        // Logout functionality
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                document.getElementById('admin-interface').classList.add('hidden');
+                document.getElementById('login-modal').classList.remove('hidden');
+                
+                // Clear form
+                document.getElementById('email').value = '';
+                document.getElementById('password').value = '';
+                
+                showNotification('You have been logged out successfully.', 'success');
+            }
+        }
+
+        // Notification system
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-elevated max-w-sm ${
+                type === 'success' ? 'bg-success-50 border border-success-200 text-success-700' :
+                type === 'error' ? 'bg-error-50 border border-error-200 text-error-700' :
+                'bg-warning-50 border border-warning-200 text-warning-700'
+            }`;
+            
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        ${type === 'success' ? 
+                            '<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>' :
+                            '<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>'
+                        }
+                    </svg>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // Initialize admin navigation styles
+        document.addEventListener('DOMContentLoaded', function() {
+            const style = document.createElement('style');
+            style.textContent = `
+                .admin-nav-btn {
+                    @apply text-text-secondary hover:text-primary px-3 py-2 rounded-md text-sm transition-colors;
+                }
+                .admin-nav-btn.active {
+                    @apply text-primary font-semibold bg-primary-50;
+                }
+                .admin-nav-btn-mobile {
+                    @apply text-text-secondary hover:text-primary px-3 py-2 rounded-md text-base transition-colors;
+                }
+                .admin-nav-btn-mobile.active {
+                    @apply text-primary font-semibold bg-primary-50;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+
+        // CSV upload handling
+        document.getElementById('csv-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                showNotification(`File "${file.name}" selected for upload.`, 'success');
+            }
+        });
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(e) {
+            const editModal = document.getElementById('product-edit-modal');
+            if (e.target === editModal) {
+                closeEditModal();
+            }
+        });
+    </script>
+</body>
+</html>

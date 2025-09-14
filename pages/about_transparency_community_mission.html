@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About FarmScout Online - Transparency & Community Mission | Kapamilya sa Palengke</title>
+    <meta name="description" content="Learn about FarmScout's mission to bridge traditional Filipino markets with modern transparency. Discover our commitment to 'Tapat na Presyo, Tapat na Serbisyo' and community empowerment." />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Ffarmscout2741back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-background min-h-screen">
+    <!-- Navigation Header -->
+    <header class="bg-white shadow-minimal sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <svg class="h-10 w-10" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="18" fill="#2D5016"/>
+                            <path d="M12 20c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8-8-3.6-8-8z" fill="#75A347"/>
+                            <path d="M16 18h8v4h-8z" fill="#FF6B35"/>
+                            <circle cx="20" cy="20" r="2" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <h1 class="text-xl font-bold text-primary font-accent">FarmScout</h1>
+                        <p class="text-xs text-text-secondary">Tapat na Presyo</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="homepage_real_time_price_dashboard.html" class="text-text-secondary hover:text-primary px-3 py-2 rounded-md text-sm transition-colors">Home</a>
+                        <a href="product_categories_agricultural_classification_system.html" class="text-text-secondary hover:text-primary px-3 py-2 rounded-md text-sm transition-colors">Categories</a>
+                        <a href="market_information_baloan_public_market_guide.html" class="text-text-secondary hover:text-primary px-3 py-2 rounded-md text-sm transition-colors">Market Info</a>
+                        <a href="about_transparency_community_mission.html" class="text-primary font-semibold px-3 py-2 rounded-md text-sm">About</a>
+                        <a href="mobile_price_checker_quick_access_tool.html" class="btn-accent text-sm px-4 py-2">Quick Check</a>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" class="text-text-secondary hover:text-primary p-2" onclick="toggleMobileMenu()">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation Menu -->
+            <div id="mobile-menu" class="md:hidden hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-surface-50 rounded-lg mt-2">
+                    <a href="homepage_real_time_price_dashboard.html" class="text-text-secondary hover:text-primary block px-3 py-2 rounded-md text-base">Home</a>
+                    <a href="product_categories_agricultural_classification_system.html" class="text-text-secondary hover:text-primary block px-3 py-2 rounded-md text-base">Categories</a>
+                    <a href="market_information_baloan_public_market_guide.html" class="text-text-secondary hover:text-primary block px-3 py-2 rounded-md text-base">Market Info</a>
+                    <a href="about_transparency_community_mission.html" class="text-primary font-semibold block px-3 py-2 rounded-md text-base">About</a>
+                    <a href="mobile_price_checker_quick_access_tool.html" class="btn-accent block text-center mx-3 my-2">Quick Check</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-primary-50 to-surface-100 py-12 md:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-bold text-primary mb-4 font-accent">
+                    Kapamilya sa Palengke
+                </h1>
+                <p class="text-lg text-text-secondary mb-6 max-w-3xl mx-auto">
+                    Your trusted family member in the marketplace who knows all the vendors, current prices, and best deals. 
+                    Building bridges between traditional Filipino markets and modern information accessibility.
+                </p>
+                <div class="flex items-center justify-center text-primary font-semibold">
+                    <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Tapat na Presyo, Tapat na Serbisyo
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Statement -->
+    <section class="py-12 md:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-primary mb-6">Our Mission</h2>
+                    <p class="text-lg text-text-secondary mb-6">
+                        FarmScout Online was born from a simple belief: every Filipino family deserves access to honest, 
+                        transparent pricing information when shopping at traditional markets. We bridge the gap between 
+                        the warmth of community palengke culture and the power of modern technology.
+                    </p>
+                    <p class="text-text-secondary mb-6">
+                        Like a trusted family member who knows every vendor and every fair price, we empower both farmers 
+                        and consumers with real-time market intelligence that promotes fairness, reduces uncertainty, and 
+                        strengthens our local food economy.
+                    </p>
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-text-primary mb-2">Community-First Approach</h3>
+                            <p class="text-text-secondary">Built by Filipinos, for Filipinos, with deep respect for traditional market culture.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <img src="https://images.pexels.com/photos/1435735/pexels-photo-1435735.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Filipino market vendors and customers" class="rounded-lg shadow-elevated w-full h-96 object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                    <div class="absolute inset-0 bg-primary opacity-10 rounded-lg"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="py-12 bg-surface-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-4">Meet Our Team</h2>
+                <p class="text-lg text-text-secondary max-w-2xl mx-auto">
+                    Local connections and deep understanding of Filipino market culture drive our commitment to authentic, reliable service.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Team Member 1 -->
+                <div class="card text-center">
+                    <img src="https://images.pixabay.com/photo/2016/11/21/12/42/beard-1845166_960_720.jpg" alt="Maria Santos - Community Relations" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                    <h3 class="text-lg font-semibold text-text-primary mb-2">Maria Santos</h3>
+                    <p class="text-accent font-semibold mb-3">Community Relations</p>
+                    <p class="text-text-secondary text-sm">
+                        Born and raised in La Union, Maria has been shopping at Baloan Public Market for over 20 years. 
+                        She understands the daily challenges families face when planning market visits.
+                    </p>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="card text-center">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" alt="Juan Dela Cruz - Market Liaison" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                    <h3 class="text-lg font-semibold text-text-primary mb-2">Juan Dela Cruz</h3>
+                    <p class="text-accent font-semibold mb-3">Market Liaison</p>
+                    <p class="text-text-secondary text-sm">
+                        Former vendor with 15 years of market experience, Juan bridges the gap between traditional 
+                        commerce and digital transparency, ensuring authentic representation.
+                    </p>
+                </div>
+
+                <!-- Team Member 3 -->
+                <div class="card text-center">
+                    <img src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=200" alt="Ana Reyes - Data Verification" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                    <h3 class="text-lg font-semibold text-text-primary mb-2">Ana Reyes</h3>
+                    <p class="text-accent font-semibold mb-3">Data Verification</p>
+                    <p class="text-text-secondary text-sm">
+                        Agricultural economics graduate who ensures price accuracy through systematic verification 
+                        processes and maintains quality control standards.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partnership & Trust -->
+    <section class="py-12 md:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&q=80" alt="Baloan Public Market partnership" class="rounded-lg shadow-elevated w-full h-96 object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                    <div class="absolute inset-0 bg-accent opacity-10 rounded-lg"></div>
+                </div>
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-primary mb-6">Official Partnership</h2>
+                    <p class="text-lg text-text-secondary mb-6">
+                        We work directly with Baloan Public Market officials to ensure every price displayed on our platform 
+                        is verified, accurate, and updated regularly. Our partnership guarantees authenticity and builds trust 
+                        through transparency.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-8 h-8 bg-success-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-success" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-text-primary">Daily Price Verification</h3>
+                                <p class="text-text-secondary text-sm">Market administrators verify prices every morning before 8 AM</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-8 h-8 bg-success-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-success" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-text-primary">Quality Control Process</h3>
+                                <p class="text-text-secondary text-sm">Multi-vendor sampling ensures representative pricing across all stalls</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-8 h-8 bg-success-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-success" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-text-primary">Real-Time Updates</h3>
+                                <p class="text-text-secondary text-sm">Significant price changes updated within 2 hours of market opening</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="py-12 bg-surface-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-4">Our Journey</h2>
+                <p class="text-lg text-text-secondary max-w-2xl mx-auto">
+                    From concept to community tool - see how FarmScout has grown to serve Filipino families.
+                </p>
+            </div>
+
+            <div class="relative">
+                <!-- Timeline line -->
+                <div class="absolute left-1/2 transform -translate-x-px h-full w-0.5 bg-primary-200"></div>
+
+                <!-- Timeline items -->
+                <div class="space-y-12">
+                    <!-- Timeline Item 1 -->
+                    <div class="relative flex items-center">
+                        <div class="flex-1 pr-8 text-right">
+                            <div class="card">
+                                <h3 class="text-lg font-semibold text-primary mb-2">January 2024</h3>
+                                <h4 class="font-semibold text-text-primary mb-2">Project Launch</h4>
+                                <p class="text-text-secondary text-sm">
+                                    Initial concept development and partnership discussions with Baloan Public Market officials.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white"></div>
+                        <div class="flex-1 pl-8"></div>
+                    </div>
+
+                    <!-- Timeline Item 2 -->
+                    <div class="relative flex items-center">
+                        <div class="flex-1 pr-8"></div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-accent rounded-full border-4 border-white"></div>
+                        <div class="flex-1 pl-8">
+                            <div class="card">
+                                <h3 class="text-lg font-semibold text-primary mb-2">March 2024</h3>
+                                <h4 class="font-semibold text-text-primary mb-2">Beta Testing</h4>
+                                <p class="text-text-secondary text-sm">
+                                    Launched beta version with 50 local families providing feedback on usability and accuracy.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 3 -->
+                    <div class="relative flex items-center">
+                        <div class="flex-1 pr-8 text-right">
+                            <div class="card">
+                                <h3 class="text-lg font-semibold text-primary mb-2">June 2024</h3>
+                                <h4 class="font-semibold text-text-primary mb-2">Public Launch</h4>
+                                <p class="text-text-secondary text-sm">
+                                    Official launch with full price database covering all major product categories.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-success rounded-full border-4 border-white"></div>
+                        <div class="flex-1 pl-8"></div>
+                    </div>
+
+                    <!-- Timeline Item 4 -->
+                    <div class="relative flex items-center">
+                        <div class="flex-1 pr-8"></div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white"></div>
+                        <div class="flex-1 pl-8">
+                            <div class="card">
+                                <h3 class="text-lg font-semibold text-primary mb-2">August 2025</h3>
+                                <h4 class="font-semibold text-text-primary mb-2">Community Growth</h4>
+                                <p class="text-text-secondary text-sm">
+                                    Reached 2,500+ regular users with 95% price accuracy rating and expanding to neighboring markets.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transparency Section -->
+    <section class="py-12 md:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-4">Our Transparency Commitment</h2>
+                <p class="text-lg text-text-secondary max-w-3xl mx-auto">
+                    We believe in complete openness about how we collect, verify, and present market pricing information.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Data Collection -->
+                <div class="card">
+                    <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-text-primary mb-3">Data Collection</h3>
+                    <p class="text-text-secondary mb-4">
+                        Prices collected daily between 6-8 AM from minimum 3 vendors per product category. 
+                        Average prices calculated to ensure fairness.
+                    </p>
+                    <div class="text-sm text-primary font-semibold">Updated: Daily at 8:30 AM</div>
+                </div>
+
+                <!-- Verification Process -->
+                <div class="card">
+                    <div class="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-text-primary mb-3">Verification Process</h3>
+                    <p class="text-text-secondary mb-4">
+                        Two-step verification by market administrators and our team. Cross-referenced with 
+                        historical data to identify unusual price fluctuations.
+                    </p>
+                    <div class="text-sm text-primary font-semibold">Accuracy Rate: 95.8%</div>
+                </div>
+
+                <!-- Quality Control -->
+                <div class="card">
+                    <div class="w-12 h-12 bg-success-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-success" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-text-primary mb-3">Quality Control</h3>
+                    <p class="text-text-secondary mb-4">
+                        Weekly audits, seasonal adjustments, and community feedback integration. 
+                        Continuous improvement based on user reports and market changes.
+                    </p>
+                    <div class="text-sm text-primary font-semibold">Response Time: < 2 hours</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Impact -->
+    <section class="py-12 bg-primary-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-4">Community Impact</h2>
+                <p class="text-lg text-text-secondary max-w-2xl mx-auto">
+                    Real stories from real families who use FarmScout to make informed market decisions.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="card-elevated">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Rosa Martinez" class="w-12 h-12 rounded-full object-cover mr-4" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div>
+                            <h4 class="font-semibold text-text-primary">Rosa Martinez</h4>
+                            <p class="text-sm text-text-secondary">Mother of 3, Baloan</p>
+                        </div>
+                    </div>
+                    <p class="text-text-secondary italic mb-4">
+                        "Before FarmScout, I would spend extra time comparing prices at different stalls. 
+                        Now I can plan my budget before leaving home. It's like having a kumare who knows all the best deals!"
+                    </p>
+                    <div class="text-sm text-primary font-semibold">Savings: ₱200-300 per week</div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="card-elevated">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.pixabay.com/photo/2016/11/21/12/42/beard-1845166_960_720.jpg" alt="Miguel Santos" class="w-12 h-12 rounded-full object-cover mr-4" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div>
+                            <h4 class="font-semibold text-text-primary">Miguel Santos</h4>
+                            <p class="text-sm text-text-secondary">Small Restaurant Owner</p>
+                        </div>
+                    </div>
+                    <p class="text-text-secondary italic mb-4">
+                        "For my restaurant, knowing ingredient costs in advance helps me plan my menu and pricing. 
+                        FarmScout gives me the transparency I need to run my business efficiently."
+                    </p>
+                    <div class="text-sm text-primary font-semibold">Better cost planning</div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="card-elevated">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616c96d5e1f?auto=format&fit=crop&w=100&q=80" alt="Elena Reyes" class="w-12 h-12 rounded-full object-cover mr-4" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div>
+                            <h4 class="font-semibold text-text-primary">Elena Reyes</h4>
+                            <p class="text-sm text-text-secondary">Senior Citizen, Baloan</p>
+                        </div>
+                    </div>
+                    <p class="text-text-secondary italic mb-4">
+                        "My children showed me how to use FarmScout on my phone. Now I can check prices before my 
+                        morning market visit. It's so helpful for my fixed budget!"
+                    </p>
+                    <div class="text-sm text-primary font-semibold">Budget confidence</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="text-3xl md:text-4xl font-bold text-primary mb-2">2,500+</div>
+                    <p class="text-text-secondary">Regular Users</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl md:text-4xl font-bold text-primary mb-2">95.8%</div>
+                    <p class="text-text-secondary">Price Accuracy</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl md:text-4xl font-bold text-primary mb-2">150+</div>
+                    <p class="text-text-secondary">Products Tracked</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl md:text-4xl font-bold text-primary mb-2">42</div>
+                    <p class="text-text-secondary">Active Vendors</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-12 bg-surface-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-primary mb-4">Get in Touch</h2>
+                <p class="text-lg text-text-secondary max-w-2xl mx-auto">
+                    Have questions, suggestions, or want to report a price discrepancy? We're here to help and always open to community feedback.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Email -->
+                <div class="card text-center">
+                    <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-text-primary mb-2">Email Us</h3>
+                    <p class="text-text-secondary mb-3">General inquiries and feedback</p>
+                    <a href="mailto:hello@farmscout.ph" class="text-primary font-semibold hover:text-primary-700 transition-colors">
+                        hello@farmscout.ph
+                    </a>
+                </div>
+
+                <!-- Phone -->
+                <div class="card text-center">
+                    <div class="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-text-primary mb-2">Call Us</h3>
+                    <p class="text-text-secondary mb-3">Price reports and urgent matters</p>
+                    <a href="tel:+639123456789" class="text-primary font-semibold hover:text-primary-700 transition-colors">
+                        +63 912 345 6789
+                    </a>
+                </div>
+
+                <!-- Visit -->
+                <div class="card text-center">
+                    <div class="w-12 h-12 bg-success-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-success" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-text-primary mb-2">Visit Us</h3>
+                    <p class="text-text-secondary mb-3">Find us at the market</p>
+                    <p class="text-primary font-semibold">
+                        Baloan Public Market<br />
+                        <span class="text-sm font-normal">La Union, Philippines</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Brand -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center mb-4">
+                        <svg class="h-8 w-8 mr-3" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="18" fill="white"/>
+                            <path d="M12 20c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8-8-3.6-8-8z" fill="#75A347"/>
+                            <path d="M16 18h8v4h-8z" fill="#FF6B35"/>
+                            <circle cx="20" cy="20" r="2" fill="#2D5016"/>
+                        </svg>
+                        <div>
+                            <h3 class="text-xl font-bold font-accent">FarmScout Online</h3>
+                            <p class="text-primary-200">Tapat na Presyo, Tapat na Serbisyo</p>
+                        </div>
+                    </div>
+                    <p class="text-primary-200 mb-4">
+                        Your trusted digital guide to Baloan Public Market. Empowering Filipino families with transparent, real-time pricing information for smarter market shopping.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="homepage_real_time_price_dashboard.html" class="text-primary-200 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="product_categories_agricultural_classification_system.html" class="text-primary-200 hover:text-white transition-colors">Categories</a></li>
+                        <li><a href="market_information_baloan_public_market_guide.html" class="text-primary-200 hover:text-white transition-colors">Market Info</a></li>
+                        <li><a href="mobile_price_checker_quick_access_tool.html" class="text-primary-200 hover:text-white transition-colors">Mobile Checker</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-primary-200">
+                        <li>Baloan Public Market</li>
+                        <li>La Union, Philippines</li>
+                        <li>hello@farmscout.ph</li>
+                        <li>+63 912 345 6789</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-primary-600 mt-8 pt-8 text-center text-primary-200">
+                <p>&copy; 2025 FarmScout Online. All Rights Reserved. | Serving the Filipino community with transparency and trust.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('mobile-menu');
+            const button = e.target.closest('button');
+            
+            if (!menu.contains(e.target) && !button) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

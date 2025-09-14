@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Categories - Agricultural Classification System | FarmScout Online</title>
+    <meta name="description" content="Browse fresh produce by category at Baloan Public Market. Organized pricing for Gulay, Prutas, Karne, Isda, and Processed goods with real-time updates." />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Ffarmscout2741back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-background min-h-screen">
+    <!-- Navigation Header -->
+    <header class="bg-white shadow-minimal sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <svg class="h-10 w-10" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="18" fill="#2D5016"/>
+                            <path d="M12 20c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8-8-3.6-8-8z" fill="#75A347"/>
+                            <path d="M16 18h8v4h-8z" fill="#FF6B35"/>
+                            <circle cx="20" cy="20" r="2" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <h1 class="text-xl font-bold text-primary font-accent">FarmScout</h1>
+                        <p class="text-xs text-text-secondary">Tapat na Presyo</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="homepage_real_time_price_dashboard.html" class="text-text-secondary hover:text-primary px-3 py-2 rounded-md text-sm transition-colors">Home</a>
+                        <a href="product_categories_agricultural_classification_system.html" class="text-primary font-semibold px-3 py-2 rounded-md text-sm">Categories</a>
+                        <a href="market_information_baloan_public_market_guide.html" class="text-text-secondary hover:text-primary px-3 py-2 rounded-md text-sm transition-colors">Market Info</a>
+                        <a href="about_transparency_community_mission.html" class="text-text-secondary hover:text-primary px-3 py-2 rounded-md text-sm transition-colors">About</a>
+                        <a href="mobile_price_checker_quick_access_tool.html" class="btn-accent text-sm px-4 py-2">Quick Check</a>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" class="text-text-secondary hover:text-primary p-2" onclick="toggleMobileMenu()">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation Menu -->
+            <div id="mobile-menu" class="md:hidden hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-surface-50 rounded-lg mt-2">
+                    <a href="homepage_real_time_price_dashboard.html" class="text-text-secondary hover:text-primary block px-3 py-2 rounded-md text-base">Home</a>
+                    <a href="product_categories_agricultural_classification_system.html" class="text-primary font-semibold block px-3 py-2 rounded-md text-base">Categories</a>
+                    <a href="market_information_baloan_public_market_guide.html" class="text-text-secondary hover:text-primary block px-3 py-2 rounded-md text-base">Market Info</a>
+                    <a href="about_transparency_community_mission.html" class="text-text-secondary hover:text-primary block px-3 py-2 rounded-md text-base">About</a>
+                    <a href="mobile_price_checker_quick_access_tool.html" class="btn-accent block text-center mx-3 my-2">Quick Check</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-primary-50 to-surface-100 py-8 md:py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-bold text-primary mb-4 font-accent">
+                    Product Categories
+                </h1>
+                <p class="text-lg text-text-secondary mb-6 max-w-2xl mx-auto">
+                    Browse fresh produce organized by Filipino market traditions. Find current prices for all your cooking needs.
+                </p>
+                
+                <!-- Search and Filter Bar -->
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex flex-col md:flex-row gap-4 items-center">
+                        <!-- Search Input -->
+                        <div class="flex-1 relative">
+                            <input type="text" placeholder="Search products (e.g., kamatis, saging)..." class="input-field pl-12 pr-4 text-base w-full" id="category-search" />
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <!-- Filter Buttons -->
+                        <div class="flex gap-2">
+                            <button class="btn-secondary text-sm px-4 py-2" onclick="toggleFilters()">
+                                <svg class="w-4 h-4 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd"/>
+                                </svg>
+                                Filter
+                            </button>
+                            <button class="btn-accent text-sm px-4 py-2">
+                                <svg class="w-4 h-4 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" clip-rule="evenodd"/>
+                                </svg>
+                                Shopping List
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Filters (Hidden by default) -->
+                    <div id="advanced-filters" class="hidden mt-4 p-4 bg-white rounded-lg shadow-card">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-text-primary mb-2">Price Range</label>
+                                <select class="input-field text-sm">
+                                    <option>All Prices</option>
+                                    <option>₱0 - ₱50</option>
+                                    <option>₱51 - ₱100</option>
+                                    <option>₱101 - ₱200</option>
+                                    <option>₱200+</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-text-primary mb-2">Availability</label>
+                                <select class="input-field text-sm">
+                                    <option>All Items</option>
+                                    <option>In Stock</option>
+                                    <option>Limited Stock</option>
+                                    <option>Seasonal</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-text-primary mb-2">Type</label>
+                                <select class="input-field text-sm">
+                                    <option>All Types</option>
+                                    <option>Organic</option>
+                                    <option>Conventional</option>
+                                    <option>Local</option>
+                                    <option>Imported</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-text-primary mb-2">Sort By</label>
+                                <select class="input-field text-sm">
+                                    <option>Price: Low to High</option>
+                                    <option>Price: High to Low</option>
+                                    <option>Name: A to Z</option>
+                                    <option>Popularity</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex gap-2">
+                            <button class="btn-primary text-sm px-4 py-2">Apply Filters</button>
+                            <button class="btn-secondary text-sm px-4 py-2" onclick="resetFilters()">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Navigation Tabs -->
+    <section class="py-6 bg-white border-b border-surface-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-center gap-2 md:gap-4">
+                <button class="category-tab active" data-category="gulay">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                    </svg>
+                    Gulay
+                </button>
+                <button class="category-tab" data-category="prutas">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                    Prutas
+                </button>
+                <button class="category-tab" data-category="karne">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Karne
+                </button>
+                <button class="category-tab" data-category="isda">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                    </svg>
+                    Isda
+                </button>
+                <button class="category-tab" data-category="processed">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clip-rule="evenodd"/>
+                    </svg>
+                    Processed
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Content -->
+    <section class="py-8 md:py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Gulay Category -->
+            <div id="gulay-content" class="category-content">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-primary mb-2">Gulay (Vegetables)</h2>
+                    <p class="text-text-secondary">Fresh vegetables organized by type - leafy greens, root crops, and cooking essentials</p>
+                </div>
+
+                <!-- Subcategory: Leafy Vegetables -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-text-primary mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 6.707 6.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        Dahong Gulay (Leafy Vegetables)
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Kangkong -->
+                        <div class="card hover:shadow-elevated transition-shadow">
+                            <div class="flex items-center mb-4">
+                                <img src="https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg?auto=compress&cs=tinysrgb&w=200" alt="Kangkong" class="w-16 h-16 rounded-lg object-cover mr-4" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-text-primary">Kangkong</h4>
+                                    <p class="text-sm text-text-secondary">Water Spinach</p>
+                                    <div class="flex items-center mt-1">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-success-100 text-success-700">
+                                            Fresh
+                                        </span>
+                                        <span class="ml-2 text-xs text-text-muted">12 vendors</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center mb-3">
+                                <div>
+                                    <p class="text-2xl font-bold text-primary">₱25</p>
+                                    <p class="text-sm text-text-secondary">per bundle</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="flex items-center text-success text-sm">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 4.414 6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                                        </svg>
+                                        ₱3 down
+                                    </div>
+                                    <p class="text-xs text-text-muted">7-day trend</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="btn-accent text-sm px-3 py-1 flex-1">Add to List</button>
+                                <button class="btn-secondary text-sm px-3 py-1">Price History</button>
+                            </div>
+                            <div class="mt-3 p-2 bg-accent-50 rounded text-xs text-accent-700">
+                                <strong>Cooking Tip:</strong> Perfect for adobong kangkong with bagoong
+                            </div>
+                        </div>
+
+                        <!-- Pechay -->
+                        <div class="card hover:shadow-elevated transition-shadow">
+                            <div class="flex items-center mb-4">
+                                <img src="https://images.pixabay.com/photo/2017/09/26/13/42/apple-2788662_960_720.jpg" alt="Pechay" class="w-16 h-16 rounded-lg object-cover mr-4" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-text-primary">Pechay</h4>
+                                    <p class="text-sm text-text-secondary">Bok Choy</p>
+                                    <div class="flex items-center mt-1">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-success-100 text-success-700">
+                                            Fresh
+                                        </span>
+                                        <span class="ml-2 text-xs text-text-muted">8 vendors</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center mb-3">
+                                <div>
+                                    <p class="text-2xl font-bold text-primary">₱30</p>
+                                    <p class="text-sm text-text-secondary">per bundle</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="flex items-center text-text-muted text-sm">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/>
+                                        </svg>
+                                        No change
+                                    </div>
+                                    <p class="text-xs text-text-muted">7-day trend</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="btn-accent text-sm px-3 py-1 flex-1">Add to List</button>
+                                <button class="btn-secondary text-sm px-3 py-1">Price History</button>
+                            </div>
+                            <div class="mt-3 p-2 bg-accent-50 rounded text-xs text-accent-700">
+                                <strong>Cooking Tip:</strong> Great in misua soup or stir-fried with garlic
+                            </div>
+                        </div>
+
+                        <!-- Malunggay -->
+                        <div class="card hover:shadow-elevated transition-shadow">
+                            <div class="flex items-center mb-4">
+                                <img src="https://images.unsplash.com/photo-1590779033100-9f60a05a013d?auto=format&fit=crop&w=200&q=80" alt="Malunggay" class="w-16 h-16 rounded-lg object-cover mr-4" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-text-primary">Malunggay</h4>
+                                    <p class="text-sm text-text-secondary">Moringa Leaves</p>
+                                    <div class="flex items-center mt-1">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-warning-100 text-warning-700">
+                                            Limited
+                                        </span>
+                                        <span class="ml-2 text-xs text-text-muted">5 vendors</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center mb-3">
+                                <div>
+                                    <p class="text-2xl font-bold text-primary">₱20</p>
+                                    <p class="text-sm text-text-secondary">per bundle</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="flex items-center text-error text-sm">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L10 15.586l3.293-3.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                        </svg>
+                                        ₱5 up
+                                    </div>
+                                    <p class="text-xs text-text-muted">7-day trend</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="btn-accent text-sm px-3 py-1 flex-1">Add to List</button>
+                                <button class="btn-secondary text-sm px-3 py-1">Price History</button>
+                            </div>
+                            <div class="mt-3 p-2 bg-accent-50 rounded text-xs text-accent-700">
+                                <strong>Health Tip:</strong> Superfood packed with vitamins and minerals
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subcategory: Root Crops -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-text-primary mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                        </svg>
+                        Ugat at Tubers (Root Crops)
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Kamote -->
+                        <div class="card hover:shadow-elevated transition-shadow">
+                            <div class="flex items-center mb-4">
+                                <img src="https://images.pexels.com/photos/1435735/pexels-photo-1435735.jpeg?auto=compress&cs=tinysrgb&w=200" alt="Kamote" class="w-16 h-16 rounded-lg object-cover mr-4" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-text-primary">Kamote</h4>
+                                    <p class="text-sm text-text-secondary">Sweet Potato</p>
+                                    <div class="flex items-center mt-1">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-success-100 text-success-700">
+                                            Fresh
+                                        </span>
+                                        <span class="ml-2 text-xs text-text-muted">15 vendors</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center mb-3">
+                                <div>
+                                    <p class="text-2xl font-bold text-primary">₱35</p>
+                                    <p class="text-sm text-text-secondary">per kilo</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="flex items-center text-success text-sm">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 4.414 6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                                        </svg>
+                                        ₱5 down
+                                    </div>
+                                    <p class="text-xs text-text-muted">7-day trend</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="btn-accent text-sm px-3 py-1 flex-1">Add to List</button>
+                                <button class="btn-secondary text-sm px-3 py-1">Price History</button>
+                            </div>
+                            <div class="mt-3 p-2 bg-accent-50 rounded text-xs text-accent-700">
+                                <strong>Cooking Tip:</strong> Perfect for kamote cue or ginataang kamote
+                            </div>
+                        </div>
+
+                        <!-- Patatas -->
+                        <div class="card hover:shadow-elevated transition-shadow">
+                            <div class="flex items-center mb-4">
+                                <img src="https://images.pixabay.com/photo/2016/08/11/08/04/rice-1584109_960_720.jpg" alt="Patatas" class="w-16 h-16 rounded-lg object-cover mr-4" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-text-primary">Patatas</h4>
+                                    <p class="text-sm text-text-secondary">Potato</p>
+                                    <div class="flex items-center mt-1">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-success-100 text-success-700">
+                                            Fresh
+                                        </span>
+                                        <span class="ml-2 text-xs text-text-muted">10 vendors</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center mb-3">
+                                <div>
+                                    <p class="text-2xl font-bold text-primary">₱65</p>
+                                    <p class="text-sm text-text-secondary">per kilo</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="flex items-center text-error text-sm">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L10 15.586l3.293-3.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                        </svg>
+                                        ₱8 up
+                                    </div>
+                                    <p class="text-xs text-text-muted">7-day trend</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="btn-accent text-sm px-3 py-1 flex-1">Add to List</button>
+                                <button class="btn-secondary text-sm px-3 py-1">Price History</button>
+                            </div>
+                            <div class="mt-3 p-2 bg-accent-50 rounded text-xs text-accent-700">
+                                <strong>Cooking Tip:</strong> Great for menudo, kaldereta, or french fries
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subcategory: Cooking Essentials -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-text-primary mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                        </svg>
+                        Pangunahing Sangkap (Cooking Essentials)
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Kamatis -->
+                        <div class="card hover:shadow-elevated transition-shadow">
+                            <div class="flex items-center mb-4">
+                                <img src="https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg?auto=compress&cs=tinysrgb&w=200" alt="Kamatis" class="w-16 h-16 rounded-lg object-cover mr-4" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-text-primary">Kamatis</h4>
+                                    <p class="text-sm text-text-secondary">Tomatoes</p>
+                                    <div class="flex items-center mt-1">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-success-100 text-success-700">
+                                            Fresh
+                                        </span>
+                                        <span class="ml-2 text-xs text-text-muted">20 vendors</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center mb-3">
+                                <div>
+                                    <p class="text-2xl font-bold text-primary">₱45</p>
+                                    <p class="text-sm text-text-secondary">per kilo</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="flex items-center text-success text-sm">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 4.414 6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                                        </svg>
+                                        ₱5 down
+                                    </div>
+                                    <p class="text-xs text-text-muted">7-day trend</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="btn-accent text-sm px-3 py-1 flex-1">Add to List</button>
+                                <button class="btn-secondary text-sm px-3 py-1">Price History</button>
+                            </div>
+                            <div class="mt-3 p-2 bg-accent-50 rounded text-xs text-accent-700">
+                                <strong>Cooking Tip:</strong> Essential for adobo, sinigang, and menudo
+                            </div>
+                        </div>
+
+                        <!-- Sibuyas -->
+                        <div class="card hover:shadow-elevated transition-shadow">
+                            <div class="flex items-center mb-4">
+                                <img src="https://images.pexels.com/photos/1435735/pexels-photo-1435735.jpeg?auto=compress&cs=tinysrgb&w=200" alt="Sibuyas" class="w-16 h-16 rounded-lg object-cover mr-4" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-text-primary">Sibuyas Pula</h4>
+                                    <p class="text-sm text-text-secondary">Red Onions</p>
+                                    <div class="flex items-center mt-1">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-success-100 text-success-700">
+                                            Fresh
+                                        </span>
+                                        <span class="ml-2 text-xs text-text-muted">18 vendors</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center mb-3">
+                                <div>
+                                    <p class="text-2xl font-bold text-primary">₱85</p>
+                                    <p class="text-sm text-text-secondary">per kilo</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="flex items-center text-success text-sm">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 4.414 6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                                        </svg>
+                                        ₱15 down
+                                    </div>
+                                    <p class="text-xs text-text-muted">7-day trend</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="btn-accent text-sm px-3 py-1 flex-1">Add to List</button>
+                                <button class="btn-secondary text-sm px-3 py-1">Price History</button>
+                            </div>
+                            <div class="mt-3 p-2 bg-accent-50 rounded text-xs text-accent-700">
+                                <strong>Cooking Tip:</strong> Base ingredient for most Filipino dishes
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other category contents (hidden by default) -->
+            <div id="prutas-content" class="category-content hidden">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-primary mb-2">Prutas (Fruits)</h2>
+                    <p class="text-text-secondary">Fresh fruits organized by local and imported varieties</p>
+                </div>
+
+                <!-- Local Fruits -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-text-primary mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                        </svg>
+                        Local na Prutas (Local Fruits)
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Saging -->
+                        <div class="card hover:shadow-elevated transition-shadow">
+                            <div class="flex items-center mb-4">
+                                <img src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=200&q=80" alt="Saging" class="w-16 h-16 rounded-lg object-cover mr-4" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-text-primary">Saging na Saba</h4>
+                                    <p class="text-sm text-text-secondary">Saba Banana</p>
+                                    <div class="flex items-center mt-1">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-success-100 text-success-700">
+                                            Fresh
+                                        </span>
+                                        <span class="ml-2 text-xs text-text-muted">14 vendors</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center mb-3">
+                                <div>
+                                    <p class="text-2xl font-bold text-primary">₱60</p>
+                                    <p class="text-sm text-text-secondary">per kilo</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="flex items-center text-text-muted text-sm">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/>
+                                        </svg>
+                                        No change
+                                    </div>
+                                    <p class="text-xs text-text-muted">7-day trend</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="btn-accent text-sm px-3 py-1 flex-1">Add to List</button>
+                                <button class="btn-secondary text-sm px-3 py-1">Price History</button>
+                            </div>
+                            <div class="mt-3 p-2 bg-accent-50 rounded text-xs text-accent-700">
+                                <strong>Cooking Tip:</strong> Perfect for banana cue, turon, or ginataang saging
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Similar structure for other categories -->
+            <div id="karne-content" class="category-content hidden">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-primary mb-2">Karne (Meat)</h2>
+                    <p class="text-text-secondary">Fresh meat cuts organized by type and preparation</p>
+                </div>
+                <div class="text-center py-12">
+                    <p class="text-text-secondary">Meat category content coming soon...</p>
+                </div>
+            </div>
+
+            <div id="isda-content" class="category-content hidden">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-primary mb-2">Isda (Fish)</h2>
+                    <p class="text-text-secondary">Fresh seafood organized by type and preparation</p>
+                </div>
+                <div class="text-center py-12">
+                    <p class="text-text-secondary">Fish category content coming soon...</p>
+                </div>
+            </div>
+
+            <div id="processed-content" class="category-content hidden">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-primary mb-2">Processed Goods</h2>
+                    <p class="text-text-secondary">Packaged and processed food items</p>
+                </div>
+                <div class="text-center py-12">
+                    <p class="text-text-secondary">Processed goods category content coming soon...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Actions -->
+    <section class="py-8 bg-primary-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Shopping List Card -->
+                <div class="card-elevated">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-text-primary">My Shopping List</h3>
+                            <p class="text-text-secondary">3 items added • Est. ₱180</p>
+                        </div>
+                    </div>
+                    <button class="btn-accent w-full">View Shopping List</button>
+                </div>
+
+                <!-- Price Alerts Card -->
+                <div class="card-elevated">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-text-primary">Price Alerts</h3>
+                            <p class="text-text-secondary">Get notified when prices drop</p>
+                        </div>
+                    </div>
+                    <button class="btn-primary w-full">Set Up Alerts</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Brand -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center mb-4">
+                        <svg class="h-8 w-8 mr-3" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="18" fill="white"/>
+                            <path d="M12 20c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8-8-3.6-8-8z" fill="#75A347"/>
+                            <path d="M16 18h8v4h-8z" fill="#FF6B35"/>
+                            <circle cx="20" cy="20" r="2" fill="#2D5016"/>
+                        </svg>
+                        <div>
+                            <h3 class="text-xl font-bold font-accent">FarmScout Online</h3>
+                            <p class="text-primary-200">Tapat na Presyo, Tapat na Serbisyo</p>
+                        </div>
+                    </div>
+                    <p class="text-primary-200 mb-4">
+                        Your trusted digital guide to Baloan Public Market. Empowering Filipino families with transparent, real-time pricing information for smarter market shopping.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="homepage_real_time_price_dashboard.html" class="text-primary-200 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="product_categories_agricultural_classification_system.html" class="text-primary-200 hover:text-white transition-colors">Categories</a></li>
+                        <li><a href="market_information_baloan_public_market_guide.html" class="text-primary-200 hover:text-white transition-colors">Market Info</a></li>
+                        <li><a href="mobile_price_checker_quick_access_tool.html" class="text-primary-200 hover:text-white transition-colors">Mobile Checker</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-primary-200">
+                        <li>Baloan Public Market</li>
+                        <li>La Union, Philippines</li>
+                        <li>farmscout@email.com</li>
+                        <li>+63 912 345 6789</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-primary-600 mt-8 pt-8 text-center text-primary-200">
+                <p>&copy; 2025 FarmScout Online. All Rights Reserved. | Serving the Filipino community with transparency and trust.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function toggleFilters() {
+            const filters = document.getElementById('advanced-filters');
+            filters.classList.toggle('hidden');
+        }
+
+        function resetFilters() {
+            // Reset all filter inputs
+            const selects = document.querySelectorAll('#advanced-filters select');
+            selects.forEach(select => select.selectedIndex = 0);
+        }
+
+        // Category tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryTabs = document.querySelectorAll('.category-tab');
+            const categoryContents = document.querySelectorAll('.category-content');
+
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const category = this.dataset.category;
+                    
+                    // Remove active class from all tabs
+                    categoryTabs.forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Hide all content
+                    categoryContents.forEach(content => content.classList.add('hidden'));
+                    // Show selected content
+                    document.getElementById(category + '-content').classList.remove('hidden');
+                });
+            });
+        });
+
+        // Search functionality
+        document.getElementById('category-search').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            // In a real application, this would filter the products
+            console.log('Searching for:', searchTerm);
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('mobile-menu');
+            const button = e.target.closest('button');
+            
+            if (!menu.contains(e.target) && !button) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
+
+    <style>
+        .category-tab {
+            @apply px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center;
+            @apply bg-surface-100 text-text-secondary hover:bg-primary-100 hover:text-primary;
+        }
+        
+        .category-tab.active {
+            @apply bg-primary text-white;
+        }
+        
+        .category-tab:hover {
+            @apply transform -translate-y-0.5;
+        }
+    </style>
+</body>
+</html>
