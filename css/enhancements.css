@@ -1,0 +1,517 @@
+/* Enhanced Navigation Button Styles */
+.nav-button-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-left: 2rem;
+    padding-left: 2rem;
+    border-left: 1px solid var(--color-surface-300);
+}
+
+.nav-enhanced-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    border: 1px solid transparent;
+    min-height: 40px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.nav-enhanced-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.nav-enhanced-btn:hover::before {
+    left: 100%;
+}
+
+.nav-enhanced-btn:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transform: translateY(-1px);
+}
+
+.nav-enhanced-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.nav-enhanced-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-primary-300);
+}
+
+/* Color variations */
+.nav-enhanced-btn.primary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.nav-enhanced-btn.primary:hover {
+    background-color: var(--color-primary-700);
+}
+
+.nav-enhanced-btn.secondary {
+    background-color: var(--color-secondary);
+    color: white;
+}
+
+.nav-enhanced-btn.secondary:hover {
+    background-color: var(--color-secondary-700);
+}
+
+.nav-enhanced-btn.accent {
+    background-color: var(--color-accent);
+    color: white;
+}
+
+.nav-enhanced-btn.accent:hover {
+    background-color: var(--color-accent-600);
+}
+
+/* Icon styling */
+.nav-enhanced-btn svg {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* Enhanced Navigation Links */
+.nav-enhanced-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    min-height: 40px;
+    white-space: nowrap;
+    position: relative;
+}
+
+.nav-enhanced-link:hover {
+    background-color: var(--color-primary-50);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+}
+
+.nav-enhanced-link.active {
+    color: var(--color-primary);
+    background-color: var(--color-primary-100);
+    font-weight: 600;
+}
+
+/* Clean header design - 2025-09-15 */
+.header-clean {
+    border-bottom: 1px solid #e5e7eb;
+    background: white;
+}
+
+/* Cool Action Button Animations - 2025-09-15 */
+.action-btn {
+    position: relative;
+    overflow: hidden;
+    transform: perspective(1000px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease-in-out;
+    z-index: 1;
+}
+
+.action-btn:hover::before {
+    left: 100%;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn:active {
+    transform: translateY(0px) scale(1.01);
+    transition: all 0.1s ease;
+}
+
+/* Pulse animation for extra coolness */
+.action-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+    z-index: 0;
+}
+
+.action-btn:hover::after {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+}
+
+/* Glow effect */
+.action-btn:hover {
+    box-shadow: 
+        0 10px 25px rgba(0, 0, 0, 0.3),
+        0 6px 10px rgba(0, 0, 0, 0.15),
+        0 0 20px rgba(59, 130, 246, 0.4);
+}
+
+/* Text stays on top */
+.action-btn > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Fill-Up Text Animation - 2025-09-15 */
+.fill-up-text {
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+}
+
+.fill-up-text .letter {
+    display: inline-block;
+    position: relative;
+    color: transparent;
+    background: linear-gradient(to top, #2D5016 0%, #2D5016 0%, transparent 0%, transparent 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: fillUp 0.8s ease-out forwards;
+    animation-delay: calc(var(--letter-index) * 0.08s);
+}
+
+.fill-up-text .letter.space {
+    width: 0.3em;
+    background: none;
+    color: transparent;
+}
+
+@keyframes fillUp {
+    0% {
+        background: linear-gradient(to top, #2D5016 0%, #2D5016 0%, transparent 0%, transparent 100%);
+    }
+    100% {
+        background: linear-gradient(to top, #2D5016 0%, #2D5016 100%, transparent 100%, transparent 100%);
+    }
+}
+
+/* Enhanced fill-up with glow effect */
+.fill-up-text .letter::before {
+    content: attr(data-letter);
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #2D5016;
+    opacity: 0;
+    animation: letterGlow 0.8s ease-out forwards;
+    animation-delay: calc(var(--letter-index) * 0.08s + 0.6s);
+}
+
+@keyframes letterGlow {
+    0% {
+        opacity: 0;
+        text-shadow: 0 0 0 rgba(45, 80, 22, 0);
+    }
+    50% {
+        opacity: 1;
+        text-shadow: 0 0 8px rgba(45, 80, 22, 0.3);
+    }
+    100% {
+        opacity: 1;
+        text-shadow: 0 0 0 rgba(45, 80, 22, 0);
+    }
+}
+
+/* Reveal Text Animation - From Bottom to Top */
+.simple-fill-up {
+    color: #2D5016;
+    position: relative;
+    overflow: hidden;
+}
+
+.simple-fill-up::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ffffff;
+    animation: revealFromBottom 2.5s ease-out forwards;
+    animation-delay: 0.8s;
+}
+
+@keyframes revealFromBottom {
+    0% {
+        transform: translateY(0%);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+/* Letter-by-letter reveal version */
+.fill-up-text .letter {
+    display: inline-block;
+    position: relative;
+    color: #2D5016;
+    overflow: hidden;
+}
+
+.fill-up-text .letter::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ffffff;
+    animation: letterReveal 0.6s ease-out forwards;
+    animation-delay: calc(var(--letter-index) * 0.05s + 0.8s);
+}
+
+@keyframes letterReveal {
+    from {
+        transform: translateY(0%);
+    }
+    to {
+        transform: translateY(-100%);
+    }
+}
+
+/* Modern Bold Design - Inspired by Reference - 2025-09-15 */
+.modern-bold-heading {
+    font-weight: 900;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+    color: #1a1a1a;
+}
+
+.modern-navigation {
+    font-weight: 600;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+}
+
+.modern-button {
+    font-weight: 600;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.modern-button-primary {
+    background: #1a1a1a;
+    color: #ffffff;
+}
+
+.modern-button-primary:hover {
+    background: #333333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(26, 26, 26, 0.2);
+}
+
+.modern-button-secondary {
+    background: transparent;
+    color: #1a1a1a;
+    border: 1px solid #1a1a1a;
+}
+
+.modern-button-secondary:hover {
+    background: #1a1a1a;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(26, 26, 26, 0.15);
+}
+
+/* Modern Header Styling */
+.modern-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.modern-logo-text {
+    font-weight: 800;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: -0.03em;
+    color: #1a1a1a;
+    font-size: 1.5rem;
+}
+
+.modern-tagline {
+    font-weight: 400;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #666666;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* Modern Color Palette */
+:root {
+    --modern-black: #1a1a1a;
+    --modern-gray-900: #111111;
+    --modern-gray-800: #1f1f1f;
+    --modern-gray-700: #2d2d2d;
+    --modern-gray-600: #404040;
+    --modern-gray-500: #666666;
+    --modern-gray-400: #888888;
+    --modern-gray-300: #b3b3b3;
+    --modern-gray-200: #cccccc;
+    --modern-gray-100: #e5e5e5;
+    --modern-gray-50: #f7f7f7;
+    --modern-white: #ffffff;
+    --modern-accent: #10b981;
+}
+
+/* Modern Typography Scale */
+.text-modern-xs { font-size: 0.75rem; line-height: 1.2; }
+.text-modern-sm { font-size: 0.875rem; line-height: 1.3; }
+.text-modern-base { font-size: 1rem; line-height: 1.4; }
+.text-modern-lg { font-size: 1.125rem; line-height: 1.4; }
+.text-modern-xl { font-size: 1.25rem; line-height: 1.3; }
+.text-modern-2xl { font-size: 1.5rem; line-height: 1.2; }
+.text-modern-3xl { font-size: 1.875rem; line-height: 1.1; }
+.text-modern-4xl { font-size: 2.25rem; line-height: 1.0; }
+.text-modern-5xl { font-size: 3rem; line-height: 0.9; }
+.text-modern-6xl { font-size: 3.75rem; line-height: 0.9; }
+
+/* Modern font weights */
+.font-modern-normal { font-weight: 400; }
+.font-modern-medium { font-weight: 500; }
+.font-modern-semibold { font-weight: 600; }
+.font-modern-bold { font-weight: 700; }
+.font-modern-extrabold { font-weight: 800; }
+.font-modern-black { font-weight: 900; }
+
+/* Logo styling to remove white/gray background */
+.logo-img {
+    /* Remove white background by making it transparent */
+    background: transparent;
+    border-radius: 50%;
+    /* Try to blend with background */
+    mix-blend-mode: darken;
+    
+    /* Alternative: Use filter to remove light backgrounds */
+    filter: 
+        contrast(1.3) 
+        brightness(0.8) 
+        drop-shadow(0 0 0 rgba(255,255,255,0));
+    
+    /* Ensure crisp rendering */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+/* Fallback - if mix-blend-mode causes issues */
+.logo-img-clean {
+    background: transparent;
+    border-radius: 50%;
+    /* Slight shadow to separate from background */
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+}
+
+/* Modern centered product cards */
+.featured-products-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.product-card-modern {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 1px solid #f1f1f1;
+}
+
+.product-card-modern:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    border-color: #e1e1e1;
+}
+
+/* Extra large hero text styling */
+.hero-heading-xl {
+    font-size: clamp(3rem, 8vw, 12rem);
+    line-height: 0.85;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+}
+
+.hero-subtitle-xl {
+    font-size: clamp(1.25rem, 3vw, 2.5rem);
+    line-height: 1.3;
+    font-weight: 400;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .nav-button-group {
+        margin-left: 0;
+        padding-left: 0;
+        border-left: none;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .nav-enhanced-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .action-btn:hover {
+        transform: translateY(-1px) scale(1.01);
+    }
+}

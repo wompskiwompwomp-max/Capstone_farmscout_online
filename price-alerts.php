@@ -74,7 +74,7 @@ include 'includes/header.php';
     <!-- Hero Section -->
     <section class="bg-gradient-to-br from-primary-50 to-surface-100 py-8 md:py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-8">
+            <div class="text-center mb-8 scroll-animate">
                 <h1 class="text-3xl md:text-4xl font-bold text-primary mb-4 font-accent">
                     Price Alerts
                 </h1>
@@ -105,7 +105,7 @@ include 'includes/header.php';
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Set New Alert Form -->
-            <div class="bg-white rounded-lg shadow-card p-6">
+            <div class="bg-white rounded-lg shadow-card p-6 scroll-animate-card" data-delay="0.1">
                 <h2 class="text-xl font-semibold text-primary mb-4">Set New Price Alert</h2>
                 
                 <form method="POST" action="price-alerts.php" class="space-y-4">
@@ -162,7 +162,7 @@ include 'includes/header.php';
                         </ul>
                     </div>
                     
-                    <button type="submit" class="btn-primary w-full">
+                    <button type="submit" class="btn-primary w-full flex items-center justify-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"/>
                         </svg>
@@ -172,7 +172,7 @@ include 'includes/header.php';
             </div>
 
             <!-- Manage Existing Alerts -->
-            <div class="bg-white rounded-lg shadow-card p-6">
+            <div class="bg-white rounded-lg shadow-card p-6 scroll-animate-card" data-delay="0.2">
                 <h2 class="text-xl font-semibold text-primary mb-4">Manage Your Alerts</h2>
                 
                 <div class="mb-4">
@@ -181,7 +181,7 @@ include 'includes/header.php';
                         <input type="email" id="email_lookup" 
                                class="input-field flex-1" 
                                placeholder="Enter your email address">
-                        <button onclick="loadAlerts()" class="btn-secondary">
+                        <button onclick="loadAlerts()" class="btn-secondary flex items-center justify-center">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                             </svg>
@@ -201,16 +201,17 @@ include 'includes/header.php';
         </div>
 
         <!-- Popular Products for Quick Alerts -->
-        <div class="mt-8 bg-white rounded-lg shadow-card p-6">
+        <div class="mt-8 bg-white rounded-lg shadow-card p-6 scroll-animate" data-delay="0.1">
             <h2 class="text-xl font-semibold text-primary mb-4">Quick Alerts for Popular Products</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <?php 
                 $featured_products = getFeaturedProducts(6);
+                $productDelay = 0.1;
                 foreach ($featured_products as $product): 
                     $price_change = formatPriceChange($product['current_price'], $product['previous_price']);
                 ?>
-                <div class="border border-surface-200 rounded-lg p-4 hover:shadow-card transition-shadow">
+                <div class="border border-surface-200 rounded-lg p-4 hover:shadow-card transition-shadow scroll-animate-card" data-delay="<?php echo $productDelay; ?>"><?php $productDelay += 0.1; ?>
                     <div class="flex items-center mb-3">
                         <img src="<?php echo htmlspecialchars($product['image_url']); ?>" 
                              alt="<?php echo htmlspecialchars($product['name']); ?>" 
@@ -248,7 +249,7 @@ include 'includes/header.php';
                     </div>
                     
                     <button onclick="quickAlert(<?php echo $product['id']; ?>, '<?php echo htmlspecialchars($product['filipino_name']); ?>', <?php echo $product['current_price']; ?>)" 
-                            class="btn-accent w-full text-sm">
+                            class="btn-accent w-full text-sm flex items-center justify-center">
                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"/>
                         </svg>
@@ -307,7 +308,93 @@ document.getElementById('product_id').addEventListener('change', function() {
             document.getElementById('target_price').value = targetPrice;
         }
     }
-});
+};
 </script>
+
+    <!-- Scroll Animation Styles -->
+    <style>
+        /* Scroll-triggered Animation Styles */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        .scroll-animate.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .scroll-animate-card {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        .scroll-animate-card.animate-in {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        /* Stagger animation delays */
+        .scroll-animate[data-delay="0.1"] { transition-delay: 0.1s; }
+        .scroll-animate[data-delay="0.2"] { transition-delay: 0.2s; }
+        .scroll-animate[data-delay="0.3"] { transition-delay: 0.3s; }
+        .scroll-animate[data-delay="0.4"] { transition-delay: 0.4s; }
+        .scroll-animate[data-delay="0.5"] { transition-delay: 0.5s; }
+        
+        .scroll-animate-card[data-delay="0.1"] { transition-delay: 0.1s; }
+        .scroll-animate-card[data-delay="0.2"] { transition-delay: 0.2s; }
+        .scroll-animate-card[data-delay="0.3"] { transition-delay: 0.3s; }
+        .scroll-animate-card[data-delay="0.4"] { transition-delay: 0.4s; }
+        .scroll-animate-card[data-delay="0.5"] { transition-delay: 0.5s; }
+        .scroll-animate-card[data-delay="0.6"] { transition-delay: 0.6s; }
+        .scroll-animate-card[data-delay="0.7"] { transition-delay: 0.7s; }
+        
+        /* Button alignment improvements */
+        .btn-primary, .btn-secondary, .btn-accent {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        /* Ensure button text and icons are properly centered */
+        .btn-primary svg, .btn-secondary svg, .btn-accent svg {
+            flex-shrink: 0;
+        }
+    </style>
+
+    <!-- Scroll Animation Script -->
+    <script>
+        // Scroll-triggered animations
+        function initScrollAnimations() {
+            const animateElements = document.querySelectorAll('.scroll-animate, .scroll-animate-card');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('animate-in');
+                        }, parseFloat(entry.target.dataset.delay || 0) * 1000);
+                    }
+                });
+            }, observerOptions);
+            
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+        
+        // Initialize scroll animations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initScrollAnimations();
+        });
+    </script>
 
 <?php include 'includes/footer.php'; ?>

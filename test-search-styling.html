@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Box Styling Test - FarmScout Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Enhanced search box styling */
+        #product-search {
+            padding: 0.875rem 1rem 0.875rem 3rem !important; /* top/bottom: 14px, right: 16px, left: 48px */
+            background-color: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        #product-search:focus {
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05);
+            outline: none;
+            background-color: #ffffff;
+        }
+
+        #product-search:hover {
+            border-color: #d1d5db;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        #product-search::placeholder {
+            color: #9ca3af;
+            font-weight: 400;
+            font-size: 0.9rem;
+        }
+
+        /* Search icon positioning - perfectly centered */
+        .search-icon-container {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 3rem; /* 48px - same as left padding */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .search-icon {
+            width: 1.25rem; /* 20px */
+            height: 1.25rem; /* 20px */
+            color: #6b7280;
+            transition: color 0.2s ease;
+        }
+
+        .search-container:focus-within .search-icon {
+            color: #22c55e;
+        }
+
+        /* Search container hover effect */
+        .search-container:hover .search-icon {
+            color: #4b5563;
+        }
+
+        .demo-section {
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            border: 1px solid #d1fae5;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="max-w-4xl mx-auto p-8">
+        
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">🔍 Search Box Styling Test</h1>
+            <p class="text-gray-600 text-lg">Testing the improved search box alignment and interactions</p>
+        </header>
+
+        <!-- Before/After Comparison -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Before vs After</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Before -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <h3 class="text-lg font-semibold text-red-600 mb-4">❌ Before (Too close to edge)</h3>
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            placeholder="Search products..." 
+                            class="w-full pl-8 pr-4 py-3 border-2 border-gray-300 rounded-lg"
+                            style="background-color: #ffffff; padding-left: 2rem;"
+                        >
+                        <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">Icon too close to the edge, cramped appearance</p>
+                </div>
+
+                <!-- After -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <h3 class="text-lg font-semibold text-green-600 mb-4">✅ After (Perfect alignment)</h3>
+                    <div class="relative search-container">
+                        <div class="search-icon-container">
+                            <svg class="search-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                        <input 
+                            type="text" 
+                            placeholder="Search products (e.g., kamatis, bangus)..." 
+                            class="w-full"
+                            id="product-search"
+                        >
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">Proper spacing, centered icon, smooth interactions</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Demo -->
+        <section class="demo-section rounded-lg p-8 mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">🎯 Interactive Demo</h2>
+            <p class="text-gray-600 mb-6">Try interacting with the search box below - notice the smooth hover and focus effects:</p>
+            
+            <div class="max-w-md mx-auto">
+                <div class="relative search-container">
+                    <div class="search-icon-container">
+                        <svg class="search-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                    <input 
+                        type="text" 
+                        placeholder="Try typing here..." 
+                        class="w-full"
+                        id="product-search"
+                    >
+                </div>
+            </div>
+
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                <div class="bg-white/50 rounded-lg p-4">
+                    <div class="text-2xl mb-2">🖱️</div>
+                    <div class="font-semibold text-gray-700">Hover Effect</div>
+                    <div class="text-sm text-gray-500">Border and icon color change</div>
+                </div>
+                <div class="bg-white/50 rounded-lg p-4">
+                    <div class="text-2xl mb-2">🎯</div>
+                    <div class="font-semibold text-gray-700">Focus State</div>
+                    <div class="text-sm text-gray-500">Green border with glow effect</div>
+                </div>
+                <div class="bg-white/50 rounded-lg p-4">
+                    <div class="text-2xl mb-2">📏</div>
+                    <div class="font-semibold text-gray-700">Perfect Spacing</div>
+                    <div class="text-sm text-gray-500">Icon centered at 12px from edge</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Details -->
+        <section class="bg-white rounded-lg p-8 shadow-sm">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">⚙️ Technical Implementation</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">CSS Improvements</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2">•</span>
+                            <span>Left padding increased to 3rem (48px)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2">•</span>
+                            <span>Icon container width matches padding</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2">•</span>
+                            <span>Perfect vertical centering with flexbox</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2">•</span>
+                            <span>Smooth transitions and hover effects</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2">•</span>
+                            <span>Focus-within for icon color change</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">HTML Structure</h3>
+                    <div class="bg-gray-50 rounded-lg p-4 text-sm font-mono">
+                        <div class="text-gray-600">&lt;div class="search-container"&gt;</div>
+                        <div class="text-blue-600 ml-2">&lt;div class="search-icon-container"&gt;</div>
+                        <div class="text-green-600 ml-4">&lt;svg class="search-icon"&gt;...&lt;/svg&gt;</div>
+                        <div class="text-blue-600 ml-2">&lt;/div&gt;</div>
+                        <div class="text-purple-600 ml-2">&lt;input id="product-search"&gt;</div>
+                        <div class="text-gray-600">&lt;/div&gt;</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center mt-12 pt-8 border-t border-gray-200">
+            <p class="text-gray-500">
+                <strong>Fixed:</strong> Search box magnifying glass icon is now properly aligned with 12px spacing from the edge
+            </p>
+            <p class="text-sm text-gray-400 mt-2">
+                Ready for implementation in FarmScout Online Shopping List
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

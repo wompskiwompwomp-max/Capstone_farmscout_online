@@ -45,7 +45,7 @@ include 'includes/header.php';
     <!-- Hero Section -->
     <section class="bg-gradient-to-br from-primary-50 to-surface-100 py-8 md:py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-8">
+            <div class="text-center mb-8 scroll-animate">
                 <h1 class="text-3xl md:text-4xl font-bold text-primary mb-4 font-accent">
                     Advanced Product Search
                 </h1>
@@ -57,9 +57,9 @@ include 'includes/header.php';
     </section>
 
     <!-- Search Form -->
-    <section class="py-8">
+    <section class="py-8 scroll-animate">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-lg shadow-card p-6 mb-8">
+            <div class="bg-white rounded-lg shadow-card p-6 mb-8 scroll-animate-card" data-delay="0.1">
                 <form method="GET" action="enhanced-search.php" class="space-y-6">
                     <!-- Search Term -->
                     <div>
@@ -146,9 +146,9 @@ include 'includes/header.php';
 
     <?php if (!empty($search_term)): ?>
     <!-- Search Results -->
-    <section class="py-8 bg-surface-50">
+    <section class="py-8 bg-surface-50 scroll-animate">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center mb-6">
+            <div class="flex justify-between items-center mb-6 scroll-animate" data-delay="0.1">
                 <div>
                     <h2 class="text-2xl font-bold text-primary">Search Results</h2>
                     <p class="text-text-secondary">
@@ -185,11 +185,13 @@ include 'includes/header.php';
             <?php else: ?>
             
             <!-- Results Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <?php foreach ($products as $product): 
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 scroll-animate" data-delay="0.3">
+                <?php 
+                $productDelay = 0.1;
+                foreach ($products as $product): 
                     $price_change = formatPriceChange($product['current_price'], $product['previous_price']);
                 ?>
-                <div class="card hover:shadow-elevated transition-shadow">
+                <div class="card hover:shadow-elevated transition-shadow scroll-animate-card" data-delay="<?php echo $productDelay; ?>"><?php $productDelay += 0.05; ?>
                     <div class="relative mb-4">
                         <img src="<?php echo htmlspecialchars($product['image_url']); ?>" 
                              alt="<?php echo htmlspecialchars($product['name']); ?>" 
@@ -270,9 +272,9 @@ include 'includes/header.php';
     <?php endif; ?>
 
     <!-- Quick Search Suggestions -->
-    <section class="py-8">
+    <section class="py-8 scroll-animate">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-2xl font-bold text-primary mb-6 text-center">Popular Searches</h2>
+            <h2 class="text-2xl font-bold text-primary mb-6 text-center scroll-animate" data-delay="0.1">Popular Searches</h2>
             
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 <?php 
@@ -291,9 +293,10 @@ include 'includes/header.php';
                     'Gatas' => 'Milk'
                 ];
                 
+                $searchDelay = 0.1;
                 foreach ($popular_searches as $filipino => $english): ?>
                 <a href="enhanced-search.php?search=<?php echo urlencode($filipino); ?>" 
-                   class="bg-white rounded-lg shadow-card p-4 text-center hover:shadow-elevated transition-shadow">
+                   class="bg-white rounded-lg shadow-card p-4 text-center hover:shadow-elevated transition-shadow scroll-animate-card" data-delay="<?php echo $searchDelay; ?>"><?php $searchDelay += 0.05; ?>
                     <h3 class="font-semibold text-text-primary mb-1"><?php echo $filipino; ?></h3>
                     <p class="text-sm text-text-secondary"><?php echo $english; ?></p>
                 </a>
@@ -326,5 +329,79 @@ document.getElementById('sort').addEventListener('change', function() {
     }
 });
 </script>
+
+    <!-- Scroll Animation Styles -->
+    <style>
+        /* Scroll-triggered Animation Styles */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        .scroll-animate.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .scroll-animate-card {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        .scroll-animate-card.animate-in {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        /* Stagger animation delays */
+        .scroll-animate[data-delay="0.1"] { transition-delay: 0.1s; }
+        .scroll-animate[data-delay="0.2"] { transition-delay: 0.2s; }
+        .scroll-animate[data-delay="0.3"] { transition-delay: 0.3s; }
+        .scroll-animate[data-delay="0.4"] { transition-delay: 0.4s; }
+        .scroll-animate[data-delay="0.5"] { transition-delay: 0.5s; }
+        
+        .scroll-animate-card[data-delay="0.1"] { transition-delay: 0.1s; }
+        .scroll-animate-card[data-delay="0.2"] { transition-delay: 0.2s; }
+        .scroll-animate-card[data-delay="0.3"] { transition-delay: 0.3s; }
+        .scroll-animate-card[data-delay="0.4"] { transition-delay: 0.4s; }
+        .scroll-animate-card[data-delay="0.5"] { transition-delay: 0.5s; }
+        .scroll-animate-card[data-delay="0.6"] { transition-delay: 0.6s; }
+        .scroll-animate-card[data-delay="0.7"] { transition-delay: 0.7s; }
+        .scroll-animate-card[data-delay="0.8"] { transition-delay: 0.8s; }
+    </style>
+
+    <!-- Scroll Animation Script -->
+    <script>
+        // Scroll-triggered animations
+        function initScrollAnimations() {
+            const animateElements = document.querySelectorAll('.scroll-animate, .scroll-animate-card');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('animate-in');
+                        }, parseFloat(entry.target.dataset.delay || 0) * 1000);
+                    }
+                });
+            }, observerOptions);
+            
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+        
+        // Initialize scroll animations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initScrollAnimations();
+        });
+    </script>
 
 <?php include 'includes/footer.php'; ?>

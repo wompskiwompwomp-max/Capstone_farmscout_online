@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmScout Price Alert</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #374151;
+            background-color: #f9fafb;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            margin: 5px 0 0 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .alert-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .alert-message {
+            font-size: 18px;
+            font-weight: 600;
+            color: #92400e;
+            margin: 0 0 10px 0;
+        }
+        
+        .product-info {
+            display: flex;
+            align-items: center;
+            background-color: #f8fafc;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .product-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-right: 20px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .product-details h3 {
+            margin: 0 0 5px 0;
+            color: #1f2937;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .product-details p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .price-comparison {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+            margin: 25px 0;
+        }
+        
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .price-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .price-label {
+            font-weight: 500;
+            color: #4b5563;
+        }
+        
+        .price-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .old-price {
+            color: #6b7280;
+            text-decoration: line-through;
+        }
+        
+        .new-price {
+            color: #059669;
+        }
+        
+        .price-change {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .cta-button {
+            display: block;
+            width: fit-content;
+            margin: 30px auto;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+        }
+        
+        .footer {
+            background-color: #f8fafc;
+            padding: 30px 40px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .footer p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: #059669;
+            text-decoration: none;
+        }
+        
+        @media only screen and (max-width: 600px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .product-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .product-image {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .price-comparison {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🔔 Price Alert</h1>
+            <p>FarmScout Online</p>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <div class="alert-card">
+                <p class="alert-message">{{ALERT_MESSAGE}}</p>
+            </div>
+            
+            <!-- Product Information -->
+            <div class="product-info">
+                <img src="{{PRODUCT_IMAGE}}" alt="{{FILIPINO_NAME}}" class="product-image" />
+                <div class="product-details">
+                    <h3>{{FILIPINO_NAME}}</h3>
+                    <p>{{PRODUCT_NAME}}</p>
+                </div>
+            </div>
+            
+            <!-- Price Comparison -->
+            <div class="price-comparison">
+                <div class="price-row">
+                    <span class="price-label">Previous Price:</span>
+                    <span class="price-value old-price">{{OLD_PRICE}} per {{UNIT}}</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">New Price:</span>
+                    <span class="price-value new-price">{{NEW_PRICE}} per {{UNIT}}</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-label">Price Change:</span>
+                    <span class="price-change" style="background-color: {{PRICE_CHANGE_COLOR}}20; color: {{PRICE_CHANGE_COLOR}};">
+                        {{PRICE_CHANGE_ICON}} {{PRICE_CHANGE}} ({{PRICE_CHANGE_PERCENT}}%)
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Call to Action -->
+            <a href="https://farmscout-online.com/price-alerts.php" class="cta-button">
+                Manage Your Price Alerts
+            </a>
+            
+            <p style="text-align: center; color: #6b7280; font-size: 14px; margin-top: 30px;">
+                This alert was sent to <strong>{{EMAIL}}</strong><br>
+                Visit our website to update your preferences or manage your alerts.
+            </p>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>
+                <strong>FarmScout Online</strong><br>
+                Your trusted source for fresh farm products and market prices<br>
+                <a href="https://farmscout-online.com">Visit our website</a> | 
+                <a href="mailto:support@farmscout-online.com">Contact Support</a>
+            </p>
+            <p style="margin-top: 20px;">
+                &copy; {{CURRENT_YEAR}} FarmScout Online. All rights reserved.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

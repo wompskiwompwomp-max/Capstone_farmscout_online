@@ -124,15 +124,33 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-primary text-white px-6 py-3 rounded-lg font-semibold transition-all duration-250 hover:bg-primary-700 focus:ring-2 focus:ring-primary-300 focus:outline-none;
+    @apply bg-primary text-white px-6 py-3 rounded-lg font-semibold transition-all duration-250 hover:bg-primary-700 focus:ring-2 focus:ring-primary-300 focus:outline-none shadow-sm hover:shadow-md;
   }
 
   .btn-secondary {
-    @apply bg-secondary text-white px-6 py-3 rounded-lg font-semibold transition-all duration-250 hover:bg-secondary-700 focus:ring-2 focus:ring-secondary-300 focus:outline-none;
+    @apply bg-secondary text-white px-6 py-3 rounded-lg font-semibold transition-all duration-250 hover:bg-secondary-700 focus:ring-2 focus:ring-secondary-300 focus:outline-none shadow-sm hover:shadow-md;
   }
 
   .btn-accent {
-    @apply bg-accent text-white px-6 py-3 rounded-lg font-semibold transition-all duration-250 hover:bg-accent-600 focus:ring-2 focus:ring-accent-300 focus:outline-none;
+    @apply bg-accent text-white px-6 py-3 rounded-lg font-semibold transition-all duration-250 hover:bg-accent-600 focus:ring-2 focus:ring-accent-300 focus:outline-none shadow-sm hover:shadow-md;
+  }
+
+  /* Navigation specific button styles */
+  .nav-btn {
+    @apply inline-flex items-center justify-center font-medium text-sm px-4 py-2 rounded-lg transition-all duration-200 border border-transparent;
+    min-height: 36px;
+  }
+
+  .nav-btn-primary {
+    @apply nav-btn bg-primary text-white hover:bg-primary-700 focus:ring-2 focus:ring-primary-300 shadow-sm hover:shadow;
+  }
+
+  .nav-btn-secondary {
+    @apply nav-btn bg-secondary text-white hover:bg-secondary-700 focus:ring-2 focus:ring-secondary-300 shadow-sm hover:shadow;
+  }
+
+  .nav-btn-accent {
+    @apply nav-btn bg-accent text-white hover:bg-accent-600 focus:ring-2 focus:ring-accent-300 shadow-sm hover:shadow;
   }
 
   .card {
@@ -202,5 +220,19 @@
 
   .shadow-elevated {
     box-shadow: var(--shadow-elevated);
+  }
+
+  /* Custom Navigation Button Enhancements */
+  .nav-button-enhanced {
+    @apply inline-flex items-center justify-center font-medium text-sm px-4 py-2 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md border border-transparent;
+    min-height: 36px;
+  }
+
+  .nav-button-enhanced:focus {
+    @apply outline-none ring-2 ring-offset-2;
+  }
+
+  .nav-button-enhanced:active {
+    @apply transform scale-95;
   }
 }

@@ -28,7 +28,7 @@ include 'includes/header.php';
     <!-- Header Section -->
     <section class="bg-gradient-to-br from-primary-50 to-surface-100 py-8 md:py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-8">
+            <div class="text-center mb-8 scroll-animate">
                 <h1 class="text-3xl md:text-4xl font-bold text-primary mb-4 font-accent">
                     <?php echo $current_category ? htmlspecialchars($current_category['filipino_name']) . ' (' . htmlspecialchars($current_category['name']) . ')' : 'All Product Categories'; ?>
                 </h1>
@@ -37,12 +37,14 @@ include 'includes/header.php';
                 </p>
                 
                 <?php if ($current_category): ?>
-                <a href="categories.php" class="btn-secondary">
-                    <svg class="w-4 h-4 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L4.414 9H17a1 1 0 110 2H4.414l5.293 5.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
-                    </svg>
-                    Back to All Categories
-                </a>
+                <div class="scroll-animate" data-delay="0.2">
+                    <a href="categories.php" class="btn-secondary">
+                        <svg class="w-4 h-4 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L4.414 9H17a1 1 0 110 2H4.414l5.293 5.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+                        </svg>
+                        Back to All Categories
+                    </a>
+                </div>
                 <?php endif; ?>
             </div>
         </div>
@@ -50,13 +52,15 @@ include 'includes/header.php';
 
     <?php if (!$current_category): ?>
     <!-- Category Grid -->
-    <section class="py-8 md:py-12">
+    <section class="py-8 md:py-12 scroll-animate">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-2xl font-bold text-primary mb-6 text-center">Browse by Category</h2>
+            <h2 class="text-2xl font-bold text-primary mb-6 text-center scroll-animate" data-delay="0.1">Browse by Category</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <?php foreach ($categories as $category): ?>
-                <a href="categories.php?category=<?php echo $category['id']; ?>" class="card-elevated hover:shadow-elevated transition-all group">
+                <?php 
+                $delay = 0.1;
+                foreach ($categories as $category): ?>
+                <a href="categories.php?category=<?php echo $category['id']; ?>" class="card-elevated hover:shadow-elevated transition-all group scroll-animate-card" data-delay="<?php echo $delay; ?>"><?php $delay += 0.1; ?>
                     <div class="flex items-center mb-4">
                         <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center group-hover:bg-primary-200 transition-colors mr-4">
                             <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 20 20">
@@ -78,9 +82,9 @@ include 'includes/header.php';
     <?php endif; ?>
 
     <!-- Products Section -->
-    <section class="py-8 md:py-12 <?php echo !$current_category ? 'bg-surface-50' : ''; ?>">
+    <section class="py-8 md:py-12 <?php echo !$current_category ? 'bg-surface-50' : ''; ?> scroll-animate">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center mb-6">
+            <div class="flex justify-between items-center mb-6 scroll-animate" data-delay="0.1">
                 <h2 class="text-2xl font-bold text-primary">
                     <?php echo $current_category ? 'Products in this Category' : 'All Products'; ?>
                 </h2>
@@ -98,11 +102,13 @@ include 'includes/header.php';
             <?php else: ?>
             
             <!-- Products Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <?php foreach ($products as $product): 
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 scroll-animate" data-delay="0.3">
+                <?php 
+                $productDelay = 0.1;
+                foreach ($products as $product): 
                     $price_change = formatPriceChange($product['current_price'], $product['previous_price']);
                 ?>
-                <div class="card hover:shadow-elevated transition-shadow">
+                <div class="card hover:shadow-elevated transition-shadow scroll-animate-card" data-delay="<?php echo $productDelay; ?>"><?php $productDelay += 0.05; ?>
                     <div class="relative mb-4">
                         <img src="<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="w-full h-48 object-cover rounded-lg" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
                         <?php if ($product['is_featured']): ?>
@@ -157,5 +163,79 @@ include 'includes/header.php';
             <?php endif; ?>
         </div>
     </section>
+
+    <!-- Scroll Animation Styles -->
+    <style>
+        /* Scroll-triggered Animation Styles */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        .scroll-animate.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .scroll-animate-card {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        .scroll-animate-card.animate-in {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        /* Stagger animation delays */
+        .scroll-animate[data-delay="0.1"] { transition-delay: 0.1s; }
+        .scroll-animate[data-delay="0.2"] { transition-delay: 0.2s; }
+        .scroll-animate[data-delay="0.3"] { transition-delay: 0.3s; }
+        .scroll-animate[data-delay="0.4"] { transition-delay: 0.4s; }
+        .scroll-animate[data-delay="0.5"] { transition-delay: 0.5s; }
+        
+        .scroll-animate-card[data-delay="0.1"] { transition-delay: 0.1s; }
+        .scroll-animate-card[data-delay="0.2"] { transition-delay: 0.2s; }
+        .scroll-animate-card[data-delay="0.3"] { transition-delay: 0.3s; }
+        .scroll-animate-card[data-delay="0.4"] { transition-delay: 0.4s; }
+        .scroll-animate-card[data-delay="0.5"] { transition-delay: 0.5s; }
+        .scroll-animate-card[data-delay="0.6"] { transition-delay: 0.6s; }
+        .scroll-animate-card[data-delay="0.7"] { transition-delay: 0.7s; }
+        .scroll-animate-card[data-delay="0.8"] { transition-delay: 0.8s; }
+    </style>
+
+    <!-- Scroll Animation Script -->
+    <script>
+        // Scroll-triggered animations
+        function initScrollAnimations() {
+            const animateElements = document.querySelectorAll('.scroll-animate, .scroll-animate-card');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('animate-in');
+                        }, parseFloat(entry.target.dataset.delay || 0) * 1000);
+                    }
+                });
+            }, observerOptions);
+            
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initScrollAnimations();
+        });
+    </script>
 
 <?php include 'includes/footer.php'; ?>

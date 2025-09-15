@@ -8,69 +8,69 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Primary Colors - Deep Market Green
+        // Primary Colors - Modern Clean Dark
         primary: {
-          DEFAULT: "#2D5016", // deep-market-green
-          50: "#F0F4ED", // light-market-green
-          100: "#D9E5CC", // pale-market-green
-          200: "#B8CFA0", // soft-market-green
-          300: "#96B973", // medium-market-green
-          400: "#75A347", // fresh-market-green
-          500: "#538D1A", // vibrant-market-green
-          600: "#2D5016", // deep-market-green
-          700: "#244012", // darker-market-green
-          800: "#1B300E", // darkest-market-green
-          900: "#12200A", // deepest-market-green
+          DEFAULT: "#111827", // modern-dark
+          50: "#F9FAFB", // lightest-gray
+          100: "#F3F4F6", // very-light-gray
+          200: "#E5E7EB", // light-gray
+          300: "#D1D5DB", // medium-light-gray
+          400: "#9CA3AF", // medium-gray
+          500: "#6B7280", // neutral-gray
+          600: "#4B5563", // dark-gray
+          700: "#374151", // darker-gray
+          800: "#1F2937", // very-dark
+          900: "#111827", // modern-dark
         },
         
-        // Secondary Colors - Warm Market Brown
+        // Secondary Colors - Clean Blue Accent
         secondary: {
-          DEFAULT: "#8B4513", // warm-market-brown
-          50: "#F5F0EB", // light-market-brown
-          100: "#E8D7C7", // pale-market-brown
-          200: "#D4B89F", // soft-market-brown
-          300: "#C09977", // medium-market-brown
-          400: "#AC7A4F", // fresh-market-brown
-          500: "#985B27", // vibrant-market-brown
-          600: "#8B4513", // warm-market-brown
-          700: "#6F370F", // darker-market-brown
-          800: "#53290B", // darkest-market-brown
-          900: "#371B07", // deepest-market-brown
+          DEFAULT: "#3B82F6", // modern-blue
+          50: "#EFF6FF", // lightest-blue
+          100: "#DBEAFE", // very-light-blue
+          200: "#BFDBFE", // light-blue
+          300: "#93C5FD", // medium-light-blue
+          400: "#60A5FA", // medium-blue
+          500: "#3B82F6", // modern-blue
+          600: "#2563EB", // darker-blue
+          700: "#1D4ED8", // dark-blue
+          800: "#1E40AF", // very-dark-blue
+          900: "#1E3A8A", // darkest-blue
         },
         
-        // Accent Colors - Ripe Papaya Orange
+        // Accent Colors - Modern Green
         accent: {
-          DEFAULT: "#FF6B35", // ripe-papaya-orange
-          50: "#FFF4F0", // light-papaya-orange
-          100: "#FFE0D1", // pale-papaya-orange
-          200: "#FFBFA3", // soft-papaya-orange
-          300: "#FF9E75", // medium-papaya-orange
-          400: "#FF7D47", // fresh-papaya-orange
-          500: "#FF6B35", // ripe-papaya-orange
-          600: "#E55A2B", // vibrant-papaya-orange
-          700: "#CC4921", // darker-papaya-orange
-          800: "#B23817", // darkest-papaya-orange
-          900: "#99270D", // deepest-papaya-orange
+          DEFAULT: "#10B981", // modern-green
+          50: "#ECFDF5", // lightest-green
+          100: "#D1FAE5", // very-light-green
+          200: "#A7F3D0", // light-green
+          300: "#6EE7B7", // medium-light-green
+          400: "#34D399", // medium-green
+          500: "#10B981", // modern-green
+          600: "#059669", // darker-green
+          700: "#047857", // dark-green
+          800: "#065F46", // very-dark-green
+          900: "#064E3B", // darkest-green
         },
         
-        // Background Colors
-        background: "#FEFEFE", // clean-market-table
+        // Background Colors - Clean & Minimal
+        background: "#FFFFFF", // pure-white
         surface: {
-          DEFAULT: "#F8F9FA", // subtle-vendor-stall
+          DEFAULT: "#FAFBFC", // subtle-background
           50: "#FFFFFF", // pure-white
-          100: "#F8F9FA", // subtle-vendor-stall
-          200: "#E9ECEF", // light-gray
-          300: "#DEE2E6", // medium-gray
-          400: "#CED4DA", // soft-gray
-          500: "#ADB5BD", // neutral-gray
+          100: "#FAFBFC", // subtle-background
+          200: "#F4F5F7", // light-background
+          300: "#E1E5E9", // medium-background
+          400: "#C7CDD1", // neutral-background
+          500: "#A6ACB2", // muted-background
         },
         
-        // Text Colors
+        // Text Colors - Modern Typography
         text: {
-          primary: "#1A1A1A", // clear-price-reading
-          secondary: "#6C757D", // supporting-information
-          muted: "#868E96", // muted-text
-          light: "#ADB5BD", // light-text
+          primary: "#1F2937", // modern-dark-text
+          secondary: "#6B7280", // modern-muted-text
+          muted: "#9CA3AF", // light-muted-text
+          light: "#D1D5DB", // very-light-text
         },
         
         // Status Colors
@@ -112,10 +112,10 @@ module.exports = {
       },
       
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        inter: ['Inter', 'sans-serif'],
-        accent: ['Merriweather', 'serif'],
-        merriweather: ['Merriweather', 'serif'],
+        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        display: ['SF Pro Display', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        body: ['SF Pro Text', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        mono: ['SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Consolas', 'monospace'],
       },
       
       fontSize: {
@@ -132,9 +132,11 @@ module.exports = {
       },
       
       boxShadow: {
-        'minimal': '0 2px 8px rgba(0, 0, 0, 0.1)',
-        'card': '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)',
-        'elevated': '0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.06)',
+        'minimal': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        'elevated': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        'soft': '0 2px 15px 0 rgba(0, 0, 0, 0.1)',
+        'modern': '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
       },
       
       borderRadius: {

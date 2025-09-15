@@ -1,5 +1,6 @@
 <?php
 require_once 'config/database.php';
+require_once 'config/email.php';
 
 // Session management
 session_start();
@@ -277,7 +278,7 @@ function updateProduct($id, $data) {
         
         $result = $stmt->execute();
         
-        // If price changed, add to history
+        // If price changed, add to history and trigger alerts
         if ($result && $current_product && $current_product['current_price'] != $data['current_price']) {
             $history_query = "INSERT INTO price_history (product_id, price, recorded_by) VALUES (:product_id, :price, :recorded_by)";
             $history_stmt = $conn->prepare($history_query);
@@ -285,6 +286,9 @@ function updateProduct($id, $data) {
             $history_stmt->bindParam(':price', $data['current_price']);
             $history_stmt->bindParam(':recorded_by', $_SESSION['user_id'] ?? null, PDO::PARAM_INT);
             $history_stmt->execute();
+            
+            // Trigger price alerts
+            checkPriceAlerts($id, $current_product['current_price'], $data['current_price']);
         }
         
         $conn->commit();
@@ -342,6 +346,154 @@ function getPriceAlerts($email) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// Check and trigger price alerts
+function checkPriceAlerts($product_id, $old_price, $new_price) {
+    $conn = getDB();
+    if (!$conn) return false;
+    
+    // Get all active alerts for this product
+    $query = "SELECT pa.*, p.name, p.filipino_name, p.unit, p.image_url, p.category_id
+              FROM price_alerts pa
+              LEFT JOIN products p ON pa.product_id = p.id
+              WHERE pa.product_id = :product_id AND pa.is_active = 1";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    foreach ($alerts as $alert) {
+        $shouldTrigger = false;
+        $alertMessage = '';
+        
+        switch ($alert['alert_type']) {
+            case 'below':
+                if ($new_price <= $alert['target_price'] && $old_price > $alert['target_price']) {
+                    $shouldTrigger = true;
+                    $alertMessage = "Price dropped below your target of ₱" . number_format($alert['target_price'], 2);
+                }
+                break;
+                
+            case 'above':
+                if ($new_price >= $alert['target_price'] && $old_price < $alert['target_price']) {
+                    $shouldTrigger = true;
+                    $alertMessage = "Price rose above your target of ₱" . number_format($alert['target_price'], 2);
+                }
+                break;
+                
+            case 'change':
+                if ($old_price != $new_price) {
+                    $shouldTrigger = true;
+                    $change = $new_price - $old_price;
+                    $alertMessage = "Price changed by " . ($change > 0 ? "+" : "") . "₱" . number_format($change, 2);
+                }
+                break;
+        }
+        
+        if ($shouldTrigger) {
+            // Send email notification
+            $emailSent = sendPriceAlertEmail(
+                $alert['user_email'],
+                $alert['name'],
+                $alert['filipino_name'],
+                $old_price,
+                $new_price,
+                $alert['unit'],
+                $alertMessage,
+                $alert['image_url']
+            );
+            
+            // Log the alert trigger
+            if ($emailSent) {
+                $log_query = "INSERT INTO price_alert_logs (alert_id, triggered_at, old_price, new_price, email_sent) 
+                              VALUES (:alert_id, NOW(), :old_price, :new_price, 1)";
+                $log_stmt = $conn->prepare($log_query);
+                $log_stmt->bindParam(':alert_id', $alert['id'], PDO::PARAM_INT);
+                $log_stmt->bindParam(':old_price', $old_price);
+                $log_stmt->bindParam(':new_price', $new_price);
+                $log_stmt->execute();
+            }
+        }
+    }
+    
+    return true;
+}
+
+// Send price alert email
+function sendPriceAlertEmail($email, $product_name, $filipino_name, $old_price, $new_price, $unit, $alert_message, $image_url = '') {
+    require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/PHPMailer.php';
+    require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/SMTP.php';
+    require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/Exception.php';
+    require_once __DIR__ . '/email_config.php';
+    
+    try {
+        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+        
+        // Server settings
+        $mail->isSMTP();
+        $mail->Host = SMTP_HOST;
+        $mail->SMTPAuth = true;
+        $mail->Username = SMTP_USERNAME;
+        $mail->Password = SMTP_PASSWORD;
+        $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = SMTP_PORT;
+        
+        // Recipients
+        $mail->setFrom(FROM_EMAIL, FROM_NAME);
+        $mail->addAddress($email);
+        $mail->addReplyTo(FROM_EMAIL, FROM_NAME);
+        
+        // Content
+        $mail->isHTML(true);
+        $mail->CharSet = 'UTF-8';
+        $mail->Subject = '🔔 Price Alert: ' . $filipino_name . ' (' . $product_name . ')';
+        
+        // Price change details
+        $price_change = $new_price - $old_price;
+        $price_change_percent = $old_price > 0 ? round(($price_change / $old_price) * 100, 2) : 0;
+        $price_change_icon = $price_change > 0 ? '📈' : ($price_change < 0 ? '📉' : '➡️');
+        $price_change_color = $price_change > 0 ? '#ef4444' : ($price_change < 0 ? '#22c55e' : '#6b7280');
+        
+        $html_body = file_get_contents(__DIR__ . '/email_templates/price_alert_template.html');
+        $html_body = str_replace('{{PRODUCT_NAME}}', htmlspecialchars($product_name), $html_body);
+        $html_body = str_replace('{{FILIPINO_NAME}}', htmlspecialchars($filipino_name), $html_body);
+        $html_body = str_replace('{{OLD_PRICE}}', formatCurrency($old_price), $html_body);
+        $html_body = str_replace('{{NEW_PRICE}}', formatCurrency($new_price), $html_body);
+        $html_body = str_replace('{{UNIT}}', htmlspecialchars($unit), $html_body);
+        $html_body = str_replace('{{ALERT_MESSAGE}}', htmlspecialchars($alert_message), $html_body);
+        $html_body = str_replace('{{PRICE_CHANGE_ICON}}', $price_change_icon, $html_body);
+        $html_body = str_replace('{{PRICE_CHANGE_COLOR}}', $price_change_color, $html_body);
+        $html_body = str_replace('{{PRICE_CHANGE}}', formatCurrency(abs($price_change)), $html_body);
+        $html_body = str_replace('{{PRICE_CHANGE_PERCENT}}', abs($price_change_percent), $html_body);
+        $html_body = str_replace('{{CURRENT_YEAR}}', date('Y'), $html_body);
+        $html_body = str_replace('{{EMAIL}}', htmlspecialchars($email), $html_body);
+        
+        $default_image = 'https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=400&auto=format&fit=crop';
+        $html_body = str_replace('{{PRODUCT_IMAGE}}', $image_url ?: $default_image, $html_body);
+        
+        $mail->Body = $html_body;
+        
+        // Plain text alternative
+        $text_body = "FarmScout Price Alert\n\n";
+        $text_body .= "Product: {$filipino_name} ({$product_name})\n";
+        $text_body .= "Previous Price: " . formatCurrency($old_price) . " per {$unit}\n";
+        $text_body .= "New Price: " . formatCurrency($new_price) . " per {$unit}\n";
+        $text_body .= "Change: " . ($price_change > 0 ? '+' : '') . formatCurrency($price_change) . " ({$price_change_percent}%)\n\n";
+        $text_body .= "{$alert_message}\n\n";
+        $text_body .= "Visit FarmScout Online to see more details and manage your price alerts.\n\n";
+        $text_body .= "Happy Shopping!\nThe FarmScout Team";
+        
+        $mail->AltBody = $text_body;
+        
+        $mail->send();
+        return true;
+        
+    } catch (Exception $e) {
+        error_log("Price Alert Email Error: {$mail->ErrorInfo}");
+        return false;
+    }
+}
+
 // Shopping list functions
 function addToShoppingList($session_id, $product_id, $quantity = 1, $notes = '') {
     $conn = getDB();
@@ -393,6 +545,85 @@ function getShoppingList($session_id) {
     $stmt->execute();
     
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Update shopping list quantity
+function updateShoppingListQuantity($session_id, $list_id, $quantity) {
+    $conn = getDB();
+    if (!$conn) return false;
+    
+    $query = "UPDATE shopping_lists SET quantity = :quantity WHERE id = :id AND user_session = :session_id";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
+    $stmt->bindParam(':id', $list_id, PDO::PARAM_INT);
+    $stmt->bindParam(':session_id', $session_id);
+    
+    return $stmt->execute();
+}
+
+// Remove item from shopping list
+function removeFromShoppingList($session_id, $list_id) {
+    $conn = getDB();
+    if (!$conn) return false;
+    
+    $query = "DELETE FROM shopping_lists WHERE id = :id AND user_session = :session_id";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':id', $list_id, PDO::PARAM_INT);
+    $stmt->bindParam(':session_id', $session_id);
+    
+    return $stmt->execute();
+}
+
+// Clear entire shopping list
+function clearShoppingList($session_id) {
+    $conn = getDB();
+    if (!$conn) return false;
+    
+    $query = "DELETE FROM shopping_lists WHERE user_session = :session_id";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':session_id', $session_id);
+    
+    return $stmt->execute();
+}
+
+// Get shopping list with price calculations
+function getShoppingListWithTotals($session_id) {
+    $items = getShoppingList($session_id);
+    $total_amount = 0;
+    $total_items = 0;
+    
+    foreach ($items as &$item) {
+        $item_total = $item['current_price'] * $item['quantity'];
+        $item['item_total'] = $item_total;
+        $total_amount += $item_total;
+        $total_items += $item['quantity'];
+    }
+    
+    return [
+        'items' => $items,
+        'total_amount' => $total_amount,
+        'total_items' => $total_items
+    ];
+}
+
+// Quick add to shopping list (for integration in other pages)
+function quickAddToShoppingList($product_id, $quantity = 1) {
+    $session_id = session_id();
+    return addToShoppingList($session_id, $product_id, $quantity, '');
+}
+
+// Get shopping list item count (for navigation badge)
+function getShoppingListCount($session_id) {
+    $conn = getDB();
+    if (!$conn) return 0;
+    
+    $query = "SELECT SUM(quantity) as total FROM shopping_lists WHERE user_session = :session_id";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':session_id', $session_id);
+    $stmt->execute();
+    
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['total'] ?? 0;
 }
 
 // Analytics functions

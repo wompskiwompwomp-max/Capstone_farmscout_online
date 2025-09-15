@@ -577,10 +577,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
   border-radius: 0.5rem;
   --tw-bg-opacity: 1;
   background-color: rgb(17 24 39 / var(--tw-bg-opacity, 1));
@@ -618,10 +614,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-secondary{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
   border-radius: 0.5rem;
   --tw-bg-opacity: 1;
   background-color: rgb(59 130 246 / var(--tw-bg-opacity, 1));
@@ -659,10 +651,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-accent{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
   border-radius: 0.5rem;
   --tw-bg-opacity: 1;
   background-color: rgb(16 185 129 / var(--tw-bg-opacity, 1));
@@ -2336,32 +2324,4 @@ h1, h2, h3, h4, h5, h6 {
     padding-left: 2rem;
     padding-right: 2rem;
   }
-}
-
-/* Button alignment improvements for all buttons */
-.btn-primary svg,
-.btn-secondary svg,
-.btn-accent svg {
-  flex-shrink: 0;
-  margin-right: 0.5rem;
-}
-
-/* Ensure buttons with only icons are centered */
-.btn-primary:has(svg:only-child),
-.btn-secondary:has(svg:only-child),
-.btn-accent:has(svg:only-child) {
-  padding: 0.75rem;
-}
-
-/* Fix for buttons that might not have the flex classes in HTML */
-button.btn-primary,
-button.btn-secondary,
-button.btn-accent,
-.btn-primary,
-.btn-secondary,
-.btn-accent {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-align: center !important;
 }
