@@ -1,0 +1,452 @@
+/* Enhanced styles for FarmScout Online Admin Interface */
+
+/* Button Styles */
+.btn-primary {
+    background-color: #111827;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-primary:hover {
+    background-color: #1F2937;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background-color: #F3F4F6;
+    color: #1F2937;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-secondary:hover {
+    background-color: #E5E7EB;
+    transform: translateY(-1px);
+}
+
+.btn-accent {
+    background-color: #10B981;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-accent:hover {
+    background-color: #059669;
+    transform: translateY(-1px);
+}
+
+.btn-error {
+    background-color: #DC3545;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-error:hover {
+    background-color: #C82333;
+    transform: translateY(-1px);
+}
+
+/* Input Field Styles */
+.input-field {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #E5E7EB;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: all 0.2s;
+    background-color: white;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #111827;
+    box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.1);
+}
+
+.input-field:disabled {
+    background-color: #F9FAFB;
+    color: #6B7280;
+    cursor: not-allowed;
+}
+
+/* Card Styles */
+.card {
+    background-color: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.card-elevated {
+    background-color: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-card {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-elevated {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Category and Product Cards */
+.category-card {
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s;
+}
+
+.category-card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+.product-card {
+    border: 2px solid #E5E7EB;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    background-color: white;
+    transition: all 0.2s;
+}
+
+.product-card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-color: #D1D5DB;
+}
+
+/* Modal Improvements */
+.modal-backdrop {
+    backdrop-filter: blur(4px);
+}
+
+/* Price Change Indicators */
+.price-up {
+    color: #DC3545;
+}
+
+.price-down {
+    color: #28A745;
+}
+
+.price-same {
+    color: #6B7280;
+}
+
+/* Text Colors */
+.text-primary {
+    color: #111827;
+}
+
+.text-text-primary {
+    color: #1F2937;
+}
+
+.text-text-secondary {
+    color: #6B7280;
+}
+
+.text-text-muted {
+    color: #9CA3AF;
+}
+
+.text-accent {
+    color: #10B981;
+}
+
+.text-success {
+    color: #28A745;
+}
+
+.text-error {
+    color: #DC3545;
+}
+
+/* Background Colors */
+.bg-primary {
+    background-color: #111827;
+}
+
+.bg-primary-100 {
+    background-color: #F3F4F6;
+}
+
+.bg-accent {
+    background-color: #10B981;
+}
+
+.bg-accent-100 {
+    background-color: #ECFDF5;
+}
+
+.bg-accent-700 {
+    color: #047857;
+}
+
+.bg-success-100 {
+    background-color: #D4EDDA;
+}
+
+.bg-success-700 {
+    color: #155724;
+}
+
+.bg-error-100 {
+    background-color: #F8D7DA;
+}
+
+.bg-error-700 {
+    color: #721c24;
+}
+
+.bg-surface-50 {
+    background-color: #FFFFFF;
+}
+
+.bg-surface-200 {
+    background-color: #F4F5F7;
+}
+
+/* Responsive Grid Improvements */
+@media (max-width: 768px) {
+    .admin-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .btn-primary,
+    .btn-secondary,
+    .btn-accent,
+    .btn-error {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .admin-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .admin-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Featured Badge */
+.featured-badge {
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Empty State Styles */
+.empty-state {
+    padding: 3rem 1rem;
+    text-align: center;
+    color: #6B7280;
+}
+
+.empty-state-icon {
+    width: 4rem;
+    height: 4rem;
+    background-color: #F3F4F6;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Loading States */
+.loading-spinner {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 2px solid #E5E7EB;
+    border-top: 2px solid #111827;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Table Improvements */
+.admin-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: white;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.admin-table th {
+    background-color: #F9FAFB;
+    padding: 1rem;
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.admin-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #F3F4F6;
+    vertical-align: middle;
+}
+
+.admin-table tbody tr:hover {
+    background-color: #F9FAFB;
+}
+
+/* Status Indicators */
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+}
+
+.status-active {
+    background-color: #ECFDF5;
+    color: #047857;
+}
+
+.status-inactive {
+    background-color: #F3F4F6;
+    color: #6B7280;
+}
+
+.status-featured {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+/* Video Background Styles */
+.hero-video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+}
+
+.hero-video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: -1;
+}
+
+/* Enhanced text shadow for better readability on video */
+.text-shadow-strong {
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 1px 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.text-shadow-medium {
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8), 0px 0px 2px rgba(0, 0, 0, 0.6);
+}
+
+/* Video optimization for mobile */
+@media (max-width: 768px) {
+    .hero-video-background {
+        /* Reduce video quality on mobile for better performance */
+        object-position: center center;
+    }
+    
+    .hero-video-overlay {
+        /* Slightly darker overlay on mobile for better text visibility */
+        background: rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* Ensure video doesn't interfere with animations */
+.hero-video-container {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Performance optimization for video */
+.hero-video-background {
+    /* Ensure video doesn't affect layout */
+    pointer-events: none;
+    /* Optimize rendering */
+    will-change: transform;
+}

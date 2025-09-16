@@ -7,6 +7,7 @@
     <meta name="description" content="<?php echo isset($page_description) ? $page_description : 'Get real-time prices from Baloan Public Market. Your trusted digital guide for fresh produce, meat, fish, and processed goods with transparent pricing.'; ?>" />
     <link rel="stylesheet" href="css/main.css?v=20250916C" />
     <link rel="stylesheet" href="css/enhancements.css?v=20250916C" />
+    <link rel="stylesheet" href="css/admin-enhancements.css?v=20250916C" />
     <!-- Updated 2025-09-15 16:50:00 - Added more spacing between hero and products sections -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

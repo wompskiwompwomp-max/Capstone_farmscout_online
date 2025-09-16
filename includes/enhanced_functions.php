@@ -339,6 +339,99 @@ function getPriceAlerts($email) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// Get products grouped by category for admin management
+function getProductsByCategories() {
+    $conn = getDB();
+    if (!$conn) return [];
+    
+    $query = "SELECT c.id as category_id, c.name as category_name, c.filipino_name as category_filipino, 
+                     c.description as category_description, c.icon_path, c.price_range,
+                     COUNT(p.id) as product_count
+              FROM categories c 
+              LEFT JOIN products p ON c.id = p.category_id AND p.is_active = 1
+              WHERE c.is_active = 1 
+              GROUP BY c.id, c.name, c.filipino_name, c.description, c.icon_path, c.price_range
+              ORDER BY c.sort_order ASC";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->execute();
+    
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getProductsByCategoryForAdmin($category_id) {
+    $conn = getDB();
+    if (!$conn) return [];
+    
+    $query = "SELECT p.*, c.name as category_name, c.filipino_name as category_filipino 
+              FROM products p 
+              LEFT JOIN categories c ON p.category_id = c.id 
+              WHERE p.category_id = :category_id AND p.is_active = 1 
+              ORDER BY p.is_featured DESC, p.filipino_name ASC";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getCategoryById($category_id) {
+    $conn = getDB();
+    if (!$conn) return null;
+    
+    $query = "SELECT * FROM categories WHERE id = :id AND is_active = 1";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':id', $category_id, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function addCategory($data) {
+    $conn = getDB();
+    if (!$conn) return false;
+    
+    $query = "INSERT INTO categories (name, filipino_name, description, icon_path, price_range, sort_order) 
+              VALUES (:name, :filipino_name, :description, :icon_path, :price_range, :sort_order)";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':name', $data['name']);
+    $stmt->bindParam(':filipino_name', $data['filipino_name']);
+    $stmt->bindParam(':description', $data['description']);
+    $stmt->bindParam(':icon_path', $data['icon_path']);
+    $stmt->bindParam(':price_range', $data['price_range']);
+    $stmt->bindParam(':sort_order', $data['sort_order'], PDO::PARAM_INT);
+    
+    return $stmt->execute();
+}
+
+function updateCategory($id, $data) {
+    $conn = getDB();
+    if (!$conn) return false;
+    
+    $query = "UPDATE categories SET 
+              name = :name, 
+              filipino_name = :filipino_name, 
+              description = :description, 
+              icon_path = :icon_path, 
+              price_range = :price_range, 
+              sort_order = :sort_order,
+              updated_at = CURRENT_TIMESTAMP
+              WHERE id = :id";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->bindParam(':name', $data['name']);
+    $stmt->bindParam(':filipino_name', $data['filipino_name']);
+    $stmt->bindParam(':description', $data['description']);
+    $stmt->bindParam(':icon_path', $data['icon_path']);
+    $stmt->bindParam(':price_range', $data['price_range']);
+    $stmt->bindParam(':sort_order', $data['sort_order'], PDO::PARAM_INT);
+    
+    return $stmt->execute();
+}
+
 // Check and trigger price alerts
 function checkPriceAlerts($product_id, $old_price, $new_price) {
     $conn = getDB();

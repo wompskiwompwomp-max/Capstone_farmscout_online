@@ -28,17 +28,27 @@ include 'includes/header.php';
     </div>
 
     <!-- Hero Section with Search -->
-    <section class="bg-gray-50 min-h-screen flex items-center justify-center">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-green-600 to-green-800">
+        <!-- Background Video -->
+        <video autoplay muted loop playsinline preload="metadata" class="absolute inset-0 w-full h-full object-cover hero-video-background">
+            <source src="assets/video/Golden Rice Ripe Harvest - HungTruongVFX (1080p, h264, youtube).mp4" type="video/mp4">
+            <!-- Fallback background if video doesn't load -->
+        </video>
+        
+        <!-- Video Overlay for Better Text Visibility -->
+        <div class="absolute inset-0 bg-black bg-opacity-30 hero-video-overlay"></div>
+        
+        <!-- Content -->
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div class="text-center mb-8">
                 <!-- Letter Reveal Animation -->
                 <div class="reveal-container" style="min-height: 200px; overflow: hidden;">
-                    <h1 id="reveal-title" class="text-8xl md:text-9xl lg:text-10xl font-black text-gray-900 mb-8 tracking-tighter leading-none" style="font-size: 10rem; line-height: 0.9; font-weight: 900; letter-spacing: -0.03em;">
+                    <h1 id="reveal-title" class="text-8xl md:text-9xl lg:text-10xl font-black text-white mb-8 tracking-tighter leading-none text-shadow-lg" style="font-size: 10rem; line-height: 0.9; font-weight: 900; letter-spacing: -0.03em; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
                         KAPAMILYA SA PALENGKE
                     </h1>
                 </div>
                 <!-- Delayed Subtitle -->
-                <p id="subtitle" class="text-xl md:text-2xl text-gray-600 mb-24 max-w-5xl mx-auto leading-relaxed font-medium" style="opacity: 0; transition: opacity 0.8s ease-in;">
+                <p id="subtitle" class="text-xl md:text-2xl text-white mb-24 max-w-5xl mx-auto leading-relaxed font-medium" style="opacity: 0; transition: opacity 0.8s ease-in; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">
                     Real-time prices from Baloan Public Market. Plan your shopping with confidence and transparency.
                 </p>
                 
@@ -129,8 +139,11 @@ include 'includes/header.php';
     </section>
     <?php endif; ?>
 
+    <!-- Spacer between hero and featured products -->
+    <div style="height: 80px; background: transparent;"></div>
+
     <!-- Featured Products Section -->
-    <section class="pt-24 md:pt-32 pb-16 md:pb-20 scroll-animate">
+    <section class="pt-16 md:pt-20 lg:pt-24 pb-16 md:pb-20 scroll-animate">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12 scroll-animate" data-delay="0.1">
                 <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">Today's Featured Prices</h2>
@@ -329,7 +342,7 @@ include 'includes/header.php';
                             <p class="text-text-secondary">Plan your market visit with current prices</p>
                         </div>
                     </div>
-                    <button class="btn-accent w-full">Create Shopping List</button>
+                    <a href="shopping-list.php" class="btn-accent w-full text-center inline-block">Create Shopping List</a>
                 </div>
 
                 <!-- Price Alerts Card -->
@@ -345,7 +358,7 @@ include 'includes/header.php';
                             <p class="text-text-secondary">Get notified when prices drop</p>
                         </div>
                     </div>
-                    <button class="btn-primary w-full">Set Up Alerts</button>
+                    <a href="price-alerts.php" class="btn-primary w-full text-center inline-block">Set Up Alerts</a>
                 </div>
             </div>
         </div>
@@ -608,8 +621,43 @@ include 'includes/header.php';
             });
         }
         
+        // Video optimization and error handling
+        function initVideoBackground() {
+            const video = document.querySelector('.hero-video-background');
+            if (video) {
+                // Handle video load error
+                video.addEventListener('error', function() {
+                    console.log('Video failed to load, using fallback background');
+                    video.style.display = 'none';
+                });
+                
+                // Optimize video playback
+                video.addEventListener('loadedmetadata', function() {
+                    // Ensure video is playing
+                    video.play().catch(function(error) {
+                        console.log('Video autoplay failed:', error);
+                    });
+                });
+                
+                // Pause video when not visible (performance optimization)
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            video.play();
+                        } else {
+                            video.pause();
+                        }
+                    });
+                });
+                observer.observe(video);
+            }
+        }
+        
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize video background
+            initVideoBackground();
+            
             // Start letter reveal animation
             initLetterRevealAnimation();
             
