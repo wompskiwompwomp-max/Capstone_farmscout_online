@@ -370,6 +370,40 @@
     box-shadow: 0 4px 12px rgba(26, 26, 26, 0.15);
 }
 
+.modern-button-danger {
+    background: #dc3545;
+    color: #ffffff;
+    border: 1px solid #dc3545;
+}
+
+.modern-button-danger:hover {
+    background: #c82333;
+    color: #ffffff;
+    border-color: #c82333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
+}
+
+/* Compact admin button variant */
+.admin-compact-btn {
+    padding: 4px 8px !important;
+    font-size: 0.7rem !important;
+    min-width: 60px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-compact-btn svg {
+    width: 12px;
+    height: 12px;
+    margin-right: 4px;
+}
+
+.admin-btn-group {
+    gap: 6px;
+}
+
 /* Modern Header Styling */
 .modern-header {
     background: #ffffff;
@@ -496,6 +530,167 @@
     margin: 0 auto;
 }
 
+/* Admin Panel Button Styles */
+.admin-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    min-width: 70px;
+    gap: 0.25rem;
+}
+
+.admin-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.admin-btn-edit {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.admin-btn-edit:hover {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-btn-delete {
+    background-color: #ef4444;
+    color: white;
+}
+
+.admin-btn-delete:hover {
+    background-color: #dc2626;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-btn svg {
+    width: 0.75rem;
+    height: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* Button Container */
+.admin-btn-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* Form Button Styles */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    background-color: #3b82f6;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+}
+
+.btn-primary:hover {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    background-color: #6b7280;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+}
+
+.btn-secondary:hover {
+    background-color: #4b5563;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(107, 114, 128, 0.3);
+}
+
+/* Input Field Styles */
+.input-field {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    background-color: white;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Card Styles */
+.shadow-card {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.card-elevated {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Table Improvements */
+.table-auto {
+    table-layout: auto;
+}
+
+.min-w-full {
+    min-width: 100%;
+}
+
+/* Text Colors */
+.text-primary {
+    color: #1f2937;
+}
+
+.text-text-primary {
+    color: #1f2937;
+}
+
+.text-text-secondary {
+    color: #6b7280;
+}
+
+.text-text-muted {
+    color: #9ca3af;
+}
+
+/* Background Colors */
+.bg-surface-50 {
+    background-color: #fafbfc;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .nav-button-group {
@@ -513,5 +708,16 @@
     
     .action-btn:hover {
         transform: translateY(-1px) scale(1.01);
+    }
+    
+    .admin-btn-group {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .admin-btn {
+        min-width: 60px;
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
     }
 }

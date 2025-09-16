@@ -145,15 +145,14 @@ function getProductsByCategory($category_id, $limit = null) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// Enhanced search with full-text search
+// Enhanced search function
 function searchProducts($search_term, $category_id = null, $sort_by = 'relevance') {
     $conn = getDB();
     if (!$conn) return [];
     
     $search_term = '%' . $search_term . '%';
     
-    $query = "SELECT p.*, c.name as category_name, c.filipino_name as category_filipino,
-              MATCH(p.name, p.filipino_name, p.description) AGAINST(:search_term IN NATURAL LANGUAGE MODE) as relevance
+    $query = "SELECT p.*, c.name as category_name, c.filipino_name as category_filipino
               FROM products p 
               LEFT JOIN categories c ON p.category_id = c.id 
               WHERE (p.name LIKE :search_term OR p.filipino_name LIKE :search_term OR p.description LIKE :search_term) 
@@ -176,7 +175,7 @@ function searchProducts($search_term, $category_id = null, $sort_by = 'relevance
             break;
         case 'relevance':
         default:
-            $query .= " ORDER BY relevance DESC, p.is_featured DESC";
+            $query .= " ORDER BY p.is_featured DESC, p.filipino_name ASC";
             break;
     }
     
@@ -198,8 +197,8 @@ function addProduct($data) {
     try {
         $conn->beginTransaction();
         
-        $query = "INSERT INTO products (name, filipino_name, description, category_id, current_price, previous_price, unit, image_url, is_featured, is_active, created_by) 
-                  VALUES (:name, :filipino_name, :description, :category_id, :current_price, :previous_price, :unit, :image_url, :is_featured, 1, :created_by)";
+        $query = "INSERT INTO products (name, filipino_name, description, category_id, current_price, previous_price, unit, image_url, is_featured, is_active) 
+                  VALUES (:name, :filipino_name, :description, :category_id, :current_price, :previous_price, :unit, :image_url, :is_featured, 1)";
         
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':name', $data['name']);
@@ -210,8 +209,7 @@ function addProduct($data) {
         $stmt->bindParam(':previous_price', $data['previous_price']);
         $stmt->bindParam(':unit', $data['unit']);
         $stmt->bindParam(':image_url', $data['image_url']);
-        $stmt->bindParam(':is_featured', $data['is_featured'], PDO::PARAM_BOOL);
-        $stmt->bindParam(':created_by', $_SESSION['user_id'] ?? null, PDO::PARAM_INT);
+        $stmt->bindParam(':is_featured', $data['is_featured'], PDO::PARAM_INT);
         
         $result = $stmt->execute();
         
@@ -219,11 +217,10 @@ function addProduct($data) {
             $product_id = $conn->lastInsertId();
             
             // Insert initial price history
-            $history_query = "INSERT INTO price_history (product_id, price, recorded_by) VALUES (:product_id, :price, :recorded_by)";
+            $history_query = "INSERT INTO price_history (product_id, price) VALUES (:product_id, :price)";
             $history_stmt = $conn->prepare($history_query);
             $history_stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
             $history_stmt->bindParam(':price', $data['current_price']);
-            $history_stmt->bindParam(':recorded_by', $_SESSION['user_id'] ?? null, PDO::PARAM_INT);
             $history_stmt->execute();
         }
         
@@ -278,17 +275,13 @@ function updateProduct($id, $data) {
         
         $result = $stmt->execute();
         
-        // If price changed, add to history and trigger alerts
+        // If price changed, add to history
         if ($result && $current_product && $current_product['current_price'] != $data['current_price']) {
-            $history_query = "INSERT INTO price_history (product_id, price, recorded_by) VALUES (:product_id, :price, :recorded_by)";
+            $history_query = "INSERT INTO price_history (product_id, price) VALUES (:product_id, :price)";
             $history_stmt = $conn->prepare($history_query);
             $history_stmt->bindParam(':product_id', $id, PDO::PARAM_INT);
             $history_stmt->bindParam(':price', $data['current_price']);
-            $history_stmt->bindParam(':recorded_by', $_SESSION['user_id'] ?? null, PDO::PARAM_INT);
             $history_stmt->execute();
-            
-            // Trigger price alerts
-            checkPriceAlerts($id, $current_product['current_price'], $data['current_price']);
         }
         
         $conn->commit();

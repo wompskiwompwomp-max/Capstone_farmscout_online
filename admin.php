@@ -176,7 +176,7 @@ include 'includes/header.php';
                         <th class="text-right py-3 px-4">Current Price</th>
                         <th class="text-right py-3 px-4">Previous Price</th>
                         <th class="text-center py-3 px-4">Featured</th>
-                        <th class="text-center py-3 px-4">Actions</th>
+                        <th class="text-center py-3 px-4 min-w-[150px]">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -202,12 +202,26 @@ include 'includes/header.php';
                             <?php endif; ?>
                         </td>
                         <td class="py-3 px-4 text-center">
-                            <button onclick="editProduct(<?php echo htmlspecialchars(json_encode($product)); ?>)" class="btn-secondary text-xs px-3 py-1 mr-2">Edit</button>
-                            <form method="POST" action="admin.php" class="inline" onsubmit="return confirm('Are you sure you want to delete this product?')">
-                                <input type="hidden" name="action" value="delete_product">
-                                <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                                <button type="submit" class="btn-accent text-xs px-3 py-1">Delete</button>
-                            </form>
+                            <div class="flex items-center justify-center gap-2 admin-btn-group">
+                                <button 
+                                    onclick="editProduct(<?php echo htmlspecialchars(json_encode($product)); ?>)" 
+                                    class="modern-button modern-button-primary admin-compact-btn">
+                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                    Edit
+                                </button>
+                                <form method="POST" action="admin.php" class="inline" onsubmit="return confirm('Are you sure you want to delete this product?')">
+                                    <input type="hidden" name="action" value="delete_product">
+                                    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                    <button type="submit" class="modern-button modern-button-danger admin-compact-btn">
+                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     <?php endforeach; ?>

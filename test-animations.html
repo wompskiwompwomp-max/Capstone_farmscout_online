@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 200vh;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 50px;
+        }
+        
+        /* Animation CSS - Fast and modern like shopping list */
+        .scroll-animate {
+            opacity: 0 !important;
+            transform: translateY(30px) !important;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, opacity;
+        }
+
+        .scroll-animate.animate-in {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        .scroll-animate-card {
+            opacity: 0 !important;
+            transform: translateY(20px) scale(0.98) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, opacity;
+        }
+
+        .scroll-animate-card.animate-in {
+            opacity: 1 !important;
+            transform: translateY(0) scale(1) !important;
+        }
+
+        /* Force initial hidden state for reliable animations */
+        .scroll-animate:not(.animate-in),
+        .scroll-animate-card:not(.animate-in) {
+            visibility: hidden;
+        }
+
+        .scroll-animate.animate-in,
+        .scroll-animate-card.animate-in {
+            visibility: visible;
+        }
+        
+        /* Stagger animation delays */
+        .scroll-animate[data-delay="0.1"] { transition-delay: 0.1s; }
+        .scroll-animate[data-delay="0.2"] { transition-delay: 0.2s; }
+        .scroll-animate[data-delay="0.3"] { transition-delay: 0.3s; }
+        .scroll-animate-card[data-delay="0.1"] { transition-delay: 0.1s; }
+        .scroll-animate-card[data-delay="0.2"] { transition-delay: 0.2s; }
+        .scroll-animate-card[data-delay="0.3"] { transition-delay: 0.3s; }
+        
+        .card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="scroll-animate" data-delay="0.1">🧪 Animation Test Page</h1>
+        <p class="scroll-animate" data-delay="0.2">This page tests the same animation system used in the shopping list.</p>
+        
+        <div class="card scroll-animate-card" data-delay="0.1">
+            <h3>Card 1</h3>
+            <p>This should animate in with a scale effect.</p>
+        </div>
+        
+        <div class="card scroll-animate-card" data-delay="0.2">
+            <h3>Card 2</h3>
+            <p>This should animate in with a slight delay.</p>
+        </div>
+        
+        <div class="card scroll-animate-card" data-delay="0.3">
+            <h3>Card 3</h3>
+            <p>This should animate in with more delay.</p>
+        </div>
+    </div>
+    
+    <div class="test-container">
+        <h2 class="scroll-animate" data-delay="0.1">Second Section</h2>
+        <p class="scroll-animate" data-delay="0.2">This section should animate when you scroll down.</p>
+        
+        <div class="card scroll-animate-card" data-delay="0.1">
+            <h3>Lower Card 1</h3>
+            <p>This card is further down and should animate when scrolled into view.</p>
+        </div>
+        
+        <div class="card scroll-animate-card" data-delay="0.2">
+            <h3>Lower Card 2</h3>
+            <p>This is the final test card.</p>
+        </div>
+    </div>
+
+    <script>
+        // Animation system - exactly like shopping list
+        function initScrollAnimations() {
+            const animateElements = document.querySelectorAll('.scroll-animate, .scroll-animate-card');
+            
+            const observerOptions = {
+                threshold: 0.05,
+                rootMargin: '20px 0px -20px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    console.log('Observer triggered:', {
+                        isIntersecting: entry.isIntersecting,
+                        targetClass: entry.target.className,
+                        delay: entry.target.dataset.delay || 0
+                    });
+                    
+                    if (entry.isIntersecting) {
+                        const delay = parseFloat(entry.target.dataset.delay || 0) * 500;
+                        console.log(`Observer animating element with delay ${delay}ms`);
+                        setTimeout(() => {
+                            entry.target.classList.add('animate-in');
+                            console.log('Observer animation class added:', entry.target.className);
+                            observer.unobserve(entry.target);
+                        }, delay);
+                    }
+                });
+            }, observerOptions);
+            
+            setTimeout(() => {
+                console.log('Initializing animations for', animateElements.length, 'elements');
+                
+                animateElements.forEach((element, index) => {
+                    const rect = element.getBoundingClientRect();
+                    const isInViewport = rect.top >= 0 && rect.top <= window.innerHeight;
+                    
+                    console.log(`Element ${index}:`, {
+                        className: element.className,
+                        isInViewport,
+                        rect: { top: rect.top, height: rect.height },
+                        delay: element.dataset.delay || 0
+                    });
+                    
+                    if (isInViewport) {
+                        const delay = parseFloat(element.dataset.delay || 0) * 500;
+                        console.log(`Animating element ${index} immediately with delay ${delay}ms`);
+                        setTimeout(() => {
+                            element.classList.add('animate-in');
+                            console.log(`Animation class added to element ${index}`);
+                        }, delay);
+                    } else {
+                        console.log(`Observing element ${index} (not in viewport)`);
+                        observer.observe(element);
+                    }
+                });
+            }, 100);
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing animations...');
+            initScrollAnimations();
+        });
+    </script>
+</body>
+</html>
