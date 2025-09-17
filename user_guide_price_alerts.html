@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Use FarmScout Price Alerts - User Guide</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .step { background: #f8f9fa; padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #28a745; }
+        .screenshot-placeholder { background: #e9ecef; padding: 30px; text-align: center; border: 2px dashed #6c757d; margin: 10px 0; }
+        .alert-example { background: #fff3cd; padding: 15px; border: 1px solid #ffeaa7; border-radius: 5px; margin: 10px 0; }
+        .success-example { background: #d1edff; padding: 15px; border: 1px solid #0084ff; border-radius: 5px; margin: 10px 0; }
+        .user-quote { font-style: italic; color: #666; padding: 10px; border-left: 3px solid #ddd; margin: 10px 0; }
+        h1 { color: #28a745; }
+        h2 { color: #007bff; }
+        .form-field { background: #f8f9fa; padding: 10px; margin: 5px 0; border-radius: 4px; }
+        .button { background: #28a745; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🔔 How to Use FarmScout Price Alerts</h1>
+    <p><strong>A Step-by-Step Guide for Users</strong></p>
+
+    <div class="step">
+        <h2>👤 Meet Maria - Our Example User</h2>
+        <div class="user-quote">
+            "Hi! I'm Maria, a busy mom who shops at Baloan Public Market. I want to save money on groceries but don't have time to check prices every day. FarmScout Price Alerts help me catch good deals automatically!"
+        </div>
+    </div>
+
+    <div class="step">
+        <h2>Step 1: Visit the Price Alerts Page</h2>
+        <p><strong>Maria's goal:</strong> Get notified when tomatoes are cheaper than ₱50/kg</p>
+        <ol>
+            <li>Maria goes to <code>http://localhost/farmscout_online/price-alerts.php</code></li>
+            <li>She sees a page titled <strong>"Price Alerts"</strong></li>
+            <li>The page has two main sections: "Set New Price Alert" and "Manage Your Alerts"</li>
+        </ol>
+        <div class="screenshot-placeholder">
+            [Website shows: Header "Price Alerts" + Form on left + Management panel on right]
+        </div>
+    </div>
+
+    <div class="step">
+        <h2>Step 2: Fill Out the Alert Form</h2>
+        <p><strong>Maria fills out the "Set New Price Alert" form:</strong></p>
+        
+        <div class="form-field">
+            <strong>📧 Email Address:</strong> maria.santos@gmail.com<br>
+            <small>This is where she'll receive alert notifications</small>
+        </div>
+
+        <div class="form-field">
+            <strong>🍅 Product:</strong> Kamatis (Tomatoes) - ₱55.00/kg<br>
+            <small>She selects from a dropdown list of available products</small>
+        </div>
+
+        <div class="form-field">
+            <strong>⚠️ Alert When:</strong> Price drops below<br>
+            <small>She wants to know when it gets cheaper</small>
+        </div>
+
+        <div class="form-field">
+            <strong>💰 Target Price:</strong> ₱50.00<br>
+            <small>She wants to buy when tomatoes cost ₱50/kg or less</small>
+        </div>
+
+        <div class="user-quote">
+            "I usually buy tomatoes at ₱55/kg. If I can get them for ₱50 or less, that's a great deal! I want to be notified when that happens."
+        </div>
+    </div>
+
+    <div class="step">
+        <h2>Step 3: Submit the Alert</h2>
+        <ol>
+            <li>Maria clicks the <button class="button">🔔 Set Price Alert</button> button</li>
+            <li>The system shows a success message: <div class="success-example">✅ Price alert set successfully! You will be notified when the price changes.</div></li>
+            <li>Her alert is now saved and active</li>
+        </ol>
+    </div>
+
+    <div class="step">
+        <h2>Step 4: System Monitors Prices (Automatic)</h2>
+        <p><strong>What happens behind the scenes:</strong></p>
+        <ul>
+            <li>🔍 System saves Maria's alert in the database</li>
+            <li>⏰ System regularly checks tomato prices</li>
+            <li>📊 Current status: Waiting for price to drop from ₱55 to ₱50 or below</li>
+        </ul>
+        <div class="alert-example">
+            <strong>Maria doesn't need to do anything!</strong> The system works automatically in the background.
+        </div>
+    </div>
+
+    <div class="step">
+        <h2>Step 5: Price Change Happens</h2>
+        <p><strong>A few days later...</strong></p>
+        <ul>
+            <li>📈 Market vendor updates tomato price: ₱55.00 → ₱45.00</li>
+            <li>🔔 System detects: "₱45 is less than Maria's target of ₱50!"</li>
+            <li>📧 System automatically sends Maria a beautiful email</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <h2>Step 6: Maria Receives Email Alert</h2>
+        <div class="success-example">
+            <strong>📧 Email Subject:</strong> "🔔 Price Alert: Kamatis - FarmScout Online"<br><br>
+            <strong>Email Content:</strong><br>
+            🎉 Great news! The price has dropped below your target price of ₱50.00<br><br>
+            🍅 <strong>Kamatis (Tomatoes)</strong><br>
+            <del>Previous Price: ₱55.00 per kg</del><br>
+            <strong style="color: green;">New Price: ₱45.00 per kg</strong><br><br>
+            💰 <strong>Your Savings: ₱10.00 (18% off!)</strong>
+        </div>
+        <div class="user-quote">
+            "Perfect! I got the email on my phone while at work. Now I know to stop by the market on my way home to buy tomatoes at this great price!"
+        </div>
+    </div>
+
+    <div class="step">
+        <h2>Step 7: Managing Existing Alerts (Optional)</h2>
+        <p><strong>If Maria wants to check or modify her alerts:</strong></p>
+        <ol>
+            <li>She goes back to the price alerts page</li>
+            <li>In the "Manage Your Alerts" section, she enters her email: <code>maria.santos@gmail.com</code></li>
+            <li>Clicks "View My Alerts"</li>
+            <li>System shows all her active alerts with current status</li>
+            <li>She can delete alerts she no longer wants</li>
+        </ol>
+    </div>
+
+    <div class="step">
+        <h2>🎯 Complete User Journey Summary</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr style="background: #f8f9fa;">
+                <th style="padding: 10px; border: 1px solid #ddd;">Step</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">User Action</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">System Response</th>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">1</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Visits price-alerts.php</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Shows alert creation form</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">2</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Fills form with email, product, target price</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Validates input</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">3</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Clicks "Set Price Alert"</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Saves alert, shows success message</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">4</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Goes about daily life</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Monitors prices automatically</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">5</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Receives email notification</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Triggered alert due to price change</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">6</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Acts on the deal (buys tomatoes)</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Alert remains active for future changes</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="step">
+        <h2>💡 Common User Scenarios</h2>
+        
+        <h3>Scenario A: Deal Hunter</h3>
+        <div class="user-quote">
+            "I want to buy rice when it's ₱45/kg or less. Currently it's ₱52/kg, so I'll wait for a better price."
+        </div>
+        <p><strong>Setup:</strong> Product = Rice, Alert = "below", Target = ₱45.00</p>
+
+        <h3>Scenario B: Budget Manager</h3>
+        <div class="user-quote">
+            "I have a monthly budget. I want to know if chicken gets more expensive than ₱200/kg so I can buy before the price increases."
+        </div>
+        <p><strong>Setup:</strong> Product = Chicken, Alert = "above", Target = ₱200.00</p>
+
+        <h3>Scenario C: Market Watcher</h3>
+        <div class="user-quote">
+            "I want to stay informed about all price changes for onions because I use them a lot in cooking."
+        </div>
+        <p><strong>Setup:</strong> Product = Onions, Alert = "any change", Target = (not applicable)</p>
+    </div>
+
+    <div class="step">
+        <h2>🔧 Technical Requirements for Users</h2>
+        <ul>
+            <li>✅ <strong>Web browser</strong> - Any modern browser (Chrome, Firefox, Safari, Edge)</li>
+            <li>✅ <strong>Email address</strong> - To receive notifications</li>
+            <li>✅ <strong>Internet connection</strong> - To access the website</li>
+            <li>❌ <strong>No app download required</strong> - Works in any browser</li>
+            <li>❌ <strong>No registration required</strong> - Just enter email to get alerts</li>
+            <li>❌ <strong>No technical knowledge needed</strong> - Simple form-based interface</li>
+        </ul>
+    </div>
+
+    <div class="step" style="background: #d4edda; border-left-color: #28a745;">
+        <h2>🎉 Why Users Love This System</h2>
+        <ul>
+            <li><strong>🕐 Saves Time:</strong> No need to check prices manually every day</li>
+            <li><strong>💰 Saves Money:</strong> Never miss a good deal or sale</li>
+            <li><strong>📱 Convenient:</strong> Get alerts on phone, computer, anywhere</li>
+            <li><strong>🎯 Personalized:</strong> Only get alerts for products and prices you care about</li>
+            <li><strong>🔄 Automatic:</strong> Works 24/7 without any effort from the user</li>
+            <li><strong>🎨 Professional:</strong> Beautiful email notifications with all the details</li>
+        </ul>
+    </div>
+</body>
+</html>

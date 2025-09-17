@@ -2,26 +2,36 @@
 require_once 'config/database.php';
 require_once 'config/email.php';
 
-// Session management
-session_start();
-
 // Get database connection with error handling
-function getDB() {
-    static $conn = null;
-    if ($conn === null) {
-        try {
-            $database = new Database();
-            $conn = $database->getConnection();
-            if (!$conn) {
-                throw new Exception("Database connection failed");
+if (!function_exists('getDB')) {
+    function getDB() {
+        static $conn = null;
+        if ($conn === null) {
+            try {
+                $database = new Database();
+                $conn = $database->getConnection();
+                if (!$conn) {
+                    throw new Exception("Database connection failed");
+                }
+            } catch (Exception $e) {
+                error_log("Database connection error: " . $e->getMessage());
+                return false;
             }
-        } catch (Exception $e) {
-            error_log("Database connection error: " . $e->getMessage());
-            return false;
         }
+        return $conn;
     }
-    return $conn;
 }
+
+// Now include config manager after getDB is defined
+require_once __DIR__ . '/config_manager.php';
+
+// Session management
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Initialize configuration table
+ensureConfigTable();
 
 // Enhanced authentication functions
 function authenticateUser($username, $password) {
@@ -68,7 +78,8 @@ function requireAdmin() {
 }
 
 // Enhanced product functions with caching
-function getAllProducts($limit = null, $offset = 0) {
+if (!function_exists('getAllProducts')) {
+    function getAllProducts($limit = null, $offset = 0) {
     $conn = getDB();
     if (!$conn) return [];
     
@@ -90,9 +101,11 @@ function getAllProducts($limit = null, $offset = 0) {
     $stmt->execute();
     
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
-function getFeaturedProducts($limit = 4) {
+if (!function_exists('getFeaturedProducts')) {
+    function getFeaturedProducts($limit = 4) {
     $conn = getDB();
     if (!$conn) return [];
     
@@ -108,9 +121,11 @@ function getFeaturedProducts($limit = 4) {
     $stmt->execute();
     
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
-function getCategories() {
+if (!function_exists('getCategories')) {
+    function getCategories() {
     $conn = getDB();
     if (!$conn) return [];
     
@@ -119,9 +134,11 @@ function getCategories() {
     $stmt->execute();
     
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
-function getProductsByCategory($category_id, $limit = null) {
+if (!function_exists('getProductsByCategory')) {
+    function getProductsByCategory($category_id, $limit = null) {
     $conn = getDB();
     if (!$conn) return [];
     
@@ -143,10 +160,12 @@ function getProductsByCategory($category_id, $limit = null) {
     $stmt->execute();
     
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 // Enhanced search function
-function searchProducts($search_term, $category_id = null, $sort_by = 'relevance') {
+if (!function_exists('searchProducts')) {
+    function searchProducts($search_term, $category_id = null, $sort_by = 'relevance') {
     $conn = getDB();
     if (!$conn) return [];
     
@@ -187,10 +206,12 @@ function searchProducts($search_term, $category_id = null, $sort_by = 'relevance
     $stmt->execute();
     
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 // Enhanced product management
-function addProduct($data) {
+if (!function_exists('addProduct')) {
+    function addProduct($data) {
     $conn = getDB();
     if (!$conn) return false;
     
@@ -232,9 +253,11 @@ function addProduct($data) {
         error_log("Error adding product: " . $e->getMessage());
         return false;
     }
+    }
 }
 
-function updateProduct($id, $data) {
+if (!function_exists('updateProduct')) {
+    function updateProduct($id, $data) {
     $conn = getDB();
     if (!$conn) return false;
     
@@ -275,13 +298,16 @@ function updateProduct($id, $data) {
         
         $result = $stmt->execute();
         
-        // If price changed, add to history
+        // If price changed, add to history and process alerts
         if ($result && $current_product && $current_product['current_price'] != $data['current_price']) {
             $history_query = "INSERT INTO price_history (product_id, price) VALUES (:product_id, :price)";
             $history_stmt = $conn->prepare($history_query);
             $history_stmt->bindParam(':product_id', $id, PDO::PARAM_INT);
             $history_stmt->bindParam(':price', $data['current_price']);
             $history_stmt->execute();
+            
+            // Process price alerts for this product
+            processPriceAlerts($id, $current_product['current_price'], $data['current_price']);
         }
         
         $conn->commit();
@@ -292,9 +318,11 @@ function updateProduct($id, $data) {
         error_log("Error updating product: " . $e->getMessage());
         return false;
     }
+    }
 }
 
-function deleteProduct($id) {
+if (!function_exists('deleteProduct')) {
+    function deleteProduct($id) {
     $conn = getDB();
     if (!$conn) return false;
     
@@ -303,6 +331,7 @@ function deleteProduct($id) {
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     
     return $stmt->execute();
+    }
 }
 
 // Price alert functions
@@ -406,6 +435,182 @@ function addCategory($data) {
     return $stmt->execute();
 }
 
+// Enhanced Email Functions
+require_once 'email.php';
+require_once 'enhanced_email.php';
+
+/**
+ * Send price alert email with enhanced template
+ */
+function sendPriceAlertEmail($email, $product, $alert_type, $target_price) {
+    try {
+        $alert_data = [
+            'email' => $email,
+            'alert_type' => $alert_type,
+            'target_price' => $target_price,
+            'product' => $product
+        ];
+        
+        // Try enhanced mailer first
+        if (function_exists('sendEnhancedPriceAlert')) {
+            return sendEnhancedPriceAlert($alert_data);
+        }
+        
+        // Fall back to simple email
+        $mailer = getMailer();
+        $content = createPriceAlertEmail($product, $alert_type, $target_price, $product['current_price']);
+        $html = $mailer->wrapTemplate($content, 'Price Alert - FarmScout Online');
+        $subject = "🔔 Price Alert: " . $product['filipino_name'] . " - FarmScout Online";
+        
+        return $mailer->send($email, $subject, $html, true);
+        
+    } catch (Exception $e) {
+        error_log("Error sending price alert: " . $e->getMessage());
+        return false;
+    }
+}
+
+/**
+ * Send welcome email to new user
+ */
+function sendWelcomeEmailToUser($email, $user_name) {
+    try {
+        // Try enhanced mailer first
+        if (function_exists('sendEnhancedWelcomeEmail')) {
+            return sendEnhancedWelcomeEmail($email, $user_name);
+        }
+        
+        // Fall back to simple email
+        return sendWelcomeEmail($email, $user_name);
+        
+    } catch (Exception $e) {
+        error_log("Error sending welcome email: " . $e->getMessage());
+        return false;
+    }
+}
+
+/**
+ * Process price alerts when products are updated
+ */
+function processPriceAlerts($product_id, $old_price, $new_price) {
+    $conn = getDB();
+    if (!$conn) return false;
+    
+    try {
+        // Get all active alerts for this product
+        $query = "SELECT pa.*, p.name, p.filipino_name, p.current_price, p.unit, p.image_url, 
+                         c.filipino_name as category_filipino
+                  FROM price_alerts pa
+                  LEFT JOIN products p ON pa.product_id = p.id
+                  LEFT JOIN categories c ON p.category_id = c.id
+                  WHERE pa.product_id = :product_id AND pa.is_active = 1";
+        
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        foreach ($alerts as $alert) {
+            $should_send = false;
+            
+            // Check if alert conditions are met
+            switch ($alert['alert_type']) {
+                case 'below':
+                    $should_send = $new_price <= $alert['target_price'] && $old_price > $alert['target_price'];
+                    break;
+                case 'above':
+                    $should_send = $new_price >= $alert['target_price'] && $old_price < $alert['target_price'];
+                    break;
+                case 'change':
+                    $should_send = $new_price != $old_price;
+                    break;
+            }
+            
+            if ($should_send) {
+                // Prepare product data with price history
+                $product_data = [
+                    'id' => $alert['product_id'],
+                    'name' => $alert['name'],
+                    'filipino_name' => $alert['filipino_name'],
+                    'current_price' => $new_price,
+                    'previous_price' => $old_price,
+                    'unit' => $alert['unit'],
+                    'image_url' => $alert['image_url'],
+                    'category_filipino' => $alert['category_filipino']
+                ];
+                
+                // Send the alert
+                $result = sendPriceAlertEmail(
+                    $alert['user_email'],
+                    $product_data,
+                    $alert['alert_type'],
+                    $alert['target_price']
+                );
+                
+                if ($result) {
+                    // Log successful alert
+                    logEmailActivity(
+                        $alert['user_email'],
+                        "Price Alert: " . $alert['filipino_name'],
+                        'ALERT_SENT'
+                    );
+                    
+                    // Update alert last_sent timestamp
+                    $update_query = "UPDATE price_alerts SET last_sent = NOW() WHERE id = :alert_id";
+                    $update_stmt = $conn->prepare($update_query);
+                    $update_stmt->bindParam(':alert_id', $alert['id'], PDO::PARAM_INT);
+                    $update_stmt->execute();
+                }
+            }
+        }
+        
+        return true;
+        
+    } catch (Exception $e) {
+        error_log("Error processing price alerts: " . $e->getMessage());
+        return false;
+    }
+}
+
+/**
+ * Test email system functionality
+ */
+function testEmailSystem($test_email = null) {
+    $results = [];
+    
+    // Test 1: Basic configuration
+    $config = getEmailConfig();
+    $results['config'] = [
+        'success' => !empty($config['from_email']),
+        'message' => !empty($config['from_email']) ? 'Email configuration loaded' : 'Email configuration missing'
+    ];
+    
+    // Test 2: Send test email
+    try {
+        if (function_exists('sendEnhancedTestEmail')) {
+            $result = sendEnhancedTestEmail($test_email);
+            $results['test_email'] = [
+                'success' => $result,
+                'message' => $result ? 'Test email sent successfully' : 'Failed to send test email'
+            ];
+        } else {
+            $result = sendTestEmail($test_email);
+            $results['test_email'] = [
+                'success' => $result['success'],
+                'message' => $result['message']
+            ];
+        }
+    } catch (Exception $e) {
+        $results['test_email'] = [
+            'success' => false,
+            'message' => 'Error: ' . $e->getMessage()
+        ];
+    }
+    
+    return $results;
+}
+
 function updateCategory($id, $data) {
     $conn = getDB();
     if (!$conn) return false;
@@ -478,7 +683,7 @@ function checkPriceAlerts($product_id, $old_price, $new_price) {
         
         if ($shouldTrigger) {
             // Send email notification
-            $emailSent = sendPriceAlertEmail(
+            $emailSent = sendDetailedPriceAlertEmail(
                 $alert['user_email'],
                 $alert['name'],
                 $alert['filipino_name'],
@@ -505,8 +710,8 @@ function checkPriceAlerts($product_id, $old_price, $new_price) {
     return true;
 }
 
-// Send price alert email
-function sendPriceAlertEmail($email, $product_name, $filipino_name, $old_price, $new_price, $unit, $alert_message, $image_url = '') {
+// Send price alert email (detailed version)
+function sendDetailedPriceAlertEmail($email, $product_name, $filipino_name, $old_price, $new_price, $unit, $alert_message, $image_url = '') {
     require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/PHPMailer.php';
     require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/SMTP.php';
     require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/Exception.php';
@@ -758,39 +963,45 @@ function trackSearch($search_term) {
 }
 
 // Enhanced utility functions
-function getPriceChange($current_price, $previous_price) {
-    if ($previous_price == 0) return 0;
-    return $current_price - $previous_price;
-}
-
-function formatPriceChange($current_price, $previous_price) {
-    $change = getPriceChange($current_price, $previous_price);
-    $percentage = $previous_price > 0 ? round(($change / $previous_price) * 100, 2) : 0;
-    
-    if ($change == 0) {
-        return ['class' => 'text-text-muted', 'icon' => 'neutral', 'text' => 'No change', 'percentage' => 0];
-    } elseif ($change > 0) {
-        return ['class' => 'text-error', 'icon' => 'up', 'text' => '+₱' . number_format($change, 2), 'percentage' => $percentage];
-    } else {
-        return ['class' => 'text-success', 'icon' => 'down', 'text' => '-₱' . number_format(abs($change), 2), 'percentage' => abs($percentage)];
+if (!function_exists('getPriceChange')) {
+    function getPriceChange($current_price, $previous_price) {
+        if ($previous_price == 0) return 0;
+        return $current_price - $previous_price;
     }
 }
 
-function getMarketStatus() {
-    $conn = getDB();
-    if (!$conn) return ['is_open' => false, 'active_vendors' => 0, 'last_updated' => 'Unknown'];
-    
-    $query = "SELECT COUNT(*) as active_vendors FROM vendors WHERE is_active = 1";
-    $stmt = $conn->prepare($query);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    return [
-        'is_open' => true,
-        'active_vendors' => $result['active_vendors'] ?? 0,
-        'last_updated' => date('g:i A'),
-        'total_products' => getTotalProductsCount()
-    ];
+if (!function_exists('formatPriceChange')) {
+    function formatPriceChange($current_price, $previous_price) {
+        $change = getPriceChange($current_price, $previous_price);
+        $percentage = $previous_price > 0 ? round(($change / $previous_price) * 100, 2) : 0;
+        
+        if ($change == 0) {
+            return ['class' => 'text-text-muted', 'icon' => 'neutral', 'text' => 'No change', 'percentage' => 0];
+        } elseif ($change > 0) {
+            return ['class' => 'text-error', 'icon' => 'up', 'text' => '+₱' . number_format($change, 2), 'percentage' => $percentage];
+        } else {
+            return ['class' => 'text-success', 'icon' => 'down', 'text' => '-₱' . number_format(abs($change), 2), 'percentage' => abs($percentage)];
+        }
+    }
+}
+
+if (!function_exists('getMarketStatus')) {
+    function getMarketStatus() {
+        $conn = getDB();
+        if (!$conn) return ['is_open' => false, 'active_vendors' => 0, 'last_updated' => 'Unknown'];
+        
+        $query = "SELECT COUNT(*) as active_vendors FROM vendors WHERE is_active = 1";
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return [
+            'is_open' => true,
+            'active_vendors' => $result['active_vendors'] ?? 0,
+            'last_updated' => date('g:i A'),
+            'total_products' => getTotalProductsCount()
+        ];
+    }
 }
 
 function getTotalProductsCount() {
@@ -823,8 +1034,10 @@ function getPriceHistory($product_id, $days = 7) {
 }
 
 // Enhanced security functions
-function sanitizeInput($data) {
-    return htmlspecialchars(strip_tags(trim($data)), ENT_QUOTES, 'UTF-8');
+if (!function_exists('sanitizeInput')) {
+    function sanitizeInput($data) {
+        return htmlspecialchars(strip_tags(trim($data)), ENT_QUOTES, 'UTF-8');
+    }
 }
 
 function validateEmail($email) {
@@ -839,6 +1052,13 @@ function generateCSRFToken() {
     if (!isset($_SESSION['csrf_token'])) {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
+    return '<input type="hidden" name="csrf_token" value="' . htmlspecialchars($_SESSION['csrf_token']) . '">';
+}
+
+function getCSRFToken() {
+    if (!isset($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
     return $_SESSION['csrf_token'];
 }
 
@@ -846,8 +1066,10 @@ function validateCSRFToken($token) {
     return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
 }
 
-function formatCurrency($amount) {
-    return '₱' . number_format($amount, 2);
+if (!function_exists('formatCurrency')) {
+    function formatCurrency($amount) {
+        return '₱' . number_format($amount, 2);
+    }
 }
 
 function formatNumber($number) {
@@ -901,5 +1123,140 @@ function sendSuccess($data = null, $message = 'Success') {
     header('Content-Type: application/json');
     echo json_encode(['success' => true, 'message' => $message, 'data' => $data]);
     exit;
+}
+
+// Price Alert Functions
+
+/**
+ * Create a new price alert
+ */
+function createPriceAlert($user_email, $product_id, $alert_type, $target_price) {
+    $conn = getDB();
+    if (!$conn) return false;
+    
+    $query = "INSERT INTO price_alerts (user_email, product_id, alert_type, target_price) 
+              VALUES (:user_email, :product_id, :alert_type, :target_price)";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':user_email', $user_email);
+    $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+    $stmt->bindParam(':alert_type', $alert_type);
+    $stmt->bindParam(':target_price', $target_price);
+    
+    return $stmt->execute();
+}
+
+/**
+ * Get all price alerts for a user
+ */
+function getUserPriceAlerts($user_email) {
+    $conn = getDB();
+    if (!$conn) return [];
+    
+    $query = "SELECT pa.*, p.name, p.filipino_name, p.current_price, p.unit, p.image_url 
+              FROM price_alerts pa 
+              JOIN products p ON pa.product_id = p.id 
+              WHERE pa.user_email = :user_email AND pa.is_active = 1 
+              ORDER BY pa.created_at DESC";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':user_email', $user_email);
+    $stmt->execute();
+    
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Delete a price alert
+ */
+function deletePriceAlert($alert_id, $user_email) {
+    $conn = getDB();
+    if (!$conn) return false;
+    
+    $query = "UPDATE price_alerts SET is_active = 0 
+              WHERE id = :alert_id AND user_email = :user_email";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':alert_id', $alert_id, PDO::PARAM_INT);
+    $stmt->bindParam(':user_email', $user_email);
+    
+    return $stmt->execute();
+}
+
+/**
+ * Check and trigger price alerts when prices change
+ */
+function checkAndTriggerPriceAlerts($product_id, $old_price, $new_price) {
+    $conn = getDB();
+    if (!$conn) return false;
+    
+    // Get all active alerts for this product
+    $query = "SELECT pa.*, p.name, p.filipino_name, p.unit, p.image_url, p.category_id 
+              FROM price_alerts pa 
+              JOIN products p ON pa.product_id = p.id 
+              WHERE pa.product_id = :product_id AND pa.is_active = 1";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    foreach ($alerts as $alert) {
+        $should_trigger = false;
+        
+        // Check alert conditions
+        switch ($alert['alert_type']) {
+            case 'below':
+                $should_trigger = $new_price <= $alert['target_price'] && $old_price > $alert['target_price'];
+                break;
+            case 'above':
+                $should_trigger = $new_price >= $alert['target_price'] && $old_price < $alert['target_price'];
+                break;
+            case 'change':
+                $should_trigger = $new_price != $old_price;
+                break;
+        }
+        
+        if ($should_trigger) {
+            // Send price alert email
+            $alert_data = [
+                'email' => $alert['user_email'],
+                'alert_type' => $alert['alert_type'],
+                'target_price' => $alert['target_price'],
+                'product' => [
+                    'name' => $alert['name'],
+                    'filipino_name' => $alert['filipino_name'],
+                    'previous_price' => $old_price,
+                    'current_price' => $new_price,
+                    'unit' => $alert['unit'],
+                    'image_url' => $alert['image_url']
+                ]
+            ];
+            
+            // Send the email using our enhanced email system
+            require_once __DIR__ . '/enhanced_email.php';
+            $mailer = getEnhancedMailer();
+            $result = $mailer->sendPriceAlert($alert_data);
+            
+            if ($result) {
+                // Update last_sent timestamp
+                $update_query = "UPDATE price_alerts SET last_sent = NOW() WHERE id = :alert_id";
+                $update_stmt = $conn->prepare($update_query);
+                $update_stmt->bindParam(':alert_id', $alert['id'], PDO::PARAM_INT);
+                $update_stmt->execute();
+                
+                // Log the alert
+                $log_query = "INSERT INTO price_alert_logs (alert_id, old_price, new_price, email_sent) 
+                              VALUES (:alert_id, :old_price, :new_price, 1)";
+                $log_stmt = $conn->prepare($log_query);
+                $log_stmt->bindParam(':alert_id', $alert['id'], PDO::PARAM_INT);
+                $log_stmt->bindParam(':old_price', $old_price);
+                $log_stmt->bindParam(':new_price', $new_price);
+                $log_stmt->execute();
+            }
+        }
+    }
+    
+    return true;
 }
 ?>

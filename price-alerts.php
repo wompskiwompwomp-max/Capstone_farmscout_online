@@ -31,11 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } elseif ($product_id <= 0) {
                     $message = 'Please select a valid product.';
                     $message_type = 'error';
-                } elseif ($target_price <= 0) {
+                } elseif ($alert_type !== 'change' && $target_price <= 0) {
                     $message = 'Please enter a valid target price.';
                     $message_type = 'error';
                 } else {
-                    if (addPriceAlert($email, $product_id, $target_price, $alert_type)) {
+                    if (createPriceAlert($email, $product_id, $alert_type, $target_price)) {
                         $message = 'Price alert set successfully! You will be notified when the price changes.';
                         $message_type = 'success';
                     } else {
@@ -47,16 +47,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
             case 'remove_alert':
                 $alert_id = intval($_POST['alert_id'] ?? 0);
-                if ($alert_id > 0) {
-                    $conn = getDB();
-                    if ($conn) {
-                        $query = "UPDATE price_alerts SET is_active = 0 WHERE id = :id";
-                        $stmt = $conn->prepare($query);
-                        $stmt->bindParam(':id', $alert_id, PDO::PARAM_INT);
-                        if ($stmt->execute()) {
-                            $message = 'Price alert removed successfully.';
-                            $message_type = 'success';
-                        }
+                $email = sanitizeInput($_POST['user_email'] ?? '');
+                if ($alert_id > 0 && !empty($email)) {
+                    if (deletePriceAlert($alert_id, $email)) {
+                        $message = 'Price alert removed successfully.';
+                        $message_type = 'success';
+                    } else {
+                        $message = 'Failed to remove price alert.';
+                        $message_type = 'error';
                     }
                 }
                 break;
@@ -110,7 +108,7 @@ include 'includes/header.php';
                 
                 <form method="POST" action="price-alerts.php" class="space-y-4">
                     <input type="hidden" name="action" value="add_alert">
-                    <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
+                    <?php echo generateCSRFToken(); ?>
                     
                     <div>
                         <label for="email" class="block text-sm font-medium text-text-primary mb-2">Email Address</label>
@@ -143,7 +141,7 @@ include 'includes/header.php';
                             </select>
                         </div>
                         
-                        <div>
+                        <div id="target_price_container">
                             <label for="target_price" class="block text-sm font-medium text-text-primary mb-2">Target Price (₱)</label>
                             <input type="number" id="target_price" name="target_price" required 
                                    step="0.01" min="0" 
@@ -262,6 +260,9 @@ include 'includes/header.php';
     </div>
 
 <script>
+// Make CSRF token available to JavaScript
+const csrfToken = '<?php echo getCSRFToken(); ?>';
+
 function loadAlerts() {
     const email = document.getElementById('email_lookup').value.trim();
     if (!email) {
@@ -272,18 +273,82 @@ function loadAlerts() {
     const container = document.getElementById('alerts-container');
     container.innerHTML = '<div class="text-center py-4"><div class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div><p class="text-text-secondary mt-2">Loading alerts...</p></div>';
     
-    // Simulate loading alerts (in real implementation, this would be an AJAX call)
-    setTimeout(() => {
+    // Make AJAX call to get user alerts
+    const formData = new FormData();
+    formData.append('email', email);
+    
+    fetch('api/get_user_alerts.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            container.innerHTML = `
+                <div class="text-center py-8 text-error-600">
+                    <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <p>${data.error}</p>
+                </div>
+            `;
+            return;
+        }
+        
+        if (!data.alerts || data.alerts.length === 0) {
+            container.innerHTML = `
+                <div class="text-center py-8 text-text-secondary">
+                    <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5v-5a7.5 7.5 0 0015 0v5z"/>
+                    </svg>
+                    <p>No active alerts found for ${email}</p>
+                    <p class="text-sm mt-2">Set up your first price alert using the form on the left!</p>
+                </div>
+            `;
+            return;
+        }
+        
+        // Display alerts
+        let alertsHTML = '<div class="space-y-4">';
+        data.alerts.forEach(alert => {
+            alertsHTML += `
+                <div class="border border-border rounded-lg p-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        ${alert.image_url ? `<img src="${alert.image_url}" alt="Product" class="w-12 h-12 object-cover rounded-lg">` : '<div class="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">📦</div>'}
+                        <div>
+                            <h3 class="font-medium text-text-primary">${alert.product_name}</h3>
+                            <p class="text-sm text-text-secondary">${alert.alert_text}</p>
+                            <p class="text-xs text-text-secondary">Current: ${alert.current_price} • Created: ${alert.created_at}</p>
+                        </div>
+                    </div>
+                    <form method="POST" action="price-alerts.php" style="display: inline;">
+                        <input type="hidden" name="csrf_token" value="${csrfToken}">
+                        <input type="hidden" name="action" value="remove_alert">
+                        <input type="hidden" name="alert_id" value="${alert.id}">
+                        <input type="hidden" name="user_email" value="${email}">
+                        <button type="submit" class="text-error-600 hover:text-error-700 text-sm"
+                                onclick="return confirm('Remove this price alert?')">
+                            🗑️ Remove
+                        </button>
+                    </form>
+                </div>
+            `;
+        });
+        alertsHTML += '</div>';
+        
+        container.innerHTML = alertsHTML;
+    })
+    .catch(error => {
+        console.error('Error:', error);
         container.innerHTML = `
-            <div class="text-center py-8 text-text-secondary">
+            <div class="text-center py-8 text-error-600">
                 <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-                <p>No active alerts found for ${email}</p>
-                <p class="text-sm mt-2">Set up your first price alert using the form on the left!</p>
+                <p>Failed to load alerts. Please try again.</p>
             </div>
         `;
-    }, 1000);
+    });
 }
 
 function quickAlert(productId, productName, currentPrice) {
@@ -297,18 +362,74 @@ function quickAlert(productId, productName, currentPrice) {
     alert(`Price alert set for ${productName} at ₱${parseFloat(targetPrice).toFixed(2)}!`);
 }
 
+// Handle alert type changes - show/hide target price field
+document.getElementById('alert_type').addEventListener('change', function() {
+    const targetPriceContainer = document.getElementById('target_price_container');
+    const targetPriceInput = document.getElementById('target_price');
+    const label = targetPriceContainer.querySelector('label');
+    
+    if (this.value === 'change') {
+        // For "any price change", make target price optional and hide it
+        targetPriceContainer.style.opacity = '0.5';
+        targetPriceInput.removeAttribute('required');
+        targetPriceInput.value = '';
+        targetPriceInput.placeholder = 'Not required for any price change';
+        label.textContent = 'Target Price (₱) - Optional';
+    } else {
+        // For specific price thresholds, make target price required
+        targetPriceContainer.style.opacity = '1';
+        targetPriceInput.setAttribute('required', 'required');
+        targetPriceInput.placeholder = '0.00';
+        label.textContent = 'Target Price (₱)';
+        
+        // Auto-fill based on current product price if available
+        const productSelect = document.getElementById('product_id');
+        if (productSelect.value) {
+            const selectedOption = productSelect.options[productSelect.selectedIndex];
+            const priceText = selectedOption.text.split(' - ')[1];
+            if (priceText) {
+                const currentPrice = parseFloat(priceText.replace('₱', ''));
+                let targetPrice;
+                if (this.value === 'below') {
+                    targetPrice = (currentPrice * 0.9).toFixed(2); // 10% below current price
+                } else if (this.value === 'above') {
+                    targetPrice = (currentPrice * 1.1).toFixed(2); // 10% above current price
+                }
+                if (targetPrice) {
+                    targetPriceInput.value = targetPrice;
+                }
+            }
+        }
+    }
+});
+
 // Auto-fill target price based on current price
 document.getElementById('product_id').addEventListener('change', function() {
     const selectedOption = this.options[this.selectedIndex];
-    if (selectedOption.value) {
+    const alertType = document.getElementById('alert_type').value;
+    
+    if (selectedOption.value && alertType !== 'change') {
         const priceText = selectedOption.text.split(' - ')[1];
         if (priceText) {
             const currentPrice = parseFloat(priceText.replace('₱', ''));
-            const targetPrice = (currentPrice * 0.9).toFixed(2); // 10% below current price
+            let targetPrice;
+            if (alertType === 'below') {
+                targetPrice = (currentPrice * 0.9).toFixed(2); // 10% below current price
+            } else if (alertType === 'above') {
+                targetPrice = (currentPrice * 1.1).toFixed(2); // 10% above current price
+            } else {
+                targetPrice = (currentPrice * 0.9).toFixed(2); // Default to below
+            }
             document.getElementById('target_price').value = targetPrice;
         }
     }
-};
+});
+
+// Initialize the form state on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Trigger alert type change to set initial state
+    document.getElementById('alert_type').dispatchEvent(new Event('change'));
+});
 </script>
 
     <!-- Scroll Animation Styles -->

@@ -218,6 +218,12 @@ function handlePriceAlerts($method) {
 function handleShoppingList($method) {
     $session_id = sanitizeInput($_GET['session'] ?? session_id());
     
+    // Debug logging - log session info
+    if (isset($_GET['debug']) || isset($_POST['debug'])) {
+        error_log("ShoppingList API Debug - Method: $method, Session ID: $session_id, Session status: " . 
+                 (session_status() === PHP_SESSION_ACTIVE ? 'Active' : 'Not active'));
+    }
+    
     switch ($method) {
         case 'GET':
             $items = getShoppingList($session_id);

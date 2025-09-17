@@ -1,0 +1,76 @@
+{"timestamp":"2025-09-17 10:39:45","to":"wompskiwompwomp@gmail.com","subject":"\ud83d\udd14 Price Alert: Kamatis - FarmScout Online","status":"SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 10:42:29","to":"livingtriburnal06@gmail.com","subject":"Test Email - FarmScout Online Email System","status":"SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 10:42:47","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kamatis - FarmScout Online","status":"SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 10:52:50","to":"test@example.com","subject":"\ud83d\udd14 Price Alert: Kamatis - FarmScout Online","status":"SENT","error":null,"ip":"CLI"}
+{"timestamp":"2025-09-17 10:55:08","to":"test@example.com","subject":"\ud83d\udd14 Price Alert: Kamatis - FarmScout Online","status":"SENT","error":null,"ip":"CLI"}
+{"timestamp":"2025-09-17 11:25:32","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 11:25:32","to":"livingtriburnal06@gmail.com","subject":"Price Alert: Kangkong","status":"ALERT_SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 11:25:55","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 11:25:55","to":"livingtriburnal06@gmail.com","subject":"Price Alert: Kangkong","status":"ALERT_SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 11:30:35","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 11:30:35","to":"livingtriburnal06@gmail.com","subject":"Price Alert: Kangkong","status":"ALERT_SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 11:35:02","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 11:35:02","to":"livingtriburnal06@gmail.com","subject":"Price Alert: Kangkong","status":"ALERT_SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 12:04:54","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 12:04:54","to":"livingtriburnal06@gmail.com","subject":"Price Alert: Kangkong","status":"ALERT_SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 12:12:41","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 12:12:41","to":"livingtriburnal06@gmail.com","subject":"Price Alert: Kangkong","status":"ALERT_SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 12:56:27","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 12:56:27","to":"livingtriburnal06@gmail.com","subject":"Price Alert: Kangkong","status":"ALERT_SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 14:09:04","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"SIMULATED","error":"No mail server configured","ip":"::1"}
+{"timestamp":"2025-09-17 14:09:04","to":"livingtriburnal06@gmail.com","subject":"Price Alert: Kangkong","status":"ALERT_SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 14:10:04","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"SIMULATED","error":"No mail server configured","ip":"::1"}
+{"timestamp":"2025-09-17 14:10:04","to":"livingtriburnal06@gmail.com","subject":"Price Alert: Kangkong","status":"ALERT_SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 14:10:04","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"SIMULATED","error":"No mail server configured","ip":"::1"}
+{"timestamp":"2025-09-17 14:10:04","to":"livingtriburnal06@gmail.com","subject":"Price Alert: Kangkong","status":"ALERT_SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 14:12:24","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"FAILED","error":"Mail function returned false","ip":"::1"}
+{"timestamp":"2025-09-17 14:12:26","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"FAILED","error":"Mail function returned false","ip":"::1"}
+{"timestamp":"2025-09-17 14:12:28","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"FAILED","error":"Mail function returned false","ip":"::1"}
+{"timestamp":"2025-09-17 14:21:03","to":"livingtriburnal06@gmail.com","subject":"\u2705 Email System Test - FarmScout Online","status":"FAILED","error":"Mail function returned false","ip":"::1"}
+{"timestamp":"2025-09-17 14:22:43","to":"wompskiwompwomp@gmail.com","subject":"\u2705 Email System Test - FarmScout Online","status":"FAILED","error":"Mail function returned false","ip":"::1"}
+{"timestamp":"2025-09-17 14:24:46","to":"wompskiwompwomp@gmail.com","subject":"\u2705 Email System Test - FarmScout Online","status":"FAILED","error":"Mail function returned false","ip":"::1"}
+{"timestamp":"2025-09-17 14:26:32","to":"wompskiwompwomp@gmail.com","subject":"\u2705 Email System Test - FarmScout Online","status":"FAILED","error":"Mail function returned false","ip":"::1"}
+{"timestamp":"2025-09-17 14:26:38","to":"wompskiwompwomp@gmail.com","subject":"\u2705 Email System Test - FarmScout Online","status":"FAILED","error":"Mail function returned false","ip":"::1"}
+{"timestamp":"2025-09-17 14:27:36","to":"wompskiwompwomp@gmail.com","subject":"\u2705 Email System Test - FarmScout Online","status":"FAILED","error":"Mail function returned false","ip":"::1"}
+{"timestamp":"2025-09-17 14:32:52","to":"wompskiwompwomp@gmail.com","subject":"\u2705 Email System Test - FarmScout Online","status":"FAILED","error":"Mail function returned false","ip":"::1"}
+{"timestamp":"2025-09-17 14:37:35","to":"wompskiwompwomp@gmail.com","subject":"\u2705 Email System Test - FarmScout Online","status":"SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 14:40:58","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"::1"}
+{"timestamp":"2025-09-17 14:41:00","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"::1"}
+{"timestamp":"2025-09-17 14:41:02","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"::1"}
+{"timestamp":"2025-09-17 14:41:04","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"::1"}
+{"timestamp":"2025-09-17 14:48:53","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"::1"}
+{"timestamp":"2025-09-17 14:48:55","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"::1"}
+{"timestamp":"2025-09-17 14:48:57","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"::1"}
+{"timestamp":"2025-09-17 14:48:59","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"::1"}
+{"timestamp":"2025-09-17 14:49:01","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"::1"}
+{"timestamp":"2025-09-17 14:54:41","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"CLI"}
+{"timestamp":"2025-09-17 14:54:42","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"CLI"}
+{"timestamp":"2025-09-17 14:54:44","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"CLI"}
+{"timestamp":"2025-09-17 14:54:46","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"CLI"}
+{"timestamp":"2025-09-17 14:54:48","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"CLI"}
+{"timestamp":"2025-09-17 14:55:19","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"CLI"}
+{"timestamp":"2025-09-17 14:55:21","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"CLI"}
+{"timestamp":"2025-09-17 14:55:23","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"CLI"}
+{"timestamp":"2025-09-17 14:55:25","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"CLI"}
+{"timestamp":"2025-09-17 14:55:26","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"SMTP Error: Could not authenticate.","ip":"CLI"}
+{"timestamp":"2025-09-17 14:57:28","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"Could not instantiate mail function.","ip":"CLI"}
+{"timestamp":"2025-09-17 14:57:30","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"Could not instantiate mail function.","ip":"CLI"}
+{"timestamp":"2025-09-17 14:57:32","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"Could not instantiate mail function.","ip":"CLI"}
+{"timestamp":"2025-09-17 14:57:34","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"Could not instantiate mail function.","ip":"CLI"}
+{"timestamp":"2025-09-17 14:57:36","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"ERROR","error":"Could not instantiate mail function.","ip":"CLI"}
+{"timestamp":"2025-09-17 15:04:09","to":"wompskiwompwomp@gmail.com","subject":"\u2705 Email System Test - FarmScout Online","status":"SENT","error":null,"ip":"CLI"}
+{"timestamp":"2025-09-17 15:04:12","to":"wompskiwompwomp@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"SENT","error":null,"ip":"CLI"}
+{"timestamp":"2025-09-17 15:06:13","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 15:06:13","to":"livingtriburnal06@gmail.com","subject":"Price Alert: Kangkong","status":"ALERT_SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 15:06:16","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 15:06:16","to":"livingtriburnal06@gmail.com","subject":"Price Alert: Kangkong","status":"ALERT_SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 15:06:19","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 15:06:19","to":"livingtriburnal06@gmail.com","subject":"Price Alert: Kangkong","status":"ALERT_SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 15:06:21","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 15:06:21","to":"livingtriburnal06@gmail.com","subject":"Price Alert: Kangkong","status":"ALERT_SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 15:06:25","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 15:06:25","to":"livingtriburnal06@gmail.com","subject":"Price Alert: Kangkong","status":"ALERT_SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 15:06:28","to":"livingtriburnal06@gmail.com","subject":"\ud83d\udd14 Price Alert: Kangkong - FarmScout Online","status":"SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 15:06:28","to":"livingtriburnal06@gmail.com","subject":"Price Alert: Kangkong","status":"ALERT_SENT","error":null,"ip":"::1"}
+{"timestamp":"2025-09-17 15:36:59","to":"wompskiwompwomp@gmail.com","subject":"\ud83d\udd14 Price Alert: Kamatis - FarmScout Online","status":"SENT","error":null,"ip":"CLI"}
+{"timestamp":"2025-09-17 15:46:50","to":"wompskiwompwomp@gmail.com","subject":"\ud83d\udd14 Price Alert: Kamatis - FarmScout Online","status":"SENT","error":null,"ip":"CLI"}

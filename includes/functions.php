@@ -2,13 +2,16 @@
 require_once 'config/database.php';
 
 // Get database connection
-function getDB() {
-    $database = new Database();
-    return $database->getConnection();
+if (!function_exists('getDB')) {
+    function getDB() {
+        $database = new Database();
+        return $database->getConnection();
+    }
 }
 
 // Get all products with category information
-function getAllProducts() {
+if (!function_exists('getAllProducts')) {
+    function getAllProducts() {
     $conn = getDB();
     $query = "SELECT p.*, c.name as category_name, c.filipino_name as category_filipino 
               FROM products p 
@@ -19,10 +22,12 @@ function getAllProducts() {
     $stmt = $conn->prepare($query);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 // Get featured products (limit 4)
-function getFeaturedProducts() {
+if (!function_exists('getFeaturedProducts')) {
+    function getFeaturedProducts() {
     $conn = getDB();
     $query = "SELECT p.*, c.name as category_name, c.filipino_name as category_filipino 
               FROM products p 
@@ -34,20 +39,24 @@ function getFeaturedProducts() {
     $stmt = $conn->prepare($query);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 // Get all categories
-function getCategories() {
+if (!function_exists('getCategories')) {
+    function getCategories() {
     $conn = getDB();
     $query = "SELECT * FROM categories WHERE is_active = 1 ORDER BY sort_order ASC";
     
     $stmt = $conn->prepare($query);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 // Get products by category
-function getProductsByCategory($category_id) {
+if (!function_exists('getProductsByCategory')) {
+    function getProductsByCategory($category_id) {
     $conn = getDB();
     $query = "SELECT p.*, c.name as category_name, c.filipino_name as category_filipino 
               FROM products p 
@@ -59,10 +68,12 @@ function getProductsByCategory($category_id) {
     $stmt->bindParam(':category_id', $category_id);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 // Search products
-function searchProducts($search_term) {
+if (!function_exists('searchProducts')) {
+    function searchProducts($search_term) {
     $conn = getDB();
     $search_term = '%' . $search_term . '%';
     
@@ -77,10 +88,12 @@ function searchProducts($search_term) {
     $stmt->bindParam(':search_term', $search_term);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 // Add new product
-function addProduct($data) {
+if (!function_exists('addProduct')) {
+    function addProduct($data) {
     $conn = getDB();
     $query = "INSERT INTO products (name, filipino_name, description, category_id, current_price, previous_price, unit, image_url, is_featured, is_active) 
               VALUES (:name, :filipino_name, :description, :category_id, :current_price, :previous_price, :unit, :image_url, :is_featured, 1)";
@@ -97,10 +110,12 @@ function addProduct($data) {
     $stmt->bindParam(':is_featured', $data['is_featured']);
     
     return $stmt->execute();
+    }
 }
 
 // Update product
-function updateProduct($id, $data) {
+if (!function_exists('updateProduct')) {
+    function updateProduct($id, $data) {
     $conn = getDB();
     $query = "UPDATE products SET 
               name = :name, 
@@ -128,10 +143,12 @@ function updateProduct($id, $data) {
     $stmt->bindParam(':is_featured', $data['is_featured']);
     
     return $stmt->execute();
+    }
 }
 
 // Delete product (soft delete)
-function deleteProduct($id) {
+if (!function_exists('deleteProduct')) {
+    function deleteProduct($id) {
     $conn = getDB();
     $query = "UPDATE products SET is_active = 0, updated_at = CURRENT_TIMESTAMP WHERE id = :id";
     
@@ -139,16 +156,20 @@ function deleteProduct($id) {
     $stmt->bindParam(':id', $id);
     
     return $stmt->execute();
+    }
 }
 
 // Calculate price change
-function getPriceChange($current_price, $previous_price) {
+if (!function_exists('getPriceChange')) {
+    function getPriceChange($current_price, $previous_price) {
     if ($previous_price == 0) return 0;
     return $current_price - $previous_price;
+    }
 }
 
 // Format price change display
-function formatPriceChange($current_price, $previous_price) {
+if (!function_exists('formatPriceChange')) {
+    function formatPriceChange($current_price, $previous_price) {
     $change = getPriceChange($current_price, $previous_price);
     
     if ($change == 0) {
@@ -158,10 +179,12 @@ function formatPriceChange($current_price, $previous_price) {
     } else {
         return ['class' => 'text-success', 'icon' => 'down', 'text' => '-₱' . number_format(abs($change), 2)];
     }
+    }
 }
 
 // Get market status
-function getMarketStatus() {
+if (!function_exists('getMarketStatus')) {
+    function getMarketStatus() {
     $conn = getDB();
     $query = "SELECT COUNT(*) as active_vendors FROM vendors WHERE is_active = 1";
     
@@ -174,15 +197,20 @@ function getMarketStatus() {
         'active_vendors' => $result['active_vendors'] ?? 42,
         'last_updated' => date('g:i A')
     ];
+    }
 }
 
 // Sanitize input
-function sanitizeInput($data) {
-    return htmlspecialchars(strip_tags(trim($data)));
+if (!function_exists('sanitizeInput')) {
+    function sanitizeInput($data) {
+        return htmlspecialchars(strip_tags(trim($data)));
+    }
 }
 
 // Format currency
-function formatCurrency($amount) {
-    return '₱' . number_format($amount, 2);
+if (!function_exists('formatCurrency')) {
+    function formatCurrency($amount) {
+        return '₱' . number_format($amount, 2);
+    }
 }
 ?>

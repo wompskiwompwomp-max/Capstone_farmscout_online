@@ -11,6 +11,13 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
     if (isset($_GET['get_shopping_list']) && $_GET['get_shopping_list'] === '1') {
         // Get shopping list data
         $session_id = session_id();
+        
+        // Debug output for AJAX shopping list request
+        if (isset($_GET['debug'])) {
+            error_log("AJAX Shopping List Debug - Session ID: $session_id, Session status: " . 
+                     (session_status() === PHP_SESSION_ACTIVE ? 'Active' : 'Not active'));
+        }
+        
         $shopping_list = getShoppingList($session_id);
         $total_amount = 0;
         $total_items = 0;
@@ -80,6 +87,12 @@ $message_type = '';
 
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Debug session info for POST requests
+    if (isset($_GET['debug']) || isset($_POST['debug'])) {
+        error_log("POST Handler Debug - Session ID: $session_id, Action: " . ($_POST['action'] ?? 'none') . ", Session status: " . 
+                 (session_status() === PHP_SESSION_ACTIVE ? 'Active' : 'Not active'));
+    }
+    
     if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
         $message = 'Invalid security token. Please try again.';
         $message_type = 'error';
@@ -162,6 +175,22 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
 $shopping_list = getShoppingList($session_id);
 $total_amount = 0;
 $total_items = 0;
+
+// Debug session and shopping list
+if (isset($_GET['debug'])) {
+    echo "<div style='background: #000; color: #0f0; padding: 10px; margin: 10px; font-family: monospace;'>";
+    echo "<strong>Session Debug:</strong><br>";
+    echo "Session ID: " . $session_id . "<br>";
+    echo "Shopping list items: " . count($shopping_list) . "<br>";
+    echo "Session status: " . (session_status() === PHP_SESSION_ACTIVE ? 'Active' : 'Not active') . "<br>";
+    if (!empty($shopping_list)) {
+        echo "<strong>Items in shopping list:</strong><br>";
+        foreach ($shopping_list as $item) {
+            echo "- ID: {$item['id']}, Product: {$item['filipino_name']}, Quantity: {$item['quantity']}<br>";
+        }
+    }
+    echo "</div>";
+}
 
 foreach ($shopping_list as $item) {
     $item_total = $item['current_price'] * $item['quantity'];
@@ -267,9 +296,14 @@ include 'includes/header.php';
                             <span class="font-semibold text-primary-700">
                                 Showing <?php echo count($search_results); ?> result<?php echo count($search_results) !== 1 ? 's' : ''; ?> for "<?php echo htmlspecialchars($search_term); ?>"
                             </span>
-                            <a href="shopping-list.php" class="text-primary-600 hover:text-primary-800 text-sm font-medium">
-                                Clear
-                            </a>
+                            <div class="flex space-x-3">
+                                <a href="shopping-list.php" class="text-primary-600 hover:text-primary-800 text-sm font-medium">
+                                    Clear
+                                </a>
+                                <button onclick="testDragDrop()" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                    🔧 Test Drag
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <?php 
@@ -375,7 +409,7 @@ include 'includes/header.php';
             <!-- Drop Zone -->
             <div 
                 id="drop-zone" 
-                class="border-2 border-dashed border-surface-300 rounded-lg p-8 mb-6 text-center transition-all duration-200 hidden"
+                class="border-2 border-dashed border-surface-300 rounded-lg p-8 mb-6 text-center transition-all duration-200"
             >
                 <svg class="w-12 h-12 mx-auto mb-3 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
@@ -409,23 +443,25 @@ include 'includes/header.php';
                             </div>
                             <div class="flex items-center space-x-3">
                                 <!-- Quantity Controls -->
-                                <div class="flex items-center space-x-2">
+                                <div class="flex items-center space-x-4 bg-white rounded-lg p-3 border border-surface-200">
                                     <button 
                                         onclick="updateQuantity(<?php echo $item['id']; ?>, <?php echo $item['quantity'] - 1; ?>)"
-                                        class="w-8 h-8 flex items-center justify-center bg-surface-200 hover:bg-surface-300 rounded-full text-text-secondary hover:text-text-primary transition-colors"
+                                        class="w-9 h-9 flex items-center justify-center bg-surface-100 hover:bg-error-100 hover:text-error rounded-lg text-text-secondary transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                         <?php echo $item['quantity'] <= 1 ? 'disabled' : ''; ?>
+                                        title="Decrease quantity"
                                     >
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M20 12H4"/>
                                         </svg>
                                     </button>
-                                    <span class="w-8 text-center font-semibold"><?php echo $item['quantity']; ?></span>
+                                    <span class="w-16 text-center font-bold text-lg text-primary px-2"><?php echo $item['quantity']; ?></span>
                                     <button 
                                         onclick="updateQuantity(<?php echo $item['id']; ?>, <?php echo $item['quantity'] + 1; ?>)"
-                                        class="w-8 h-8 flex items-center justify-center bg-surface-200 hover:bg-surface-300 rounded-full text-text-secondary hover:text-text-primary transition-colors"
+                                        class="w-9 h-9 flex items-center justify-center bg-surface-100 hover:bg-success-100 hover:text-success rounded-lg text-text-secondary transition-all duration-200"
+                                        title="Increase quantity"
                                     >
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                                         </svg>
                                     </button>
                                 </div>
@@ -494,7 +530,7 @@ include 'includes/header.php';
         
         <form id="add-form" method="POST" action="shopping-list.php">
             <input type="hidden" name="action" value="add_to_list">
-            <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
+            <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
             <input type="hidden" name="product_id" id="modal-product-id">
             
             <div class="mb-4">
@@ -551,20 +587,20 @@ include 'includes/header.php';
 <!-- Hidden forms for actions -->
 <form id="update-form" method="POST" action="shopping-list.php" style="display: none;">
     <input type="hidden" name="action" value="update_quantity">
-    <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
+    <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
     <input type="hidden" name="list_id" id="update-list-id">
     <input type="hidden" name="quantity" id="update-quantity">
 </form>
 
 <form id="remove-form" method="POST" action="shopping-list.php" style="display: none;">
     <input type="hidden" name="action" value="remove_item">
-    <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
+    <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
     <input type="hidden" name="list_id" id="remove-list-id">
 </form>
 
 <form id="clear-form" method="POST" action="shopping-list.php" style="display: none;">
     <input type="hidden" name="action" value="clear_list">
-    <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
+    <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
 </form>
 
 <script>
@@ -1450,12 +1486,27 @@ function initScrollAnimations() {
 let draggedElement = null;
 let dropZone = null;
 
+// JavaScript version of formatCurrency function
+function formatCurrency(amount) {
+    const num = parseFloat(amount) || 0;
+    return '₱' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 // Function to initialize drag and drop for product items
 function initDragAndDrop() {
-    console.log('Initializing drag and drop...');
-    const productItems = document.querySelectorAll('.product-item:not([data-drag-initialized])');
+    console.log('🚀 Initializing drag and drop...');
     
-    console.log('Found', productItems.length, 'product items to initialize');
+    // Check if elements exist first
+    const allProductItems = document.querySelectorAll('.product-item');
+    console.log('📊 Total .product-item elements found:', allProductItems.length);
+    
+    const productItems = document.querySelectorAll('.product-item:not([data-drag-initialized])');
+    console.log('📊 Product items without drag initialization:', productItems.length);
+    
+    if (productItems.length === 0) {
+        console.log('⚠️ No product items to initialize - might be no search results');
+        return;
+    }
     
     productItems.forEach((item, index) => {
         const productId = item.dataset.productId;
@@ -1482,11 +1533,10 @@ function initDragAndDrop() {
             draggedElement = this;
             this.classList.add('dragging');
             
-            // Show drop zone with animation
+            // Highlight drop zone during drag
             if (dropZone) {
-                dropZone.classList.remove('hidden');
                 dropZone.classList.add('border-primary-500', 'bg-primary-50');
-                console.log('Drop zone shown');
+                console.log('Drop zone highlighted');
             } else {
                 console.warn('Drop zone not found!');
             }
@@ -1501,11 +1551,10 @@ function initDragAndDrop() {
             this.classList.remove('dragging');
             draggedElement = null;
             
-            // Hide drop zone
+            // Reset drop zone appearance but keep it visible
             if (dropZone) {
-                dropZone.classList.add('hidden');
                 dropZone.classList.remove('border-primary-500', 'bg-primary-50', 'border-success-500', 'bg-success-50');
-                console.log('Drop zone hidden');
+                console.log('Drop zone appearance reset');
             }
         });
     });
@@ -1519,13 +1568,17 @@ function reinitializeInteractivity() {
 
 // Initialize drop zone events
 function initDropZone() {
+    console.log('🎯 Attempting to find drop zone...');
     dropZone = document.getElementById('drop-zone');
+    
     if (!dropZone) {
-        console.error('Drop zone not found!');
+        console.error('❌ Drop zone element not found!');
+        console.log('🔍 Available elements with IDs:', Array.from(document.querySelectorAll('[id]')).map(el => el.id));
         return;
     }
     
-    console.log('Initializing drop zone events...');
+    console.log('✅ Drop zone found:', dropZone);
+    console.log('🎯 Initializing drop zone events...');
     
     dropZone.addEventListener('dragover', function(e) {
         e.preventDefault();
@@ -1542,6 +1595,11 @@ function initDropZone() {
         e.preventDefault();
         console.log('Item dropped!', draggedElement);
         
+        if (!draggedElement) {
+            console.error('No dragged element found!');
+            return;
+        }
+        
         if (draggedElement) {
             const productId = draggedElement.dataset.productId;
             const productName = draggedElement.dataset.productName;
@@ -1556,9 +1614,32 @@ function initDropZone() {
     });
 }
 
+// Function to debug session info
+function debugSessionInfo() {
+    console.log('🔍 Session Debug Info:');
+    console.log('📍 Current URL:', window.location.href);
+    console.log('🍪 Document.cookie:', document.cookie);
+    
+    // Look for PHPSESSID in cookies
+    const cookies = document.cookie.split(';');
+    let sessionId = null;
+    for (const cookie of cookies) {
+        const [name, value] = cookie.trim().split('=');
+        if (name === 'PHPSESSID') {
+            sessionId = value;
+            break;
+        }
+    }
+    console.log('🔑 PHPSESSID from cookies:', sessionId || 'Not found');
+}
+
 // Drag and Drop Implementation
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, initializing everything...');
+    console.log('🚀 DOM loaded, initializing everything...');
+    console.log('📍 Current URL:', window.location.href);
+    
+    // Debug session info
+    debugSessionInfo();
     
     // Initialize animations
     initScrollAnimations();
@@ -1570,15 +1651,28 @@ document.addEventListener('DOMContentLoaded', function() {
     initSearchAutocomplete();
     
     // Initialize drop zone
+    console.log('🎯 Initializing drop zone...');
     initDropZone();
     
     // Initialize drag and drop for existing items
+    console.log('🎯 Initializing drag and drop for existing items...');
     initDragAndDrop();
+    
+    // Also try again after a short delay to catch any dynamically loaded content
+    setTimeout(function() {
+        console.log('🔄 Re-initializing drag and drop after delay...');
+        initDragAndDrop();
+    }, 1000);
+    
+    console.log('✅ All initialization complete!');
 });
 
 // Quick add function for drag & drop - using AJAX to avoid page reload
 function addToListQuick(productId, productName, productPrice, productUnit) {
     console.log('addToListQuick called with:', { productId, productName, productPrice, productUnit });
+    
+    // Debug session info before AJAX call
+    debugSessionInfo();
     
     // Show loading feedback
     showTemporaryMessage('Adding ' + productName + ' to shopping list...', 'info');
@@ -1618,6 +1712,7 @@ function addToListQuick(productId, productName, productPrice, productUnit) {
     // Send AJAX request
     fetch('shopping-list.php', {
         method: 'POST',
+        credentials: 'same-origin', // Ensure cookies (including session) are sent
         body: formData
     })
     .then(response => {
@@ -1654,7 +1749,9 @@ function addToListQuick(productId, productName, productPrice, productUnit) {
 function updateShoppingListDisplay() {
     console.log('Fetching shopping list data...');
     // Fetch updated shopping list data
-    fetch('shopping-list.php?ajax=1&get_shopping_list=1')
+    fetch('shopping-list.php?ajax=1&get_shopping_list=1&debug=1', {
+        credentials: 'same-origin' // Ensure cookies (including session) are sent
+    })
         .then(response => {
             console.log('Shopping list data response status:', response.status);
             console.log('Shopping list data response headers:', response.headers.get('content-type'));
@@ -2028,6 +2125,36 @@ function showTemporaryMessage(message, type) {
             }
         }, 300);
     }, 4000);
+}
+
+// Debug function to manually test drag and drop
+function testDragDrop() {
+    console.log('🔧 Manual drag & drop test triggered!');
+    
+    // Show current state
+    const allProductItems = document.querySelectorAll('.product-item');
+    const initializedItems = document.querySelectorAll('.product-item[data-drag-initialized="true"]');
+    const dropZoneElement = document.getElementById('drop-zone');
+    
+    console.log('📊 Total product items:', allProductItems.length);
+    console.log('📊 Initialized items:', initializedItems.length);
+    console.log('🎯 Drop zone found:', !!dropZoneElement);
+    
+    if (allProductItems.length === 0) {
+        alert('⚠️ No product items found! Search for products first.');
+        return;
+    }
+    
+    if (!dropZoneElement) {
+        alert('❌ Drop zone not found!');
+        return;
+    }
+    
+    // Re-initialize drag and drop
+    console.log('🔄 Re-initializing drag and drop...');
+    initDragAndDrop();
+    
+    alert('✅ Drag & Drop reinitialized!\n\nTotal items: ' + allProductItems.length + '\nInitialized: ' + document.querySelectorAll('.product-item[data-drag-initialized="true"]').length + '\n\nTry dragging a product now!');
 }
 
 </script>

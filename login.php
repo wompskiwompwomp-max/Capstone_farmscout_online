@@ -98,7 +98,7 @@ include 'includes/header.php';
             
             <form class="space-y-6" method="POST" action="login.php">
                 <input type="hidden" name="action" value="login">
-                <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
+                <input type="hidden" name="csrf_token" value="<?php echo getCSRFToken(); ?>">
                 
                 <div>
                     <label for="username" class="block text-sm font-medium text-text-primary mb-2">

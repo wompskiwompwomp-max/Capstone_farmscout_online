@@ -11,11 +11,11 @@ $email_config = [
     'from_name' => 'FarmScout Online - Baloan Public Market',
     
     // SMTP Settings (set use_smtp to true to enable SMTP)
-    'use_smtp' => false, // Change to true for production SMTP
+    'use_smtp' => true, // Change to true for production SMTP
     'smtp_host' => 'smtp.gmail.com', // Gmail SMTP server
     'smtp_port' => 587, // Gmail SMTP port (587 for TLS, 465 for SSL)
-    'smtp_username' => '', // Your Gmail address
-    'smtp_password' => '', // Your Gmail app password or regular password
+    'smtp_username' => 'wompskiwompwomp@gmail.com', // Your Gmail address - REPLACE THIS
+    'smtp_password' => 'jijnrjxxjijplobh', // Your Gmail app password - REPLACE THIS
     
     // Alternative SMTP providers:
     // 'smtp_host' => 'smtp.outlook.com', // Outlook
@@ -29,7 +29,7 @@ $email_config = [
     'support_email' => 'support@farmscout.com',
     
     // Testing mode - when true, emails are logged instead of sent
-    'test_mode' => true, // Set to false in production
+    'test_mode' => false, // Set to false in production
     'test_email' => 'test@example.com', // Where test emails are sent
     
     // Email templates directory
@@ -40,22 +40,7 @@ $email_config = [
     'email_log_file' => __DIR__ . '/../logs/email.log',
 ];
 
-/**
- * Get email configuration
- */
-function getEmailConfig() {
-    global $email_config;
-    return $email_config;
-}
 
-/**
- * Get mailer instance with configuration
- */
-function getMailer() {
-    require_once __DIR__ . '/../includes/email.php';
-    $config = getEmailConfig();
-    return new SimpleMailer($config);
-}
 
 /**
  * Log email activity
