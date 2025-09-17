@@ -138,6 +138,74 @@
 .category-card:hover {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     transform: translateY(-2px);
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+/* Admin Panel Category Overview Cards ONLY */
+/* Target ONLY category cards (bg-white shadow-card), NOT product cards (border border-surface-200) */
+.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-6 > div.bg-white.rounded-lg.shadow-card {
+    transition: all 0.6s ease;
+}
+
+.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-6 > div.bg-white.rounded-lg.shadow-card:hover {
+    background-color: #000000 !important;
+    color: #FFFFFF !important;
+    transform: translateY(-2px);
+    transition: all 0.6s ease;
+}
+
+/* Ensure all text inside ONLY category cards turns white on hover */
+.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-6 > div.bg-white.rounded-lg.shadow-card:hover h3,
+.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-6 > div.bg-white.rounded-lg.shadow-card:hover p,
+.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-6 > div.bg-white.rounded-lg.shadow-card:hover .text-text-primary,
+.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-6 > div.bg-white.rounded-lg.shadow-card:hover .text-text-secondary,
+.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-6 > div.bg-white.rounded-lg.shadow-card:hover .text-primary,
+.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-6 > div.bg-white.rounded-lg.shadow-card:hover .text-accent,
+.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-6 > div.bg-white.rounded-lg.shadow-card:hover span {
+    color: #FFFFFF !important;
+}
+
+/* Ensure SVG icons also turn white on hover - ONLY category cards */
+.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-6 > div.bg-white.rounded-lg.shadow-card:hover svg {
+    color: #FFFFFF !important;
+}
+
+/* Ensure the colored background of icon containers also changes on hover */
+.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-6 > div.bg-white.rounded-lg.shadow-card:hover .bg-primary-100 {
+    background-color: #333333 !important;
+}
+
+/* Ensure buttons inside category cards adapt to dark theme on hover */
+.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-6 > div.bg-white.rounded-lg.shadow-card:hover .btn-primary {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+}
+
+.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-6 > div.bg-white.rounded-lg.shadow-card:hover .btn-secondary {
+    background-color: #333333 !important;
+    color: #FFFFFF !important;
+    border: 1px solid #555555;
+}
+
+/* Ensure all text inside the category card turns white on hover (legacy support) */
+.category-card:hover h3,
+.category-card:hover p,
+.category-card:hover .text-text-primary,
+.category-card:hover .text-text-secondary,
+.category-card:hover .text-primary,
+.category-card:hover .text-accent {
+    color: #FFFFFF;
+}
+
+/* Ensure SVG icons also turn white on hover (legacy support) */
+.category-card:hover svg {
+    color: #FFFFFF;
+}
+
+/* Ensure the colored background of icon containers also changes on hover (legacy support) */
+.category-card:hover .bg-primary-100 {
+    background-color: #333333;
 }
 
 .product-card {
@@ -156,6 +224,128 @@
 /* Modal Improvements */
 .modal-backdrop {
     backdrop-filter: blur(4px);
+    animation: fadeInBackdrop 0.3s ease-out;
+}
+
+@keyframes fadeInBackdrop {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    to {
+        opacity: 1;
+        backdrop-filter: blur(4px);
+    }
+}
+
+/* Enhanced Modal Animations */
+.modal-backdrop .card-elevated {
+    animation: slideInModal 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes slideInModal {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Email List Styling */
+.email-option {
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.email-option:hover {
+    transform: translateX(2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.email-option.selected {
+    background-color: #ECFDF5 !important;
+    border-color: #10B981 !important;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+}
+
+/* Search Input Focus Enhancement */
+.input-field:focus {
+    box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Modal Compact Design */
+#removeUserModal .card-elevated {
+    max-width: 28rem; /* Ensure compact width */
+}
+
+/* Search Input Icon Spacing Fix */
+#removeUserModal .input-field {
+    padding-left: 3rem; /* Ensure enough space for search icon */
+    padding-right: 1rem;
+}
+
+/* Email List Compact Styling */
+#removeUserModal .email-option {
+    font-size: 0.875rem; /* Slightly smaller text */
+}
+
+#removeUserModal .email-option .status-badge {
+    font-size: 0.75rem; /* Smaller badges */
+    padding: 0.125rem 0.5rem;
+}
+
+/* Compact button styling in modal */
+#removeUserModal .btn-secondary,
+#removeUserModal .btn-error {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+/* Checkbox styling improvements */
+#removeUserModal .email-checkbox {
+    width: 1rem;
+    height: 1rem;
+    accent-color: #10B981;
+}
+
+#removeUserModal #selectAllEmails {
+    width: 1rem;
+    height: 1rem;
+    accent-color: #111827;
+}
+
+/* Selected email list styling */
+#selectedEmailList .font-mono {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+}
+
+/* Simple Modal Improvements for FarmScout Theme */
+#removeUserModal .email-option:hover {
+    background-color: #f9fafb;
+}
+
+/* Smooth transitions for modal */
+#removeUserModal {
+    backdrop-filter: blur(4px);
+}
+
+#removeUserModal .bg-white {
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* Price Change Indicators */

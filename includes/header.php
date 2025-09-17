@@ -35,6 +35,126 @@
             });
         }
     </script>
+    
+    <!-- Logo Animation Styles -->
+    <style>
+        /* Animated Logo Enhancements */
+        .animated-logo {
+            border-radius: 8px;
+        }
+        
+        /* Mobile optimization */
+        @media (max-width: 640px) {
+            .animated-logo {
+                height: 2.5rem; /* h-10 equivalent */
+                width: 2.5rem;
+                border-radius: 6px;
+            }
+            
+        }
+        
+        /* Tablet optimization */
+        @media (min-width: 641px) and (max-width: 768px) {
+            .animated-logo {
+                height: 3rem; /* h-12 equivalent */
+                width: 3rem;
+            }
+        }
+        
+        /* Desktop optimization */
+        @media (min-width: 769px) {
+            .animated-logo {
+                height: 3.5rem; /* h-14 equivalent */
+                width: 3.5rem;
+            }
+        }
+        
+        /* Smooth loading for GIF */
+        .animated-logo {
+            opacity: 0;
+            animation: fadeInLogo 0.5s ease-in forwards;
+        }
+        
+        @keyframes fadeInLogo {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* Prefers reduced motion - respect accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            .animated-logo {
+                animation: none;
+                opacity: 1;
+                transform: none;
+            }
+            
+        }
+        
+        /* Navigation Underline Reveal Animation */
+        .modern-navigation {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .modern-navigation::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #000000; /* Black underline */
+            transition: width 0.3s ease;
+        }
+        
+        .modern-navigation:hover::before {
+            width: 100%;
+        }
+        
+        /* Keep active page underline always visible */
+        .modern-navigation.text-black::before {
+            width: 100%;
+            background-color: #000000;
+        }
+        
+        /* Ensure hover doesn't interfere with active state */
+        .modern-navigation.text-black:hover::before {
+            width: 100%;
+        }
+        
+        /* Mobile navigation underline animation */
+        @media (max-width: 767px) {
+            .mobile-nav-item {
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .mobile-nav-item::before {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background-color: #000000;
+                transition: width 0.3s ease;
+            }
+            
+            .mobile-nav-item:hover::before {
+                width: 100%;
+            }
+            
+            .mobile-nav-item.text-gray-900::before {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body class="bg-background min-h-screen">
     <!-- Navigation Header -->
@@ -44,7 +164,10 @@
                 <!-- Logo -->
                 <div class="flex items-center flex-shrink-0 mr-12">
                     <div class="flex-shrink-0">
-                        <img src="assets/images/farmscoutlogo.png" alt="FarmScout - Tapat na Presyo" class="h-10 w-10 object-contain logo-img" />
+                        <img src="assets/images/gif wazulafu no bg.gif" 
+                             alt="FarmScout - Tapat na Presyo" 
+                             class="h-12 w-12 md:h-14 md:w-14 object-contain logo-img animated-logo" 
+                             onerror="this.src='assets/images/farmscoutlogo.png'; this.onerror=null;" />
                     </div>
                     <div class="ml-4">
                         <h1 class="modern-logo-text">FARMSCOUT</h1>
@@ -112,19 +235,19 @@
             <!-- Mobile Navigation Menu -->
             <div id="mobile-menu" class="md:hidden hidden border-t border-gray-200 bg-white">
                 <div class="px-6 pt-4 pb-6 space-y-4">
-                    <a href="index.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'index.php' ? 'text-gray-900 font-semibold' : 'text-gray-600 hover:text-gray-900'; ?> block text-sm font-medium transition-colors duration-200">
+                    <a href="index.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'index.php' ? 'text-gray-900 font-semibold' : 'text-gray-600 hover:text-gray-900'; ?> block text-sm font-medium transition-colors duration-200 mobile-nav-item">
                         HOME
                     </a>
-                    <a href="categories.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'categories.php' ? 'text-gray-900 font-semibold' : 'text-gray-600 hover:text-gray-900'; ?> block text-sm font-medium transition-colors duration-200">
+                    <a href="categories.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'categories.php' ? 'text-gray-900 font-semibold' : 'text-gray-600 hover:text-gray-900'; ?> block text-sm font-medium transition-colors duration-200 mobile-nav-item">
                         CATEGORIES
                     </a>
-                    <a href="enhanced-search.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'enhanced-search.php' ? 'text-gray-900 font-semibold' : 'text-gray-600 hover:text-gray-900'; ?> block text-sm font-medium transition-colors duration-200">
+                    <a href="enhanced-search.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'enhanced-search.php' ? 'text-gray-900 font-semibold' : 'text-gray-600 hover:text-gray-900'; ?> block text-sm font-medium transition-colors duration-200 mobile-nav-item">
                         SEARCH
                     </a>
-                    <a href="price-alerts.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'price-alerts.php' ? 'text-gray-900 font-semibold' : 'text-gray-600 hover:text-gray-900'; ?> block text-sm font-medium transition-colors duration-200">
+                    <a href="price-alerts.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'price-alerts.php' ? 'text-gray-900 font-semibold' : 'text-gray-600 hover:text-gray-900'; ?> block text-sm font-medium transition-colors duration-200 mobile-nav-item">
                         PRICE ALERTS
                     </a>
-                    <a href="shopping-list.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'shopping-list.php' ? 'text-gray-900 font-semibold' : 'text-gray-600 hover:text-gray-900'; ?> block text-sm font-medium transition-colors duration-200">
+                    <a href="shopping-list.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'shopping-list.php' ? 'text-gray-900 font-semibold' : 'text-gray-600 hover:text-gray-900'; ?> block text-sm font-medium transition-colors duration-200 mobile-nav-item">
                         SHOPPING LIST
                     </a>
                     <div class="border-t border-gray-200 pt-4 mt-4">

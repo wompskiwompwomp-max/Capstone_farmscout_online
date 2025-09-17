@@ -54,21 +54,16 @@ include 'includes/header.php';
 <div class="min-h-screen bg-gradient-to-br from-primary-50 to-surface-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
         <div>
-            <!-- Updated logo to match header -->
-            <div class="mx-auto flex items-center justify-center">
-                <div class="flex items-center">
-                    <img src="assets/images/farmscoutlogo.png" alt="FarmScout - Tapat na Presyo" class="h-10 w-10 object-contain" />
-                    <div class="ml-3">
-                        <h1 class="text-xl font-bold text-primary font-accent">FarmScout</h1>
-                        <p class="text-xs text-text-secondary">Tapat na Presyo</p>
-                    </div>
-                </div>
+            <!-- Logo section removed -->
+            <div class="mx-auto text-center">
+                <h1 class="text-2xl font-bold text-primary font-accent">FarmScout</h1>
+                <p class="text-sm text-text-secondary">Tapat na Presyo</p>
             </div>
             <h2 class="mt-8 text-center text-3xl font-bold text-primary">
                 Sign in to FarmScout
             </h2>
             <!-- Added more spacing between heading and subheading -->
-            <p class="mt-6 text-center text-sm text-text-secondary">
+            <p class="mt-6 text-center text-sm text-text-secondary mb-8">
                 Access the admin panel to manage products and prices
             </p>
         </div>
@@ -86,14 +81,12 @@ include 'includes/header.php';
             <?php endif; ?>
             
             <?php if ($success_message): ?>
-            <div id="success-message" class="mb-4 p-4 bg-success-100 border border-success-300 text-success-700 rounded-lg transition-all duration-300 opacity-100 transform translate-y-0">
-                <div class="flex items-center justify-center">
-                    <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                    </svg>
-                    <span class="text-center"><?php echo htmlspecialchars($success_message); ?></span>
-                </div>
-            </div>
+            <!-- Success message will be shown via JavaScript notification -->
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                showTemporaryMessage('<?php echo addslashes($success_message); ?>', 'success');
+            });
+            </script>
             <?php endif; ?>
             
             <form class="space-y-6" method="POST" action="login.php">
@@ -176,35 +169,94 @@ include 'includes/header.php';
 // Auto-focus on username field
 document.getElementById('username').focus();
 
-// Auto-fade success message
-const successMessage = document.getElementById('success-message');
-if (successMessage) {
-    // Add a close button for manual dismissal
-    const closeButton = document.createElement('button');
-    closeButton.innerHTML = '&times;';
-    closeButton.className = 'ml-2 text-success-700 hover:text-success-800 font-bold text-xl leading-none cursor-pointer';
-    closeButton.onclick = () => fadeOutMessage();
+// Show temporary message without page reload - Same as shopping list
+function showTemporaryMessage(message, type) {
+    console.log('showTemporaryMessage called:', { message, type });
     
-    const messageContainer = successMessage.querySelector('div');
-    messageContainer.appendChild(closeButton);
-    
-    // Function to handle fade out
-    function fadeOutMessage() {
-        successMessage.classList.add('fade-out');
-        
-        // Remove from DOM after fade animation completes
-        setTimeout(() => {
-            successMessage.style.display = 'none';
-        }, 300); // Match the CSS transition duration
+    // Remove any existing temporary messages
+    const existingMsg = document.getElementById('temp-message');
+    if (existingMsg) {
+        existingMsg.remove();
     }
     
-    // Start auto-fading out after 4 seconds
-    setTimeout(() => {
-        fadeOutMessage();
-    }, 4000); // Show for 4 seconds before auto-fading
+    // Create message element with simpler styling
+    const messageDiv = document.createElement('div');
+    messageDiv.id = 'temp-message';
+    messageDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        max-width: 400px;
+        padding: 16px 20px;
+        border-radius: 8px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        font-family: system-ui, -apple-system, sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        transform: translateX(100%);
+        transition: all 0.3s ease;
+    `;
     
-    // Allow manual dismissal by clicking anywhere on the message
-    successMessage.addEventListener('click', fadeOutMessage);
+    // Set colors and content based on type - Black theme with white text and icons
+    if (type === 'success') {
+        messageDiv.style.backgroundColor = '#000000'; // Pure black background
+        messageDiv.style.borderLeft = '4px solid #22c55e'; // Green accent
+        messageDiv.style.color = '#ffffff'; // Pure white text
+        messageDiv.style.border = '1px solid #333333'; // Dark border
+        messageDiv.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="assets/images/demi doggu.gif" alt="Success!" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
+                <div style="flex: 1; color: #ffffff;">${message}</div>
+                <button onclick="document.getElementById('temp-message').remove()" style="margin-left: auto; background: none; border: none; color: #ffffff; cursor: pointer; padding: 6px; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 16px; opacity: 0.7;" onmouseover="this.style.backgroundColor='#333333'; this.style.opacity='1';" onmouseout="this.style.backgroundColor='transparent'; this.style.opacity='0.7';">×</button>
+            </div>
+        `;
+    } else if (type === 'error') {
+        messageDiv.style.backgroundColor = '#000000'; // Pure black background
+        messageDiv.style.borderLeft = '4px solid #ef4444'; // Red accent
+        messageDiv.style.color = '#ffffff'; // Pure white text
+        messageDiv.style.border = '1px solid #333333'; // Dark border
+        messageDiv.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="background: #ef4444; color: #ffffff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">×</div>
+                <div style="flex: 1; color: #ffffff;">${message}</div>
+                <button onclick="document.getElementById('temp-message').remove()" style="margin-left: auto; background: none; border: none; color: #ffffff; cursor: pointer; padding: 6px; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 16px; opacity: 0.7;" onmouseover="this.style.backgroundColor='#333333'; this.style.opacity='1';" onmouseout="this.style.backgroundColor='transparent'; this.style.opacity='0.7';">×</button>
+            </div>
+        `;
+    } else {
+        messageDiv.style.backgroundColor = '#000000'; // Pure black background
+        messageDiv.style.borderLeft = '4px solid #3b82f6'; // Blue accent
+        messageDiv.style.color = '#ffffff'; // Pure white text
+        messageDiv.style.border = '1px solid #333333'; // Dark border
+        messageDiv.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="background: #3b82f6; color: #ffffff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">i</div>
+                <div style="flex: 1; color: #ffffff;">${message}</div>
+                <button onclick="document.getElementById('temp-message').remove()" style="margin-left: auto; background: none; border: none; color: #ffffff; cursor: pointer; padding: 6px; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 16px; opacity: 0.7;" onmouseover="this.style.backgroundColor='#333333'; this.style.opacity='1';" onmouseout="this.style.backgroundColor='transparent'; this.style.opacity='0.7';">×</button>
+            </div>
+        `;
+    }
+    
+    // Add to page
+    document.body.appendChild(messageDiv);
+    console.log('Message element added to DOM');
+    
+    // Animate in
+    setTimeout(() => {
+        messageDiv.style.transform = 'translateX(0)';
+        console.log('Message animated in');
+    }, 100);
+    
+    // Auto-remove after 4 seconds
+    setTimeout(() => {
+        messageDiv.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (messageDiv.parentNode) {
+                messageDiv.remove();
+                console.log('Message removed from DOM');
+            }
+        }, 300);
+    }, 4000);
 }
 
 // Form validation
@@ -214,46 +266,16 @@ document.querySelector('form').addEventListener('submit', function(e) {
     
     if (!username || !password) {
         e.preventDefault();
-        alert('Please enter both username and password.');
+        showTemporaryMessage('Please enter both username and password.', 'error');
         return false;
     }
     
     if (password.length < 6) {
         e.preventDefault();
-        alert('Password must be at least 6 characters long.');
+        showTemporaryMessage('Password must be at least 6 characters long.', 'error');
         return false;
     }
 });
 </script>
-
-<style>
-/* Enhanced success message styling */
-#success-message {
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15);
-    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-    border: 2px solid #22c55e;
-}
-
-#success-message svg {
-    color: #15803d;
-}
-
-/* Smooth fade out animation */
-#success-message.fade-out {
-    opacity: 0;
-    transform: translateY(-10px);
-}
-
-/* Pulse animation on first appearance */
-@keyframes successPulse {
-    0% { transform: scale(0.95); opacity: 0.8; }
-    50% { transform: scale(1.02); opacity: 1; }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-#success-message {
-    animation: successPulse 0.5s ease-out;
-}
-</style>
 
 <?php include 'includes/footer.php'; ?>

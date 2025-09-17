@@ -10,9 +10,9 @@ function getEnhancedMailer($config = null) {
 }
 
 // Enhanced email functions for backwards compatibility
-function sendEnhancedPriceAlert($alert_data) {
+function sendEnhancedPriceAlert($alert_data, $template_style = null) {
     $mailer = getEnhancedMailer();
-    return $mailer->sendPriceAlert($alert_data);
+    return $mailer->sendPriceAlert($alert_data, $template_style);
 }
 
 function sendEnhancedWelcomeEmail($email, $user_name) {
@@ -239,13 +239,42 @@ class FarmScoutMailer {
     }
     
     /**
-     * Send price alert email
+     * Send price alert email with template selection
      */
-    public function sendPriceAlert($alert_data) {
-        $template = $this->loadTemplate('price_alert_template.html');
+    public function sendPriceAlert($alert_data, $template_style = null) {
+        // Load template configuration
+        $template_config = $this->getTemplateConfig();
         
+        // Use provided style or fallback to configured default
+        if (!$template_style) {
+            $template_style = $template_config['default_price_alert_template'] ?? 'premium_nitro';
+        }
+        // Template selection based on style preference
+        $template_options = [
+            'special_event' => 'price_alert_special_event.html',
+            'special_event_v2' => 'price_alert_special_event_v2.html', // Email client optimized
+            'standard' => 'price_alert_template.html',
+            'professional' => 'price_alert_professional.html',
+            'dark' => 'price_alert_dark_theme.html',
+            'premium_nitro' => 'price_alert_premium_nitro.html' // New Discord-inspired template
+        ];
+        
+        // Use the requested template or fallback to premium_nitro
+        $template_name = $template_options[$template_style] ?? $template_options['premium_nitro'];
+        $template = $this->loadTemplate($template_name);
+        
+        // Fallback chain if template not found
         if (!$template) {
-            return false;
+            foreach (['premium_nitro', 'special_event_v2', 'standard', 'professional'] as $fallback_style) {
+                $fallback_template = $template_options[$fallback_style];
+                $template = $this->loadTemplate($fallback_template);
+                if ($template) break;
+            }
+            
+            if (!$template) {
+                error_log("No email template found for price alerts");
+                return false;
+            }
         }
         
         // Prepare template variables
@@ -514,6 +543,22 @@ class FarmScoutMailer {
         if (function_exists('logEmailActivity')) {
             logEmailActivity($to, $subject, $status, $error);
         }
+    }
+    
+    /**
+     * Get template configuration
+     */
+    private function getTemplateConfig() {
+        $config_file = __DIR__ . '/../config/email_templates.php';
+        if (file_exists($config_file)) {
+            return include $config_file;
+        }
+        
+        // Fallback configuration
+        return [
+            'default_price_alert_template' => 'premium_nitro',
+            'available_price_alert_templates' => []
+        ];
     }
     
     /**

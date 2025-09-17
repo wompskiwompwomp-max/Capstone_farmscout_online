@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FarmScout Price Alert - Discord Style Demo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #c084fc 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+        
+        .email-wrapper {
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        
+        .email-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            text-align: center;
+            padding: 40px 30px 30px 30px;
+            background: #ffffff;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2D5016;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .tagline {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+        
+        .greeting {
+            font-size: 18px;
+            color: #374151;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            font-size: 15px;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .product-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 30px;
+        }
+        
+        .product-image {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .product-image img {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .product-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #111827;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        
+        .product-name-en {
+            font-size: 14px;
+            color: #9ca3af;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .price-details {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+        
+        .price-row:not(:last-child) {
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .price-label {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .price-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .old-price {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+        
+        .new-price {
+            color: #059669;
+            font-weight: 600;
+        }
+        
+        .savings {
+            background: #dcfce7;
+            color: #16a34a;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        
+        .cta-section {
+            text-align: center;
+            padding: 30px;
+            background: #ffffff;
+        }
+        
+        .cta-text {
+            font-size: 15px;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #7c3aed;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        .cta-button:hover {
+            background: #6d28d9;
+        }
+        
+        .footer {
+            background: #f9fafb;
+            padding: 25px 30px;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+        }
+        
+        .footer-links {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: #7c3aed;
+            text-decoration: none;
+            font-size: 13px;
+            margin: 0 12px;
+        }
+        
+        .footer-text {
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.5;
+        }
+        
+        .email-address {
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+        
+        /* Mobile responsiveness */
+        @media only screen and (max-width: 600px) {
+            .email-wrapper {
+                padding: 20px 10px;
+            }
+            
+            .email-container {
+                border-radius: 12px;
+            }
+            
+            .header {
+                padding: 30px 20px 20px 20px;
+            }
+            
+            .product-card {
+                margin: 20px 15px;
+                padding: 20px;
+            }
+            
+            .cta-section {
+                padding: 25px 20px;
+            }
+            
+            .footer {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <div class="email-container">
+            <!-- Header -->
+            <div class="header">
+                <div class="logo">FARMSCOUT</div>
+                <div class="tagline">Tapat na Presyo</div>
+                
+                <div class="greeting">Thank you, kofi1567!</div>
+                <div class="message">
+                    Great success! Your price alert has been triggered. The Premium na Kamatis price has dropped below your target price.
+                </div>
+            </div>
+            
+            <!-- Product Card -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Premium na Kamatis">
+                </div>
+                
+                <div class="product-name">Premium na Kamatis</div>
+                <div class="product-name-en">Premium Fresh Tomatoes</div>
+                
+                <div class="price-details">
+                    <div class="price-row">
+                        <span class="price-label">Previous Price:</span>
+                        <span class="price-value old-price">₱68.00/kg</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-label">Current Price:</span>
+                        <span class="price-value new-price">₱32.00/kg</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-label">Your Target:</span>
+                        <span class="price-value">₱40.00/kg</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-label">Date Updated:</span>
+                        <span class="price-value">Jan 17, 2025, 11:24 PM</span>
+                    </div>
+                    
+                    <div class="savings">
+                        💰 You save ₱36.00 (52.9% off)
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Call to Action -->
+            <div class="cta-section">
+                <div class="cta-text">
+                    Visit our market portal to explore more deals and manage your price alerts.
+                </div>
+                <a href="#" class="cta-button">Browse Market Prices</a>
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <div class="email-address">Sent to your.email@gmail.com</div>
+                
+                <div class="footer-links">
+                    <a href="#">Visit FarmScout</a>
+                    <a href="#">Manage Alerts</a>
+                    <a href="#">Contact Support</a>
+                </div>
+                
+                <div class="footer-text">
+                    You can update or cancel your subscription by visiting your User Settings.<br><br>
+                    
+                    Need help? Contact our support team or visit us at the documented Discord or FarmScout website. Please see our Terms of Service and FAQ.<br><br>
+                    
+                    Enjoy your gains, and again, thanks for the support!<br><br>
+                    
+                    © 2025 FarmScout Online. All rights reserved.<br>
+                    Baloan Public Market Digital Platform
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

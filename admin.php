@@ -91,6 +91,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $message_type = 'error';
                 }
                 break;
+                
+            case 'remove_price_alert':
+                $alert_id = intval($_POST['alert_id']);
+                try {
+                    $conn = getDB();
+                    $stmt = $conn->prepare("DELETE FROM price_alerts WHERE id = ?");
+                    $stmt->execute([$alert_id]);
+                    $message = 'Price alert removed successfully!';
+                    $message_type = 'success';
+                } catch (Exception $e) {
+                    $message = 'Error removing price alert: ' . $e->getMessage();
+                    $message_type = 'error';
+                }
+                break;
+                
+            case 'deactivate_price_alert':
+                $alert_id = intval($_POST['alert_id']);
+                try {
+                    $conn = getDB();
+                    $stmt = $conn->prepare("UPDATE price_alerts SET is_active = 0 WHERE id = ?");
+                    $stmt->execute([$alert_id]);
+                    $message = 'Price alert deactivated successfully!';
+                    $message_type = 'success';
+                } catch (Exception $e) {
+                    $message = 'Error deactivating price alert: ' . $e->getMessage();
+                    $message_type = 'error';
+                }
+                break;
+                
+            case 'remove_user_alerts':
+                $email = sanitizeInput($_POST['email']);
+                try {
+                    $conn = getDB();
+                    $stmt = $conn->prepare("DELETE FROM price_alerts WHERE user_email = ?");
+                    $stmt->execute([$email]);
+                    $deleted = $stmt->rowCount();
+                    $message = "Removed $deleted price alert(s) for $email";
+                    $message_type = 'success';
+                } catch (Exception $e) {
+                    $message = 'Error removing alerts: ' . $e->getMessage();
+                    $message_type = 'error';
+                }
+                break;
+                
+            case 'remove_multiple_user_alerts':
+                if (isset($_POST['emails']) && is_array($_POST['emails'])) {
+                    $emails = array_map('sanitizeInput', $_POST['emails']);
+                    try {
+                        $conn = getDB();
+                        $placeholders = str_repeat('?,', count($emails) - 1) . '?';
+                        $stmt = $conn->prepare("DELETE FROM price_alerts WHERE user_email IN ($placeholders)");
+                        $stmt->execute($emails);
+                        $deleted = $stmt->rowCount();
+                        $emailCount = count($emails);
+                        $message = "Successfully removed $deleted price alert(s) for $emailCount email address(es)";
+                        $message_type = 'success';
+                    } catch (Exception $e) {
+                        $message = 'Error removing alerts: ' . $e->getMessage();
+                        $message_type = 'error';
+                    }
+                } else {
+                    $message = 'No email addresses selected for removal.';
+                    $message_type = 'error';
+                }
+                break;
         }
     }
 }
@@ -102,6 +167,21 @@ $current_category = $current_category_id ? getCategoryById($current_category_id)
 
 $categories = getCategories();
 $products = getAllProducts();
+
+// Get price alerts data
+$price_alerts = [];
+try {
+    $conn = getDB();
+    $stmt = $conn->query("
+        SELECT pa.*, p.filipino_name, p.name as english_name, p.current_price, p.unit 
+        FROM price_alerts pa 
+        JOIN products p ON pa.product_id = p.id 
+        ORDER BY pa.created_at DESC
+    ");
+    $price_alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    // Handle error silently for now
+}
 
 // Get category-based data
 $category_overview = getProductsByCategories();
@@ -166,6 +246,13 @@ include 'includes/header.php';
                     </svg>
                     Category View
                 </a>
+                <a href="admin.php?view=alerts" 
+                   class="<?php echo $view_mode === 'alerts' ? 'border-primary text-primary' : 'border-transparent text-text-secondary hover:text-text-primary hover:border-gray-300'; ?> py-3 px-4 border-b-2 font-medium text-base transition-colors flex items-center">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                    </svg>
+                    Price Alerts
+                </a>
             </nav>
         </div>
         <?php endif; ?>
@@ -177,7 +264,186 @@ include 'includes/header.php';
     </div>
     <?php endif; ?>
 
-    <?php if ($view_mode === 'categories' && !$current_category): ?>
+    <?php if ($view_mode === 'alerts'): ?>
+    <!-- Price Alert Management -->
+    <div class="mb-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-primary">Price Alert Management</h2>
+            <div class="text-sm text-text-secondary">
+                Total alerts: <?php echo count($price_alerts); ?>
+            </div>
+        </div>
+        
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <?php 
+            $active_alerts = array_filter($price_alerts, function($alert) { return $alert['is_active']; });
+            $unique_users = array_unique(array_column($price_alerts, 'user_email'));
+            $recent_alerts = array_filter($price_alerts, function($alert) { 
+                return strtotime($alert['created_at']) > strtotime('-7 days'); 
+            });
+            ?>
+            <div class="bg-white rounded-lg shadow-card p-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-primary"><?php echo count($active_alerts); ?></p>
+                        <p class="text-sm text-text-secondary">Active Alerts</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-card p-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-accent-100 rounded-lg flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-accent"><?php echo count($unique_users); ?></p>
+                        <p class="text-sm text-text-secondary">Unique Users</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-card p-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-success-100 rounded-lg flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-success" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-success"><?php echo count($recent_alerts); ?></p>
+                        <p class="text-sm text-text-secondary">This Week</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-card p-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-error-100 rounded-lg flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-error" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-error"><?php echo count($price_alerts) - count($active_alerts); ?></p>
+                        <p class="text-sm text-text-secondary">Inactive</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-lg shadow-card p-6 mb-6">
+            <h3 class="text-lg font-semibold text-primary mb-4">Quick Actions</h3>
+            <div class="flex flex-wrap gap-3">
+                <button onclick="showRemoveUserModal()" class="btn-secondary">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clip-rule="evenodd"/>
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Remove User Alerts
+                </button>
+            </div>
+        </div>
+        
+        <!-- Price Alerts List -->
+        <div class="bg-white rounded-lg shadow-card p-6">
+            <h3 class="text-lg font-semibold text-primary mb-4">All Price Alerts</h3>
+            
+            <?php if (empty($price_alerts)): ?>
+            <div class="text-center py-8 text-text-secondary">
+                <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM11 6H6a2 2 0 00-2 2v7a2 2 0 002 2h2m7-9V8a2 2 0 00-2-2H9.414a1 1 0 00-.707.293L7 8v1M9 15v-4a2 2 0 00-2-2H6"/>
+                </svg>
+                <p>No price alerts found</p>
+            </div>
+            <?php else: ?>
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto">
+                    <thead>
+                        <tr class="border-b bg-gray-50">
+                            <th class="text-left py-2 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User Email</th>
+                            <th class="text-left py-2 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                            <th class="text-center py-2 px-2 text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                            <th class="text-right py-2 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Target</th>
+                            <th class="text-right py-2 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Current</th>
+                            <th class="text-center py-2 px-2 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="text-center py-2 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                            <th class="text-center py-2 px-2 text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($price_alerts as $alert): ?>
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="py-2 px-3">
+                                <div class="text-sm text-gray-900 max-w-xs truncate" title="<?php echo htmlspecialchars($alert['user_email']); ?>">
+                                    <?php echo htmlspecialchars($alert['user_email']); ?>
+                                </div>
+                            </td>
+                            <td class="py-2 px-3">
+                                <div class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($alert['filipino_name']); ?></div>
+                                <div class="text-xs text-gray-500"><?php echo htmlspecialchars($alert['english_name']); ?></div>
+                            </td>
+                            <td class="py-2 px-2 text-center">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
+                                    <?php echo $alert['alert_type'] === 'below' ? 'bg-green-100 text-green-800' : 
+                                              ($alert['alert_type'] === 'above' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'); ?>">
+                                    <?php echo ucfirst($alert['alert_type']); ?>
+                                </span>
+                            </td>
+                            <td class="py-2 px-3 text-right text-sm font-medium">₱<?php echo number_format($alert['target_price'], 2); ?></td>
+                            <td class="py-2 px-3 text-right text-sm">₱<?php echo number_format($alert['current_price'], 2); ?></td>
+                            <td class="py-2 px-2 text-center">
+                                <?php if ($alert['is_active']): ?>
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>
+                                <?php else: ?>
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">Inactive</span>
+                                <?php endif; ?>
+                            </td>
+                            <td class="py-2 px-3 text-center text-xs text-gray-500"><?php echo date('M j, Y', strtotime($alert['created_at'])); ?></td>
+                            <td class="py-2 px-2 text-center">
+                                <div class="flex items-center justify-center gap-1">
+                                    <?php if ($alert['is_active']): ?>
+                                    <form method="POST" action="admin.php?view=alerts" class="inline" onsubmit="return confirm('Deactivate this price alert?')">
+                                        <input type="hidden" name="action" value="deactivate_price_alert">
+                                        <input type="hidden" name="alert_id" value="<?php echo $alert['id']; ?>">
+                                        <button type="submit" class="text-yellow-600 hover:text-yellow-800 p-1 rounded" title="Deactivate">
+                                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                    <?php endif; ?>
+                                    <form method="POST" action="admin.php?view=alerts" class="inline" onsubmit="return confirm('Permanently delete this price alert?')">
+                                        <input type="hidden" name="action" value="remove_price_alert">
+                                        <input type="hidden" name="alert_id" value="<?php echo $alert['id']; ?>">
+                                        <button type="submit" class="text-red-600 hover:text-red-800 p-1 rounded" title="Delete">
+                                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clip-rule="evenodd"/>
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    
+    <?php elseif ($view_mode === 'categories' && !$current_category): ?>
     <!-- Categories Overview -->
     <div class="mb-8">
         <div class="flex justify-between items-center mb-6">
@@ -680,7 +946,10 @@ include 'includes/header.php';
                     
                     <div>
                         <label for="edit_previous_price" class="block text-sm font-medium text-text-primary mb-2">Previous Price (₱)</label>
-                        <input type="number" id="edit_previous_price" name="previous_price" step="0.01" min="0" class="input-field">
+                        <input type="number" id="edit_previous_price" name="previous_price" step="0.01" min="0" class="input-field" readonly style="background-color: #f9fafb; cursor: not-allowed;">
+                        <p class="text-xs text-text-secondary mt-1">
+                            <strong>Automatic:</strong> When you change the current price, the old current price will automatically become the previous price.
+                        </p>
                     </div>
                     
                     <div class="md:col-span-2">
@@ -701,6 +970,173 @@ include 'includes/header.php';
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
+
+    <script>
+        // Store initial current price when modal opens
+        let initialCurrentPrice = null;
+        
+        // Add event listener for current price changes
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPriceInput = document.getElementById('edit_current_price');
+            const previousPriceInput = document.getElementById('edit_previous_price');
+            
+            if (currentPriceInput && previousPriceInput) {
+                currentPriceInput.addEventListener('input', function() {
+                    const newCurrentPrice = parseFloat(this.value) || 0;
+                    
+                    // Only update previous price if:
+                    // 1. We have an initial current price stored
+                    // 2. The new price is different from the initial price
+                    // 3. The new price is greater than 0
+                    if (initialCurrentPrice && newCurrentPrice !== initialCurrentPrice && newCurrentPrice > 0) {
+                        previousPriceInput.value = initialCurrentPrice.toFixed(2);
+                        
+                        // Add visual feedback with a subtle animation
+                        previousPriceInput.style.backgroundColor = '#f0fff4'; // Light green
+                        previousPriceInput.style.transition = 'background-color 0.3s ease';
+                        
+                        // Reset background after animation
+                        setTimeout(() => {
+                            previousPriceInput.style.backgroundColor = '#f9fafb';
+                        }, 1000);
+                    } else if (newCurrentPrice === initialCurrentPrice) {
+                        // If price is reverted to original, clear previous price to original value
+                        const originalPreviousPrice = previousPriceInput.dataset.originalValue || '';
+                        previousPriceInput.value = originalPreviousPrice;
+                        previousPriceInput.style.backgroundColor = '#f9fafb';
+                    }
+                });
+            }
+        });
+    </script>
+</div>
+
+<!-- Remove User Alerts Modal -->
+<div id="removeUserModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-elevated w-full max-w-md mx-auto">
+        <!-- Header -->
+        <div class="flex justify-between items-center p-6 border-b border-gray-200">
+            <div class="flex items-center">
+                <svg class="w-5 h-5 text-error mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                </svg>
+                <h3 class="text-lg font-semibold text-text-primary">Remove User Alerts</h3>
+            </div>
+            <button onclick="hideRemoveUserModal()" class="text-text-muted hover:text-primary transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Content -->
+        <div class="p-6">
+            <!-- Warning Alert -->
+            <div class="bg-error-100 border border-red-300 rounded-lg p-4 mb-6">
+                <div class="flex items-start">
+                    <svg class="w-5 h-5 text-error mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                    </svg>
+                    <div>
+                        <h4 class="font-semibold text-error mb-2">⚠️ Permanent Action</h4>
+                        <p class="text-sm text-error-700">
+                            This will permanently delete <strong>ALL price alerts</strong> for the selected email address(es). 
+                            <strong>This action cannot be undone.</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Form -->
+            <form method="POST" action="admin.php?view=alerts">
+                <input type="hidden" name="action" value="remove_multiple_user_alerts">
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-text-primary mb-3">Select Email Address(es) to Remove</label>
+                    
+                    <!-- Select All Option -->
+                    <div class="mb-4">
+                        <label class="flex items-center p-3 bg-surface-50 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors">
+                            <input type="checkbox" id="selectAllEmails" class="mr-3" onchange="toggleAllEmails()">
+                            <span class="text-sm font-medium text-text-primary">Select All Email Addresses</span>
+                            <span class="text-xs text-text-muted ml-2">(Bulk selection)</span>
+                        </label>
+                    </div>
+                    
+                    <!-- Search Input -->
+                    <div class="mb-4 relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-4 w-4 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <input type="text" id="emailSearch" placeholder="Search emails..." 
+                               class="input-field pl-10"
+                               onkeyup="filterEmails()">
+                    </div>
+                    
+                    <!-- Email List -->
+                    <div class="border border-gray-200 rounded-lg max-h-48 overflow-y-auto bg-white">
+                        <?php 
+                        $unique_emails = array_unique(array_column($price_alerts, 'user_email'));
+                        foreach ($unique_emails as $index => $email): 
+                            $alert_count = count(array_filter($price_alerts, function($alert) use ($email) { 
+                                return $alert['user_email'] === $email; 
+                            }));
+                        ?>
+                        <div class="email-option border-b border-gray-100 last:border-b-0 hover:bg-surface-50 transition-colors">
+                            <label class="flex items-start p-3 cursor-pointer">
+                                <input type="checkbox" class="email-checkbox mt-1 mr-3" value="<?php echo htmlspecialchars($email); ?>" onchange="updateSelectedEmails()">
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-medium text-text-primary break-all"><?php echo htmlspecialchars($email); ?></div>
+                                    <div class="mt-1">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-accent-100 text-accent-700">
+                                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                                            </svg>
+                                            <?php echo $alert_count; ?> alerts
+                                        </span>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    
+                    <!-- Selected Email Display -->
+                    <div id="selectedEmailDisplay" class="mt-4 p-4 bg-success-50 border border-green-200 rounded-lg hidden">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-4 h-4 text-success mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-sm font-medium text-success">Selected for removal:</span>
+                        </div>
+                        <div id="selectedEmailList" class="space-y-1"></div>
+                    </div>
+                    
+                    <!-- Hidden inputs -->
+                    <div id="hiddenEmailInputs"></div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                    <button type="button" onclick="hideRemoveUserModal()" class="btn-secondary">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        Cancel
+                    </button>
+                    <button type="submit" id="removeAlertsBtn" disabled class="btn-error opacity-50 cursor-not-allowed" 
+                            onclick="return validateEmailSelection()">
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="button-text">Remove All Alerts</span>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -729,6 +1165,10 @@ function hideAddCategoryModal() {
 }
 
 function editProduct(product) {
+    // Store initial current price for automatic previous price update
+    initialCurrentPrice = parseFloat(product.current_price) || 0;
+    
+    // Set form values
     document.getElementById('edit_product_id').value = product.id;
     document.getElementById('edit_name').value = product.name;
     document.getElementById('edit_filipino_name').value = product.filipino_name;
@@ -739,6 +1179,10 @@ function editProduct(product) {
     document.getElementById('edit_previous_price').value = product.previous_price;
     document.getElementById('edit_image_url').value = product.image_url || '';
     document.getElementById('edit_is_featured').checked = product.is_featured == 1;
+    
+    // Store original previous price in dataset for restoration if needed
+    const previousPriceInput = document.getElementById('edit_previous_price');
+    previousPriceInput.dataset.originalValue = product.previous_price || '';
     
     document.getElementById('editModal').classList.remove('hidden');
 }
@@ -773,6 +1217,153 @@ document.getElementById('editModal')?.addEventListener('click', function(e) {
         closeEditModal();
     }
 });
+
+// Remove User Modal Functions
+function showRemoveUserModal() {
+    document.getElementById('removeUserModal').classList.remove('hidden');
+    // Reset the modal state
+    document.getElementById('emailSearch').value = '';
+    document.getElementById('selectedEmailDisplay').classList.add('hidden');
+    document.getElementById('selectAllEmails').checked = false;
+    document.querySelectorAll('.email-checkbox').forEach(cb => cb.checked = false);
+    updateSelectedEmails();
+    filterEmails(); // Show all emails
+}
+
+function hideRemoveUserModal() {
+    document.getElementById('removeUserModal').classList.add('hidden');
+}
+
+// Email Search and Selection Functions
+function filterEmails() {
+    const searchTerm = document.getElementById('emailSearch').value.toLowerCase();
+    const emailOptions = document.querySelectorAll('.email-option');
+    
+    emailOptions.forEach(function(option) {
+        const emailText = option.querySelector('.text-text-primary').textContent.toLowerCase();
+        if (emailText.includes(searchTerm)) {
+            option.style.display = 'block';
+        } else {
+            option.style.display = 'none';
+        }
+    });
+}
+
+function updateSelectedEmails() {
+    const checkedBoxes = document.querySelectorAll('.email-checkbox:checked');
+    const selectedEmails = Array.from(checkedBoxes).map(cb => cb.value);
+    
+    // Update hidden inputs
+    const hiddenInputsContainer = document.getElementById('hiddenEmailInputs');
+    hiddenInputsContainer.innerHTML = '';
+    
+    selectedEmails.forEach(email => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'emails[]';
+        input.value = email;
+        hiddenInputsContainer.appendChild(input);
+    });
+    
+    // Update selected email display
+    const selectedEmailDisplay = document.getElementById('selectedEmailDisplay');
+    const selectedEmailList = document.getElementById('selectedEmailList');
+    
+    if (selectedEmails.length > 0) {
+        selectedEmailDisplay.classList.remove('hidden');
+        selectedEmailList.innerHTML = '';
+        
+        selectedEmails.forEach(email => {
+            const emailDiv = document.createElement('div');
+            emailDiv.className = 'text-sm text-text-primary bg-white p-2 rounded border font-mono break-all';
+            emailDiv.textContent = email;
+            selectedEmailList.appendChild(emailDiv);
+        });
+        
+        // Enable submit button
+        const submitBtn = document.getElementById('removeAlertsBtn');
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        submitBtn.classList.add('hover:bg-red-700', 'cursor-pointer');
+        submitBtn.style.backgroundColor = '#DC3545';
+        
+        // Update button text
+        const emailCount = selectedEmails.length;
+        submitBtn.innerHTML = `
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+            </svg>
+            Remove Alerts (${emailCount} ${emailCount === 1 ? 'user' : 'users'})
+        `;
+    } else {
+        selectedEmailDisplay.classList.add('hidden');
+        
+        // Disable submit button
+        const submitBtn = document.getElementById('removeAlertsBtn');
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        submitBtn.classList.remove('hover:bg-red-700', 'cursor-pointer');
+        submitBtn.style.backgroundColor = '';
+        
+        // Reset button text
+        submitBtn.innerHTML = `
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+            </svg>
+            Remove All Alerts
+        `;
+    }
+    
+    // Update select all checkbox
+    const selectAllCheckbox = document.getElementById('selectAllEmails');
+    const totalCheckboxes = document.querySelectorAll('.email-checkbox').length;
+    selectAllCheckbox.checked = selectedEmails.length === totalCheckboxes && totalCheckboxes > 0;
+    selectAllCheckbox.indeterminate = selectedEmails.length > 0 && selectedEmails.length < totalCheckboxes;
+}
+
+function toggleAllEmails() {
+    const selectAllCheckbox = document.getElementById('selectAllEmails');
+    const emailCheckboxes = document.querySelectorAll('.email-checkbox');
+    
+    emailCheckboxes.forEach(checkbox => {
+        checkbox.checked = selectAllCheckbox.checked;
+    });
+    
+    updateSelectedEmails();
+}
+
+function validateEmailSelection() {
+    const selectedEmails = document.querySelectorAll('.email-checkbox:checked');
+    if (selectedEmails.length === 0) {
+        alert('Please select at least one email address first.');
+        return false;
+    }
+    const emailCount = selectedEmails.length;
+    const emailText = emailCount === 1 ? 'this email address' : `these ${emailCount} email addresses`;
+    return confirm(`Are you sure you want to remove ALL alerts for ${emailText}? This cannot be undone.`);
+}
+
+// Add btn-danger class styles if not already defined
+if (!document.querySelector('.btn-danger')) {
+    const style = document.createElement('style');
+    style.textContent = `
+        .btn-danger {
+            background-color: #dc2626;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-danger:hover {
+            background-color: #b91c1c;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
 </script>
 
 <?php include 'includes/footer.php'; ?>

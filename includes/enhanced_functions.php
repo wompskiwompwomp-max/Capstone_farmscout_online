@@ -264,12 +264,19 @@ if (!function_exists('updateProduct')) {
     try {
         $conn->beginTransaction();
         
-        // Get current price for comparison
+        // Get current product data for comparison
         $current_query = "SELECT current_price FROM products WHERE id = :id";
         $current_stmt = $conn->prepare($current_query);
         $current_stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $current_stmt->execute();
         $current_product = $current_stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // Automatic previous price handling
+        // If current price is different from the new price, save old current price as previous price
+        $previous_price = $data['previous_price']; // Use provided previous price as default
+        if ($current_product && $current_product['current_price'] != $data['current_price']) {
+            $previous_price = $current_product['current_price']; // Automatically set to old current price
+        }
         
         $query = "UPDATE products SET 
                   name = :name, 
@@ -291,7 +298,7 @@ if (!function_exists('updateProduct')) {
         $stmt->bindParam(':description', $data['description']);
         $stmt->bindParam(':category_id', $data['category_id'], PDO::PARAM_INT);
         $stmt->bindParam(':current_price', $data['current_price']);
-        $stmt->bindParam(':previous_price', $data['previous_price']);
+        $stmt->bindParam(':previous_price', $previous_price); // Use automatic previous price
         $stmt->bindParam(':unit', $data['unit']);
         $stmt->bindParam(':image_url', $data['image_url']);
         $stmt->bindParam(':is_featured', $data['is_featured'], PDO::PARAM_BOOL);

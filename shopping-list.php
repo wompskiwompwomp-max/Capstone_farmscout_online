@@ -2075,6 +2075,7 @@ function showTemporaryMessage(message, type) {
         messageDiv.style.border = '1px solid #333333'; // Dark border
         messageDiv.innerHTML = `
             <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="assets/images/demi doggu.gif" alt="Success!" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
                 <div style="flex: 1; color: #ffffff;">${message}</div>
                 <button onclick="document.getElementById('temp-message').remove()" style="margin-left: auto; background: none; border: none; color: #ffffff; cursor: pointer; padding: 6px; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 16px; opacity: 0.7;" onmouseover="this.style.backgroundColor='#333333'; this.style.opacity='1';" onmouseout="this.style.backgroundColor='transparent'; this.style.opacity='0.7';">×</button>
             </div>
