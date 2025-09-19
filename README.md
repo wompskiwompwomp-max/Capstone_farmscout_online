@@ -170,6 +170,37 @@ For issues or questions:
 3. Check web server error logs
 4. Ensure proper file permissions
 
+## Testing
+
+FarmScout Online includes a comprehensive testing framework:
+
+### Running Tests
+1. **Simple Test Runner**: `http://localhost/farmscout_online/tests/simple_test_runner.php`
+   - Quick, standalone testing (8 tests)
+   - Works without any setup
+   - Recommended for demos
+
+2. **Complete Test Runner**: `http://localhost/farmscout_online/tests/run_all_tests_fixed.php`
+   - Comprehensive testing (50+ tests)
+   - Multiple test suites
+   - Professional test output
+   - Recommended for professor evaluation
+
+3. **Individual Tests**: Access specific test files in `tests/unit/` and `tests/integration/`
+
+### Test Coverage
+- **Unit Tests**: Core functions, security, validation
+- **Integration Tests**: Database operations, search functionality
+- **Manual Tests**: File structure, configuration validation
+- **Total**: 29+ test cases covering critical functionality
+
+### Test Documentation
+See `docs/TESTING_GUIDE.md` for comprehensive testing information including:
+- Test structure and organization
+- Academic evaluation criteria
+- Running instructions
+- Troubleshooting guide
+
 ## License
 
 MIT License - Feel free to modify and distribute as needed.

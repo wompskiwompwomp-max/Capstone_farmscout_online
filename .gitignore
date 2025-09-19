@@ -1,4 +1,38 @@
+# System files
 .DS_Store
-node_modules
-.idea
+Thumbs.db
+
+# Dependencies
+node_modules/
+vendor/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build files
 package-lock.json
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Logs
+logs/*.log
+!logs/.gitkeep
+
+# Tests (optional - uncomment if you don't want to track test files)
+# tests/
+
+# Temporary files
+*.tmp
+*.temp
+
+# OS generated files
+*.DS_Store?
+ehthumbs.db
+Icon?
+desktop.ini
