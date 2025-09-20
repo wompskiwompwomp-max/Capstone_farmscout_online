@@ -140,7 +140,23 @@ SimpleTestFramework::test('Test rate limiting logic', function() {
 
 // Run this test file if called directly
 if (basename($_SERVER['PHP_SELF']) === 'SecurityTest.php') {
+    // Browser output styling
+    $isBrowser = !empty($_SERVER['HTTP_HOST']);
+    if ($isBrowser) {
+        echo "<!DOCTYPE html><html><head><title>Security Unit Tests</title><style>
+        body { font-family: 'Courier New', monospace; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        pre { background: #f8f9fa; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .pass { color: #28a745; }
+        .fail { color: #dc3545; }
+        </style></head><body><div class='container'><h1>🛡️ Security Unit Tests</h1><pre>";
+    }
+    
     echo "Running Security Unit Tests\n";
     echo "===========================\n";
     SimpleTestFramework::runAll();
+    
+    if ($isBrowser) {
+        echo "</pre></div></body></html>";
+    }
 }
